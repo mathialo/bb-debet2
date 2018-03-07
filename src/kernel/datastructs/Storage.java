@@ -21,6 +21,7 @@ public class Storage implements Exportable {
 
     private LinkedList<PriorityQueue<Product>> storage;
 
+
     public Storage() {
         storage = new LinkedList<PriorityQueue<Product>>();
     }
@@ -45,7 +46,6 @@ public class Storage implements Exportable {
                 String[] line = rawLine.split("\\s*,\\s*");
 
                 add(new Product(line[0], Double.parseDouble(line[1]), Double.parseDouble(line[2])));
-
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new ErrorInFileException("Error in storage file on line " + linenum);
             }

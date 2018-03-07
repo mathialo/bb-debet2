@@ -18,29 +18,26 @@ import java.util.Scanner;
 
 public class Kernel {
 
-    public static Logger logger;
-
     public static final String SAVE_DIR = System.getProperty("user.home") + "/.bbdebet2/";
-
     public static final String SALESHISTORY_FILENAME = "saleshistory.csv";
     public static final String USERLIST_FILENAME = "users.usl";
     public static final String STORAGE_FILENAME = "storage.csv";
     public static final String TRANSACTIONHIST_FILENAME = "transactionhistory.csv";
     public static final String SETTINGS_FILENAME = "settings.properties";
     public static final String LOG_FILENAME = "log";
-
     public static final String SALESHISTORY_FILEPATH = SAVE_DIR + SALESHISTORY_FILENAME;
     public static final String USERLIST_FILEPATH = SAVE_DIR + USERLIST_FILENAME;
     public static final String STORAGE_FILEPATH = SAVE_DIR + STORAGE_FILENAME;
     public static final String TRANSACTIONHIST_FILEPATH = SAVE_DIR + TRANSACTIONHIST_FILENAME;
     public static final String SETTINGS_FILEPATH = SAVE_DIR + SETTINGS_FILENAME;
     public static final String LOG_FILEPATH = SAVE_DIR + LOG_FILENAME;
-
+    public static Logger logger;
     private File runningFile;
 
     private Exportable[] saveOnExit;
     private UserList userList;
     private Storage storage;
+
 
     public Kernel() {
         // Initialize Kernel
@@ -58,96 +55,6 @@ public class Kernel {
 
         // Log status update
         logger.log("New kernel instantiated");
-    }
-
-    private void createLogger() {
-        try {
-            logger = new Logger(new File(LOG_FILEPATH), true);
-
-        } catch (IOException e) {
-            System.out.println("Warning: Could not instantiate logger!");
-            e.printStackTrace();
-        }
-    }
-
-    private void createRunningFile() {
-        runningFile = new File(SAVE_DIR + "running");
-        if (runningFile.exists()) {
-            logger.log("Error: Kernel already running on system");
-            logger.close();
-            System.exit(1);
-        }
-
-        try {
-            runningFile.createNewFile();
-
-        } catch (IOException e) {
-            logger.log(e);
-        }
-    }
-
-    private void readFiles() {
-        logger.log("Loading UserList");
-        try {
-            userList = new UserList(new File(USERLIST_FILEPATH));
-
-        } catch (IOException | ErrorInFileException e) {
-            logger.log(e);
-            logger.log("Falling back to empty user list");
-
-            userList = new UserList();
-        }
-
-        logger.log("Loading Storage");
-        try {
-            storage = new Storage(new File(STORAGE_FILEPATH));
-
-        } catch (IOException | ErrorInFileException e) {
-            logger.log(e);
-            logger.log("Falling back to empty storage");
-
-            storage = new Storage();
-        }
-
-        Exportable[] saveOnExit = {userList, storage};
-        this.saveOnExit = saveOnExit;
-    }
-
-
-    public UserList getUserList() {
-        return userList;
-    }
-
-
-    public Storage getStorage() {
-        return storage;
-    }
-
-
-    public void shutDown() {
-        if (!isRunning()) return;
-
-        if (saveOnExit != null) {
-            for (Exportable e : saveOnExit) {
-                logger.log("Saving " + e.getClass().getSimpleName());
-                try {
-                    e.saveFile();
-
-                } catch (IOException ex) {
-                    logger.log(ex);
-                }
-            }
-        }
-
-        runningFile.delete();
-
-        logger.log("Shutting down kernel");
-        logger.close();
-    }
-
-
-    public boolean isRunning() {
-        return runningFile.exists();
     }
 
 
@@ -215,10 +122,97 @@ public class Kernel {
                         System.out.println("Unknown command '" + command[0] + "'");
                         break;
                 }
-
             } catch (Exception e) {
                 logger.log(e);
             }
         }
+    }
+
+
+    private void createLogger() {
+        try {
+            logger = new Logger(new File(LOG_FILEPATH), true);
+        } catch (IOException e) {
+            System.out.println("Warning: Could not instantiate logger!");
+            e.printStackTrace();
+        }
+    }
+
+
+    private void createRunningFile() {
+        runningFile = new File(SAVE_DIR + "running");
+        if (runningFile.exists()) {
+            logger.log("Error: Kernel already running on system");
+            logger.close();
+            System.exit(1);
+        }
+
+        try {
+            runningFile.createNewFile();
+        } catch (IOException e) {
+            logger.log(e);
+        }
+    }
+
+
+    private void readFiles() {
+        logger.log("Loading UserList");
+        try {
+            userList = new UserList(new File(USERLIST_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty user list");
+
+            userList = new UserList();
+        }
+
+        logger.log("Loading Storage");
+        try {
+            storage = new Storage(new File(STORAGE_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty storage");
+
+            storage = new Storage();
+        }
+
+        Exportable[] saveOnExit = {userList, storage};
+        this.saveOnExit = saveOnExit;
+    }
+
+
+    public UserList getUserList() {
+        return userList;
+    }
+
+
+    public Storage getStorage() {
+        return storage;
+    }
+
+
+    public void shutDown() {
+        if (!isRunning()) return;
+
+        if (saveOnExit != null) {
+            for (Exportable e : saveOnExit) {
+                logger.log("Saving " + e.getClass().getSimpleName());
+                try {
+                    e.saveFile();
+                } catch (IOException ex) {
+                    logger.log(ex);
+                }
+            }
+        }
+
+        runningFile.delete();
+
+        logger.log("Shutting down kernel");
+        logger.close();
+    }
+
+
+    public boolean isRunning() {
+        return runningFile.exists();
     }
 }

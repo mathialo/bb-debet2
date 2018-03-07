@@ -11,9 +11,14 @@ import kernel.Kernel;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class UserList implements Iterable<User>, Exportable {
+
     private LinkedList<User> list;
 
 
@@ -28,7 +33,8 @@ public class UserList implements Iterable<User>, Exportable {
     /**
      * Reads given file and initializes a user list from the file
      *
-     * @param  userlist             file to read from
+     * @param userlist file to read from
+     *
      * @throws IOException          if file could not be found/read properly
      * @throws ErrorInFileException if there is an error in the file (file is on an incorrect format)
      */
@@ -70,13 +76,10 @@ public class UserList implements Iterable<User>, Exportable {
             }
 
             sc.close();
-
         } catch (NumberFormatException e) {
             throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + userlist + " inneholder et element av feil type.");
-
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + userlist + " inneholder for få elementer.");
-
         } catch (NoSuchElementException e) {
             throw new ErrorInFileException("Feil i inputfil: " + userlist + " inneholder for få linjer.");
         }
@@ -121,13 +124,10 @@ public class UserList implements Iterable<User>, Exportable {
             }
 
             sc.close();
-
         } catch (NumberFormatException e) {
             throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + userlist + " inneholder et element av feil type.");
-
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + userlist + " inneholder for få elementer.");
-
         } catch (NoSuchElementException e) {
             throw new ErrorInFileException("Feil i inputfil: " + userlist + " inneholder for få linjer.");
         }
@@ -136,8 +136,10 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * saves file as a userlist file (described in fileformat definitions)
-     * @param  file        where to store file
+     *
+     * @param file           where to store file
      * @param includeCounter wether to include total number of users on first line or not
+     *
      * @throws IOException if file could not be created for some reason
      */
     public void saveFile(File file, boolean includeCounter) throws IOException {
@@ -150,7 +152,7 @@ public class UserList implements Iterable<User>, Exportable {
         PrintWriter pw = new PrintWriter(file);
 
         // print User's ID-counter
-        if (includeCounter)	pw.println(User.getCounter());
+        if (includeCounter) pw.println(User.getCounter());
 
         // print all users as csv
         for (User u : list) {
@@ -161,9 +163,12 @@ public class UserList implements Iterable<User>, Exportable {
         pw.close();
     }
 
+
     /**
      * saves file as a userlist file (described in fileformat definitions)
-     * @param  file        where to store file
+     *
+     * @param file where to store file
+     *
      * @throws IOException if file could not be created for some reason
      */
     public void saveFile(File file) throws IOException {
@@ -173,30 +178,38 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * saves file as a userlist file (described in fileformat definitions)
-     * @param  filepath    where to store file (relative or absolute path)
+     *
+     * @param filepath where to store file (relative or absolute path)
+     *
      * @throws IOException if file could not be created for some reason
      */
     public void saveFile(String filepath) throws IOException {
         saveFile(new File(filepath));
     }
 
+
     /**
      * saves file as a userlist file (described in fileformat definitions)
-     * @param  filepath    where to store file (relative or absolute path)
+     *
+     * @param filepath       where to store file (relative or absolute path)
      * @param includeCounter wether to include total number of users on first line or not
+     *
      * @throws IOException if file could not be created for some reason
      */
     public void saveFile(String filepath, boolean includeCounter) throws IOException {
         saveFile(new File(filepath), includeCounter);
     }
 
+
     @Override
     public void saveFile() throws IOException {
         saveFile(Kernel.USERLIST_FILEPATH, true);
     }
 
+
     /**
      * adds user to list
+     *
      * @param user user to add
      */
     public void add(User user) {
@@ -206,8 +219,10 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * check if user exists in list
-     * @param  user user to search for
-     * @return      if user exists in list
+     *
+     * @param user user to search for
+     *
+     * @return if user exists in list
      */
     public boolean contains(User user) {
         return list.contains(user);
@@ -216,8 +231,10 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * searches for a user with given name in the list
-     * @param  userName name to search for
-     * @return          if there is a user with given name or not
+     *
+     * @param userName name to search for
+     *
+     * @return if there is a user with given name or not
      */
     public boolean contains(String userName) {
         return find(userName) != null;
@@ -226,6 +243,7 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * deletes user from list
+     *
      * @param user user to remove
      */
     public void remove(User user) {
@@ -235,8 +253,10 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * search for a user in the list by username
-     * @param  userName name of user to search for
-     * @return          user with given name. null if there are no users with given name
+     *
+     * @param userName name of user to search for
+     *
+     * @return user with given name. null if there are no users with given name
      */
     public User find(String userName) {
         // loop through list
@@ -253,6 +273,7 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * reuturns iterator, makes list iterable
+     *
      * @return iterator for list
      */
     public Iterator<User> iterator() {
@@ -264,6 +285,7 @@ public class UserList implements Iterable<User>, Exportable {
 
     /**
      * returns list as an observable list
+     *
      * @return userlist as an obserable list of usernames
      */
     public ObservableList<String> toObservableList() {
