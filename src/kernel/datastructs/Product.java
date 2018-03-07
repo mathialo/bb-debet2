@@ -4,7 +4,7 @@
 
 package kernel.datastructs;
 
-public class Product {
+public class Product implements Comparable<Product> {
     private String name;
     private double sellPrice;
     private double buyPrice;
@@ -33,5 +33,11 @@ public class Product {
 
     public double getMarkupRate() {
         return sellPrice / buyPrice;
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        if (sellPrice >= o.getSellPrice()) return 1;
+        else return -1;
     }
 }
