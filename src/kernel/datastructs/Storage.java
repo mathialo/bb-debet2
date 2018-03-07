@@ -23,7 +23,7 @@ public class Storage implements Exportable {
 
 
     public Storage() {
-        storage = new LinkedList<PriorityQueue<Product>>();
+        storage = new LinkedList<>();
     }
 
 
@@ -89,7 +89,7 @@ public class Storage implements Exportable {
         }
 
         // No matching product entry, create new p-queue for the new product
-        PriorityQueue<Product> q = new PriorityQueue<Product>();
+        PriorityQueue<Product> q = new PriorityQueue<>();
         q.add(p);
         storage.add(q);
     }
@@ -127,12 +127,7 @@ public class Storage implements Exportable {
 
 
     public Set<Product> getProductSet() {
-        TreeSet<Product> productSet = new TreeSet<Product>(new Comparator<Product>() {
-            @Override
-            public int compare(Product o1, Product o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
+        TreeSet<Product> productSet = new TreeSet<>(Comparator.comparing(Product::getName));
 
         for (PriorityQueue<Product> q : storage) {
             productSet.add(q.peek());

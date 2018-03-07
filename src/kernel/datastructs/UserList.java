@@ -26,7 +26,7 @@ public class UserList implements Iterable<User>, Exportable {
      * Creates an empty user list
      */
     public UserList() {
-        list = new LinkedList<User>();
+        list = new LinkedList<>();
     }
 
 
@@ -45,7 +45,7 @@ public class UserList implements Iterable<User>, Exportable {
 
         try {
             // create empty list
-            list = new LinkedList<User>();
+            list = new LinkedList<>();
 
             // create file reader
             Scanner sc = new Scanner(userlist);
@@ -93,7 +93,7 @@ public class UserList implements Iterable<User>, Exportable {
 
         try {
             // create empty list
-            list = new LinkedList<User>();
+            list = new LinkedList<>();
 
             // create file reader
             Scanner sc = new Scanner(userlist);
@@ -289,7 +289,7 @@ public class UserList implements Iterable<User>, Exportable {
      * @return userlist as an obserable list of usernames
      */
     public ObservableList<String> toObservableList() {
-        ArrayList<String> listOfPeople = new ArrayList<String>();
+        ArrayList<String> listOfPeople = new ArrayList<>();
 
         for (User u : list) {
             listOfPeople.add(u.toString());
@@ -311,7 +311,7 @@ public class UserList implements Iterable<User>, Exportable {
 
 
     public void reset() {
-        list = new LinkedList<User>();
+        list = new LinkedList<>();
         User.setCounter(0);
     }
 }

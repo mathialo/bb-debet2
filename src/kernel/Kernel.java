@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 public class Kernel {
 
     public static final String SAVE_DIR = System.getProperty("user.home") + "/.bbdebet2/";
@@ -46,12 +47,7 @@ public class Kernel {
         readFiles();
 
         // Make sure shutDown is called on exit
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                shutDown();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutDown));
 
         // Log status update
         logger.log("New kernel instantiated");
@@ -148,6 +144,7 @@ public class Kernel {
         }
 
         try {
+            //noinspection ResultOfMethodCallIgnored
             runningFile.createNewFile();
         } catch (IOException e) {
             logger.log(e);
@@ -176,8 +173,7 @@ public class Kernel {
             storage = new Storage();
         }
 
-        Exportable[] saveOnExit = {userList, storage};
-        this.saveOnExit = saveOnExit;
+        this.saveOnExit = new Exportable[]{userList, storage};
     }
 
 
@@ -205,6 +201,7 @@ public class Kernel {
             }
         }
 
+        //noinspection ResultOfMethodCallIgnored
         runningFile.delete();
 
         logger.log("Shutting down kernel");

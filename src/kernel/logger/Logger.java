@@ -31,7 +31,7 @@ public class Logger {
     public void log(String message) {
         try {
             logWriter.write(getTimeStamp() + message + ".\n");
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
         if (terminaldump) System.out.println("LOG:\t" + message);
@@ -48,7 +48,7 @@ public class Logger {
                 logWriter.write("\t" + e.toString() + "\n");
             }
             logWriter.write("END STACKTRACE\n");
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
         if (terminaldump) System.out.println("LOG:\tError: " + exception.getMessage());
@@ -59,7 +59,7 @@ public class Logger {
         try {
             log("Closing");
             logWriter.close();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 }

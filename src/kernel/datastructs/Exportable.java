@@ -19,7 +19,7 @@ public interface Exportable {
      *
      * @throws IOException On IO errors
      */
-    public void saveFile(File file) throws IOException;
+    void saveFile(File file) throws IOException;
 
 
     /**
@@ -27,5 +27,5 @@ public interface Exportable {
      *
      * @throws IOException On IO errors
      */
-    public void saveFile() throws IOException;
+    void saveFile() throws IOException;
 }
