@@ -32,19 +32,19 @@ public class Logger {
         if (terminaldump) System.out.println("LOG:\t" + message);
     }
 
-    public void log(Exception exeption) {
+    public void log(Exception exception) {
         try {
-            logWriter.write(getTimeStamp() + "NEW EXCEPTION OCCURED:\n");
-            logWriter.write("  -->> " + exeption.getMessage() + "\n");
+            logWriter.write(getTimeStamp() + "New " + exception.getClass().getSimpleName() + " occurred:\n");
+            logWriter.write("  -->> " + exception.getMessage() + "\n");
             logWriter.write("BEGIN STACKTRACE\n");
-            StackTraceElement[] stackTrace = exeption.getStackTrace();
+            StackTraceElement[] stackTrace = exception.getStackTrace();
             for (StackTraceElement e : stackTrace) {
                 logWriter.write("\t" + e.toString() + "\n");
             }
             logWriter.write("END STACKTRACE\n");
         } catch (IOException e) {}
 
-        if (terminaldump) System.out.println(exeption.getMessage());
+        if (terminaldump) System.out.println("LOG:\tError: " + exception.getMessage());
     }
 
     public void close() {
