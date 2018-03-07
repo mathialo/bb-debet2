@@ -7,6 +7,7 @@ package kernel;
 import kernel.datastructs.ErrorInFileException;
 import kernel.datastructs.Exportable;
 import kernel.datastructs.Product;
+import kernel.datastructs.SalesHistory;
 import kernel.datastructs.Storage;
 import kernel.datastructs.User;
 import kernel.datastructs.UserList;
@@ -38,6 +39,7 @@ public class Kernel {
     private Exportable[] saveOnExit;
     private UserList userList;
     private Storage storage;
+    private SalesHistory salesHistory = new SalesHistory();
 
 
     public Kernel() {
@@ -173,7 +175,17 @@ public class Kernel {
             storage = new Storage();
         }
 
-        this.saveOnExit = new Exportable[]{userList, storage};
+        logger.log("Loading SalesHistory");
+        try {
+            salesHistory = new SalesHistory(new File(SALESHISTORY_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty storage");
+
+            salesHistory = new SalesHistory();
+        }
+
+        this.saveOnExit = new Exportable[]{userList, storage, salesHistory};
     }
 
 

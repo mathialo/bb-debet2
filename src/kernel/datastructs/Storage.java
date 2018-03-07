@@ -4,7 +4,6 @@
 
 package kernel.datastructs;
 
-
 import kernel.Kernel;
 
 import java.io.File;
