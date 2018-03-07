@@ -21,23 +21,20 @@ public class User {
 
     /**
      * Initializes new user with automatic id generation
-     * @param fullName  User's real name
      * @param userName  Username
      * @param mail      Email address
      */
-    public User(String fullName, String userName, String mail) {
-        this(fullName, userName, mail, counter++);
+    public User(String userName, String mail) {
+        this(userName, mail, counter++);
     }
 
     /**
      * Initializes new user with specified id
-     * @param fullName  User's real name
      * @param userName  Username
      * @param mail      Email address
      * @param id        ID of user
      */
-    User(String fullName, String userName, String mail, int id) {
-        this.fullName = fullName;
+    User(String userName, String mail, int id) {
         this.userName = userName;
         this.mail = mail;
 
@@ -45,10 +42,6 @@ public class User {
         balance = 0;
 
         formatter = new DecimalFormat("#0.00");
-    }
-
-    public String getFullName() {
-        return fullName;
     }
 
     public String getUserName() {
@@ -79,6 +72,14 @@ public class User {
     public double addBalance(double amount) {
         balance += amount;
         return balance;
+    }
+
+    protected static int getCounter() {
+        return counter;
+    }
+
+    protected static void setCounter(int counter) {
+        User.counter = counter;
     }
 
     @Override

@@ -65,7 +65,6 @@ public class Kernel {
         });
 
         logger.log("New kernel instantiated");
-
     }
 
 
