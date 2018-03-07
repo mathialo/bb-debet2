@@ -69,7 +69,9 @@ public class Kernel {
     }
 
 
-    public void shutDown(int exitCode) {
+    public void shutDown() {
+        if (!isRunning()) return;
+
         if (saveOnExit != null) {
             for (Exportable e : saveOnExit) {
                 logger.log("Saving " + e.getClass().getSimpleName());
@@ -86,12 +88,13 @@ public class Kernel {
 
         logger.log("Shutting down kernel");
         logger.close();
-        System.exit(exitCode);
     }
 
-    public void shutDown() {
-        shutDown(0);
+
+    public boolean isRunning() {
+        return runningFile.exists();
     }
+
 
     public static void main(String[] args) {
         Kernel kernel = new Kernel();
@@ -110,12 +113,14 @@ public class Kernel {
                     cont = false;
                     break;
 
+                case "isRunning":
+                    System.out.println(kernel.isRunning());
+                    break;
+
                 default:
                     System.out.println("Unknown command '" + command[0] + "'");
                     break;
             }
         }
-
-        kernel.shutDown();
     }
 }
