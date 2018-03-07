@@ -6,6 +6,7 @@ package kernel;
 
 import kernel.datastructs.ErrorInFileException;
 import kernel.datastructs.Exportable;
+import kernel.datastructs.User;
 import kernel.datastructs.UserList;
 import kernel.logger.Logger;
 
@@ -83,7 +84,7 @@ public class Kernel {
     }
 
     private void readFiles() {
-        logger.log("Loading user list");
+        logger.log("Loading UserList");
         try {
             userList = new UserList(new File(USERLIST_FILEPATH));
 
@@ -98,6 +99,10 @@ public class Kernel {
         saveOnExit[0] = userList;
     }
 
+
+    public UserList getUserList() {
+        return userList;
+    }
 
 
     public void shutDown() {
@@ -136,21 +141,52 @@ public class Kernel {
         String[] command;
 
         while (cont) {
-            System.out.print("  >> ");
-            command = cmdline.nextLine().split("\\s+");
+            try {
+                System.out.print("  >> ");
+                command = cmdline.nextLine().split("\\s+");
 
-            switch (command[0]) {
-                case "shutDown":
-                    cont = false;
-                    break;
+                switch (command[0]) {
+                    case "shutDown":
+                        cont = false;
+                        break;
 
-                case "isRunning":
-                    System.out.println(kernel.isRunning());
-                    break;
+                    case "isRunning":
+                        System.out.println(kernel.isRunning());
+                        break;
 
-                default:
-                    System.out.println("Unknown command '" + command[0] + "'");
-                    break;
+                    case "getUserList":
+                        for (User u : kernel.getUserList()) {
+                            System.out.println(u);
+                        }
+                        break;
+
+                    case "addUser":
+                        kernel.getUserList().add(new User(command[1], command[2]));
+                        break;
+
+                    case "removeUser":
+                        kernel.getUserList().remove(kernel.getUserList().find(command[1]));
+                        break;
+
+                    case "addBalance":
+                        kernel.getUserList().find(command[1]).addBalance(Double.parseDouble(command[2]));
+                        break;
+
+                    case "subtractMoney":
+                        kernel.getUserList().find(command[1]).subtractBalance(Double.parseDouble(command[2]));
+                        break;
+
+                    case "getMoney":
+                        System.out.println(kernel.getUserList().find(command[1]).getBalance());
+                        break
+
+                    default:
+                        System.out.println("Unknown command '" + command[0] + "'");
+                        break;
+                }
+
+            } catch (Exception e) {
+                logger.log(e);
             }
         }
     }
