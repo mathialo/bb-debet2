@@ -42,7 +42,7 @@ public class Kernel {
     public Kernel() {
         // Initialize Kernel
         createLogger();
-        createRunningFiles();
+        createRunningFile();
         readFiles();
 
         // Make sure shutDown is called on exit
@@ -67,11 +67,11 @@ public class Kernel {
         }
     }
 
-    private void createRunningFiles() {
+    private void createRunningFile() {
         runningFile = new File(SAVE_DIR + "running");
         if (runningFile.exists()) {
             logger.log("Error: Kernel already running on system");
-            shutDown();
+            logger.close();
             System.exit(1);
         }
 
@@ -172,13 +172,13 @@ public class Kernel {
                         kernel.getUserList().find(command[1]).addBalance(Double.parseDouble(command[2]));
                         break;
 
-                    case "subtractMoney":
+                    case "subtractBalance":
                         kernel.getUserList().find(command[1]).subtractBalance(Double.parseDouble(command[2]));
                         break;
 
-                    case "getMoney":
+                    case "getBalance":
                         System.out.println(kernel.getUserList().find(command[1]).getBalance());
-                        break
+                        break;
 
                     default:
                         System.out.println("Unknown command '" + command[0] + "'");
