@@ -5,4 +5,33 @@
 package kernel.datastructs;
 
 public class Product {
+    private String name;
+    private double sellPrice;
+    private double buyPrice;
+
+    public Product(String name, double sellPrice, double buyPrice) {
+        this.name = name;
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSellPrice() {
+        return sellPrice;
+    }
+
+    public double getBuyPrice() {
+        return buyPrice;
+    }
+
+    public double getMarkup() {
+        return sellPrice - buyPrice;
+    }
+
+    public double getMarkupRate() {
+        return sellPrice / buyPrice;
+    }
 }
