@@ -4,7 +4,9 @@
 
 package kernel;
 
+import kernel.datastructs.ErrorInFileException;
 import kernel.datastructs.Exportable;
+import kernel.datastructs.UserList;
 import kernel.logger.Logger;
 
 import java.io.File;
@@ -34,8 +36,27 @@ public class Kernel {
     private File runningFile;
 
     private Exportable[] saveOnExit;
+    private UserList userList;
 
     public Kernel() {
+        // Initialize Kernel
+        createLogger();
+        createRunningFiles();
+        readFiles();
+
+        // Make sure shutDown is called on exit
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                shutDown();
+            }
+        });
+
+        // Log status update
+        logger.log("New kernel instantiated");
+    }
+
+    private void createLogger() {
         try {
             logger = new Logger(new File(LOG_FILEPATH), true);
 
@@ -43,11 +64,14 @@ public class Kernel {
             System.out.println("Warning: Could not instantiate logger!");
             e.printStackTrace();
         }
+    }
 
+    private void createRunningFiles() {
         runningFile = new File(SAVE_DIR + "running");
         if (runningFile.exists()) {
             logger.log("Error: Kernel already running on system");
             shutDown();
+            System.exit(1);
         }
 
         try {
@@ -56,16 +80,24 @@ public class Kernel {
         } catch (IOException e) {
             logger.log(e);
         }
-
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                shutDown();
-            }
-        });
-
-        logger.log("New kernel instantiated");
     }
+
+    private void readFiles() {
+        logger.log("Loading user list");
+        try {
+            userList = new UserList(new File(USERLIST_FILEPATH));
+
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty user list");
+
+            userList = new UserList();
+        }
+
+        saveOnExit = new Exportable[1];
+        saveOnExit[0] = userList;
+    }
+
 
 
     public void shutDown() {
