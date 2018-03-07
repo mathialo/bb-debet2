@@ -6,6 +6,8 @@ package kernel;
 
 import kernel.datastructs.ErrorInFileException;
 import kernel.datastructs.Exportable;
+import kernel.datastructs.Product;
+import kernel.datastructs.Storage;
 import kernel.datastructs.User;
 import kernel.datastructs.UserList;
 import kernel.logger.Logger;
@@ -38,6 +40,7 @@ public class Kernel {
 
     private Exportable[] saveOnExit;
     private UserList userList;
+    private Storage storage;
 
     public Kernel() {
         // Initialize Kernel
@@ -95,13 +98,29 @@ public class Kernel {
             userList = new UserList();
         }
 
-        saveOnExit = new Exportable[1];
-        saveOnExit[0] = userList;
+        logger.log("Loading Storage");
+        try {
+            storage = new Storage(new File(STORAGE_FILEPATH));
+
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty storage");
+
+            storage = new Storage();
+        }
+
+        Exportable[] saveOnExit = {userList, storage};
+        this.saveOnExit = saveOnExit;
     }
 
 
     public UserList getUserList() {
         return userList;
+    }
+
+
+    public Storage getStorage() {
+        return storage;
     }
 
 
@@ -178,6 +197,18 @@ public class Kernel {
 
                     case "getBalance":
                         System.out.println(kernel.getUserList().find(command[1]).getBalance());
+                        break;
+
+                    case "getStorage":
+                        System.out.printf("%20s  %6s  %6s\n", "Product", "Price", "Num");
+
+                        for (Product p : kernel.getStorage().getProductSet()) {
+                            System.out.printf("%20s  %6.2f  %6d\n", p.getName(), p.getSellPrice(), kernel.getStorage().getNum(p));
+                        }
+                        break;
+
+                    case "addProduct":
+                        kernel.getStorage().add(new Product(command[1], Double.parseDouble(command[2]), Double.parseDouble(command[3])));
                         break;
 
                     default:
