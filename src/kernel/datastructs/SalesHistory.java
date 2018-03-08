@@ -89,8 +89,8 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
                 // and user objects), and add it to list
                 history.add(
                     new Sale(
-                        Long.parseLong(line[0]),
-                        Integer.parseInt(line[1]),
+                        Integer.parseInt(line[0]),
+                        Long.parseLong(line[1]),
                         line[2],
                         line[3],
                         Double.parseDouble(line[4]),

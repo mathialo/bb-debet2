@@ -109,6 +109,11 @@ public class Storage implements Exportable {
     }
 
 
+    public Product get(Product product) {
+        return get(product.getName());
+    }
+
+
     public int getNum(Product product) {
         return getNum(product.getName());
     }

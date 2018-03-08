@@ -12,26 +12,26 @@ import java.util.Date;
 public class Sale {
 
     private static int counter;
-    private long timestamp;
-    private int id;
-    private String userName;
-    private String productName;
-
-    private double pricePayed;
-    private double earnings;
 
     private static NumberFormat formatter = new DecimalFormat("#0.00");
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
 
+    private int id;
+    private long timestamp;
+    private String userName;
+    private String productName;
+    private double pricePayed;
+    private double earnings;
 
-    public Sale(long timestamp, int id, String userName, String productName, double pricePayed, double earnings) {
-        this.timestamp = timestamp;
+
+    public Sale(int id, long timestamp,  String userName, String productName, double pricePayed, double earnings) {
         this.id = id;
+        this.timestamp = timestamp;
         this.userName = userName;
         this.productName = productName;
         this.pricePayed = pricePayed;
         this.earnings = earnings;
-        if (id > counter) counter = id+1;
+        if (id > counter) counter = id + 1;
     }
 
 
@@ -62,7 +62,6 @@ public class Sale {
 
 
     public long getTimestamp() {
-
         return timestamp;
     }
 
@@ -94,6 +93,6 @@ public class Sale {
 
     @Override
     public String toString() {
-        return dateFormat.format(new Date(timestamp*1000L)) + ":    " + productName + " (" + formatter.format(pricePayed) + " kr)";
+        return dateFormat.format(new Date(timestamp * 1000L)) + ":    " + productName + " (" + formatter.format(pricePayed) + " kr)";
     }
 }

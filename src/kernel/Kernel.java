@@ -13,6 +13,7 @@ import kernel.datastructs.Storage;
 import kernel.datastructs.User;
 import kernel.datastructs.UserList;
 import kernel.logger.Logger;
+import kernel.transactions.TransactionHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,13 +38,14 @@ public class Kernel {
     public static final String SETTINGS_FILEPATH = SAVE_DIR + SETTINGS_FILENAME;
     public static final String LOG_FILEPATH = SAVE_DIR + LOG_FILENAME;
 
-    public static Logger logger;
+    private Logger logger;
     private File runningFile;
 
     private Exportable[] saveOnExit;
     private UserList userList;
     private Storage storage;
-    private SalesHistory salesHistory = new SalesHistory();
+    private SalesHistory salesHistory;
+    private TransactionHandler transactionHandler;
 
 
     public Kernel() {
@@ -51,6 +53,8 @@ public class Kernel {
         createLogger();
         createRunningFile();
         readFiles();
+
+        transactionHandler = new TransactionHandler(this);
 
         // Make sure shutDown is called on exit
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutDown));
@@ -110,11 +114,12 @@ public class Kernel {
 
                     case "getSalesHistory":
                         for (Sale s : kernel.getSalesHistory()) {
-                            System.out.println(s);
+                            System.out.println(s.getUserName() + ", " + s);
                         }
                         break;
 
                     case "newSale":
+                        kernel.getTransactionHandler().newPurchase(kernel.getUserList().find(command[1]), kernel.getStorage().get(command[2]));
                         break;
 
                     case "getStorage":
@@ -138,7 +143,7 @@ public class Kernel {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid argument type(s) for '" + command[0] + "'");
             } catch (Exception e) {
-                logger.log(e);
+                kernel.getLogger().log(e);
             }
         }
     }
@@ -218,6 +223,16 @@ public class Kernel {
 
     public Storage getStorage() {
         return storage;
+    }
+
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+
+    public TransactionHandler getTransactionHandler() {
+        return transactionHandler;
     }
 
 
