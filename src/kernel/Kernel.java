@@ -7,6 +7,7 @@ package kernel;
 import kernel.datastructs.ErrorInFileException;
 import kernel.datastructs.Exportable;
 import kernel.datastructs.Product;
+import kernel.datastructs.Sale;
 import kernel.datastructs.SalesHistory;
 import kernel.datastructs.Storage;
 import kernel.datastructs.User;
@@ -21,18 +22,21 @@ import java.util.Scanner;
 public class Kernel {
 
     public static final String SAVE_DIR = System.getProperty("user.home") + "/.bbdebet2/";
+
     public static final String SALESHISTORY_FILENAME = "saleshistory.csv";
     public static final String USERLIST_FILENAME = "users.usl";
     public static final String STORAGE_FILENAME = "storage.csv";
     public static final String TRANSACTIONHIST_FILENAME = "transactionhistory.csv";
     public static final String SETTINGS_FILENAME = "settings.properties";
     public static final String LOG_FILENAME = "log";
+
     public static final String SALESHISTORY_FILEPATH = SAVE_DIR + SALESHISTORY_FILENAME;
     public static final String USERLIST_FILEPATH = SAVE_DIR + USERLIST_FILENAME;
     public static final String STORAGE_FILEPATH = SAVE_DIR + STORAGE_FILENAME;
     public static final String TRANSACTIONHIST_FILEPATH = SAVE_DIR + TRANSACTIONHIST_FILENAME;
     public static final String SETTINGS_FILEPATH = SAVE_DIR + SETTINGS_FILENAME;
     public static final String LOG_FILEPATH = SAVE_DIR + LOG_FILENAME;
+
     public static Logger logger;
     private File runningFile;
 
@@ -65,10 +69,10 @@ public class Kernel {
         String[] command;
 
         while (cont) {
-            try {
-                System.out.print("  >> ");
-                command = cmdline.nextLine().split("\\s+");
+            System.out.print("  >> ");
+            command = cmdline.nextLine().split("\\s+");
 
+            try {
                 switch (command[0]) {
                     case "shutDown":
                         cont = false;
@@ -104,6 +108,15 @@ public class Kernel {
                         System.out.println(kernel.getUserList().find(command[1]).getBalance());
                         break;
 
+                    case "getSalesHistory":
+                        for (Sale s : kernel.getSalesHistory()) {
+                            System.out.println(s);
+                        }
+                        break;
+
+                    case "newSale":
+                        break;
+
                     case "getStorage":
                         System.out.printf("%20s  %6s  %6s\n", "Product", "Price", "Num");
 
@@ -120,6 +133,10 @@ public class Kernel {
                         System.out.println("Unknown command '" + command[0] + "'");
                         break;
                 }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Not enough arguments for '" + command[0] + "'");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid argument type(s) for '" + command[0] + "'");
             } catch (Exception e) {
                 logger.log(e);
             }
@@ -191,6 +208,11 @@ public class Kernel {
 
     public UserList getUserList() {
         return userList;
+    }
+
+
+    public SalesHistory getSalesHistory() {
+        return salesHistory;
     }
 
 

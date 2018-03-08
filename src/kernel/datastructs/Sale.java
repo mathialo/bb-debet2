@@ -96,8 +96,4 @@ public class Sale {
     public String toString() {
         return dateFormat.format(new Date(timestamp*1000L)) + ":    " + productName + " (" + formatter.format(pricePayed) + " kr)";
     }
-
-    public String toLongString() {
-        return  "(" + dateFormat.format(new Date(timestamp*1000L)) + ") " + userName + " kjopte " + productName + " for " + formatter.format(pricePayed) + " kr";
-    }
 }
