@@ -270,22 +270,35 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
     /**
      * delete a sale from history
      *
-     * @param index sale num
+     * @param id sale id
      */
-    public void remove(int index) {
-        history.remove(index);
+    public void remove(int id) {
+        Iterator<Sale> it = history.iterator();
+        while (it.hasNext()){
+            Sale temp = it.next();
+            if (temp.getId() == id) {
+                it.remove();
+                return;
+            }
+        }
     }
 
 
     /**
      * get sale object on given index
      *
-     * @param index sale num
+     * @param id sale num
      *
      * @return sale on given index
      */
-    public Sale get(int index) {
-        return history.get(index);
+    public Sale get(int id) {
+        for (Sale temp : history) {
+            if (temp.getId() == id) {
+                return temp;
+            }
+        }
+
+        return null;
     }
 
 
