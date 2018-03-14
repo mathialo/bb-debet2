@@ -136,6 +136,11 @@ public class Kernel {
                         kernel.getStorage().add(new Product(command[1], Double.parseDouble(command[2]), Double.parseDouble(command[3])));
                         break;
 
+                    case "newUserTransaction":
+                        kernel.getTransactionHandler().newUserTransaction(kernel.getUserList().find(command[1]), kernel.getUserList().find(command[2]), Double.parseDouble(command[3]));
+                        break;
+
+
                     default:
                         System.out.println("Unknown command '" + command[0] + "'");
                         break;
