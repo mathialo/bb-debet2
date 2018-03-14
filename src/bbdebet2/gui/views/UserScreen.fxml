@@ -28,7 +28,7 @@
           <Menu mnemonicParsing="false" text="Meny">
             <items>
                   <MenuItem mnemonicParsing="false" text="Be om annulering av kjøp" />
-                  <MenuItem mnemonicParsing="false" text="Overfør penger til en annen bruker" />
+                  <MenuItem mnemonicParsing="false" onAction="#openNewUserTransactionDialog" text="Overfør penger til en annen bruker" />
               <MenuItem mnemonicParsing="false" onAction="#handleLogout" text="Logg ut" />
             </items>
           </Menu>

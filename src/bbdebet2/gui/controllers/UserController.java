@@ -5,6 +5,7 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
+import bbdebet2.gui.applets.NewUserTransaction;
 import bbdebet2.gui.customelements.StorageButton;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
@@ -184,6 +185,17 @@ public class UserController implements Initializable {
     }
 
 
+    public void repaintGui() {
+        if (Main.getActiveUser() == null) return;
+
+        updateFavouritesView();
+        updateSalesHistoryView();
+        updateStorageView();
+        updateShoppingCartTitleLabel();
+        loginNameView.setText(formatTitleString(Main.getActiveUser()));
+    }
+
+
     public void logout() {
         // Set active user
         Main.setActiveUser(null);
@@ -202,5 +214,11 @@ public class UserController implements Initializable {
         kernel = Main.getKernel();
         Main.setCurrentUserController(this);
         setUpSalesHistoryView();
+    }
+
+
+    @FXML
+    public void openNewUserTransactionDialog(ActionEvent event) {
+        NewUserTransaction.createAndDisplayDialog();
     }
 }

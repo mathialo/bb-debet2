@@ -10,7 +10,6 @@ import java.text.NumberFormat;
 public class User {
 
     private static int counter;
-    private String fullName;
     private String userName;
     private String mail;
     private int id;

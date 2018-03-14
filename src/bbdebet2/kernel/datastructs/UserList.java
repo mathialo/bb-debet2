@@ -4,6 +4,7 @@
 
 package bbdebet2.kernel.datastructs;
 
+import bbdebet2.gui.modelwrappers.ViewUser;
 import bbdebet2.kernel.Kernel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -288,11 +289,11 @@ public class UserList implements Iterable<User>, Exportable {
      *
      * @return userlist as an obserable list of usernames
      */
-    public ObservableList<String> toObservableList() {
-        ArrayList<String> listOfPeople = new ArrayList<>();
+    public ObservableList<ViewUser> toObservableList() {
+        ArrayList<ViewUser> listOfPeople = new ArrayList<>();
 
         for (User u : list) {
-            listOfPeople.add(u.toString());
+            listOfPeople.add(new ViewUser(u));
         }
 
         return FXCollections.observableArrayList(listOfPeople);
