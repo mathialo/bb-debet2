@@ -8,15 +8,24 @@ import bbdebet2.kernel.datastructs.Sale;
 import javafx.beans.property.SimpleStringProperty;
 
 public class ViewSale {
-    public final SimpleStringProperty saleDate;
-    public final SimpleStringProperty productName;
-    public final SimpleStringProperty price;
+
+    private final SimpleStringProperty saleDate;
+    private final SimpleStringProperty productName;
+    private final SimpleStringProperty price;
+    private Sale saleObject;
 
 
     public ViewSale(Sale sale) {
         this.saleDate = new SimpleStringProperty(sale.getFormattedTimestamp());
         this.productName = new SimpleStringProperty(sale.getProductName());
         this.price = new SimpleStringProperty(sale.getFormattedPrice());
+
+        this.saleObject = sale;
+    }
+
+
+    public Sale getSaleObject() {
+        return saleObject;
     }
 
 
