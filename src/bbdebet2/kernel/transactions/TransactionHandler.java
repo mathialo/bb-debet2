@@ -8,6 +8,9 @@ import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.Sale;
 import bbdebet2.kernel.datastructs.User;
+import bbdebet2.kernel.logging.CsvLogger;
+
+import java.io.IOException;
 
 public class TransactionHandler {
 
@@ -49,6 +52,15 @@ public class TransactionHandler {
     }
 
     public void newUserTransaction(User from, User to, double amount) {
+        // process transaction
+        to.addBalance(amount);
+        from.subtractBalance(amount);
 
+        // log transaction
+        try {
+            CsvLogger.addUserTransaction(from, to, amount);
+        } catch (IOException e) {
+            kernel.getLogger().log(e);
+        }
     }
 }
