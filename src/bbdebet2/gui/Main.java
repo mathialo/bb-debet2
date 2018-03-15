@@ -7,13 +7,13 @@ package bbdebet2.gui;
 import bbdebet2.gui.controllers.AdminController;
 import bbdebet2.gui.controllers.LoginController;
 import bbdebet2.gui.controllers.UserController;
+import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import bbdebet2.kernel.Kernel;
-import bbdebet2.kernel.datastructs.User;
 
 import java.io.IOException;
 
@@ -25,6 +25,10 @@ public class Main extends Application {
     private static Scene loginScene;
     private static Scene userScene;
     private static Scene adminScene;
+
+    private static Parent loginRoot;
+    private static Parent userRoot;
+    private static Parent adminRoot;
 
     private static User activeUser;
 
@@ -110,17 +114,19 @@ public class Main extends Application {
         Main.primaryStage = primaryStage;
 
         try {
-            Parent loginRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/LoginScreen.fxml"));
-            loginScene = new Scene(loginRoot, 1200, 1000);
+            loginRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/LoginScreen.fxml"));
+            loginScene = new Scene(loginRoot);
 
-            Parent userRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/UserScreen.fxml"));
-            userScene = new Scene(userRoot, 1200, 1000);
+            userRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/UserScreen.fxml"));
+            userScene = new Scene(userRoot);
 
-            Parent adminRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/AdminScreen.fxml"));
-            adminScene = new Scene(adminRoot, 1200, 1000);
+            adminRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/AdminScreen.fxml"));
+            adminScene = new Scene(adminRoot);
 
             primaryStage.setTitle("BBDebet 2.0.1");
             primaryStage.setScene(loginScene);
+            primaryStage.setHeight(1000);
+            primaryStage.setWidth(1200);
             // primaryStage.setMaximized(true);
             primaryStage.show();
         } catch (IOException e) {

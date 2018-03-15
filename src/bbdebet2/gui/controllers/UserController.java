@@ -5,6 +5,7 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
+import bbdebet2.gui.applets.Applet;
 import bbdebet2.gui.applets.NewUserTransaction;
 import bbdebet2.gui.customelements.StorageButton;
 import bbdebet2.gui.modelwrappers.ViewProduct;
