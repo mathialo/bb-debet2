@@ -53,7 +53,8 @@ public class Kernel {
 
 
     /**
-     * Initializes a new kernel from specifications in ~/.bbdebet2. Creates an empty kernel if nothing is specified in ~/.bbdebet2.
+     * Initializes a new kernel from specifications in ~/.bbdebet2. Creates an empty kernel if
+     * nothing is specified in ~/.bbdebet2.
      *
      * @throws IllegalStateException If a kernel is allready running on the system.
      */
@@ -74,9 +75,14 @@ public class Kernel {
     }
 
 
+    /**
+     * Opens a CLI variant of the kernel.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         Kernel kernel = null;
-        
+
         try {
             kernel = new Kernel();
         } catch (IllegalStateException e) {
@@ -118,11 +124,13 @@ public class Kernel {
                         break;
 
                     case "addBalance":
-                        kernel.getUserList().find(command[1]).addBalance(Double.parseDouble(command[2]));
+                        kernel.getUserList().find(command[1]).addBalance(
+                            Double.parseDouble(command[2]));
                         break;
 
                     case "subtractBalance":
-                        kernel.getUserList().find(command[1]).subtractBalance(Double.parseDouble(command[2]));
+                        kernel.getUserList().find(command[1]).subtractBalance(
+                            Double.parseDouble(command[2]));
                         break;
 
                     case "getBalance":
@@ -136,23 +144,35 @@ public class Kernel {
                         break;
 
                     case "newSale":
-                        kernel.getTransactionHandler().newPurchase(kernel.getUserList().find(command[1]), kernel.getStorage().get(command[2]));
+                        kernel.getTransactionHandler().newPurchase(
+                            kernel.getUserList().find(command[1]),
+                            kernel.getStorage().get(command[2])
+                        );
                         break;
 
                     case "getStorage":
                         System.out.printf("%20s  %6s  %6s\n", "Product", "Price", "Num");
 
                         for (Product p : kernel.getStorage().getProductSet()) {
-                            System.out.printf("%20s  %6.2f  %6d\n", p.getName(), p.getSellPrice(), kernel.getStorage().getNum(p));
+                            System.out.printf(
+                                "%20s  %6.2f  %6d\n", p.getName(), p.getSellPrice(),
+                                kernel.getStorage().getNum(p)
+                            );
                         }
                         break;
 
                     case "addProduct":
-                        kernel.getStorage().add(new Product(command[1], Double.parseDouble(command[2]), Double.parseDouble(command[3])));
+                        kernel.getStorage().add(
+                            new Product(command[1], Double.parseDouble(command[2]),
+                                        Double.parseDouble(command[3])
+                            ));
                         break;
 
                     case "newUserTransaction":
-                        kernel.getTransactionHandler().newUserTransaction(kernel.getUserList().find(command[1]), kernel.getUserList().find(command[2]), Double.parseDouble(command[3]));
+                        kernel.getTransactionHandler().newUserTransaction(
+                            kernel.getUserList().find(command[1]),
+                            kernel.getUserList().find(command[2]), Double.parseDouble(command[3])
+                        );
                         break;
 
 
@@ -171,6 +191,9 @@ public class Kernel {
     }
 
 
+    /**
+     * Creates a Logger object. Dumps stacktrace to terminal if an IOException occurs.
+     */
     private void createLogger() {
         try {
             logger = new Logger(new File(LOG_FILEPATH), true);
@@ -181,12 +204,20 @@ public class Kernel {
     }
 
 
+    /**
+     * Creates a file "running" in SAVE_DIR. <p> This will be deleted on kernel shutdown, hence we
+     * know if a kernel is running on the system or not.
+     *
+     * @throws IllegalStateException If "running" file already exists.
+     */
     private void createRunningFile() throws IllegalStateException {
         runningFile = new File(SAVE_DIR + "running");
         if (runningFile.exists()) {
             logger.log("Error: Kernel already running on system");
             logger.close();
-            throw new IllegalStateException("Could not instantiate kernel. An instance of bbdebet2 is already running on the system.");
+            throw new IllegalStateException(
+                "Could not instantiate kernel. An instance of bbdebet2 is already running on the system."
+            );
         }
 
         try {
@@ -198,6 +229,9 @@ public class Kernel {
     }
 
 
+    /**
+     * Reads user list, storage and sales history from SAVE_DIR and initializes objects from them.
+     */
     private void readFiles() {
         logger.log("Loading UserList");
         try {
@@ -233,21 +267,41 @@ public class Kernel {
     }
 
 
+    /**
+     * Returns active user list for this kernel
+     *
+     * @return Current user list
+     */
     public UserList getUserList() {
         return userList;
     }
 
 
+    /**
+     * Returns active sales history for this kernel
+     *
+     * @return Current sales history
+     */
     public SalesHistory getSalesHistory() {
         return salesHistory;
     }
 
 
+    /**
+     * Returns active storage for this kernel
+     *
+     * @return Current storage
+     */
     public Storage getStorage() {
         return storage;
     }
 
 
+    /**
+     * Returns the active logger for this kernel
+     *
+     * @return Current logger
+     */
     public Logger getLogger() {
         return logger;
     }
@@ -256,13 +310,18 @@ public class Kernel {
     /**
      * Returns the active transaction handler for this kernel
      *
-     * @return Active transaction handler
+     * @return Current transaction handler
      */
     public TransactionHandler getTransactionHandler() {
         return transactionHandler;
     }
 
 
+    /**
+     * Properly shuts down kernel if running.
+     *
+     * Saves all exportable files to SAVE_DIR, deletes "running" file, and closes logger.
+     */
     public void shutDown() {
         if (!isRunning()) return;
 
@@ -285,6 +344,11 @@ public class Kernel {
     }
 
 
+    /**
+     * Returns the state of the kernel, ie, the existance of the "running" file.
+     *
+     * @return true if kernel is running, false if not
+     */
     public boolean isRunning() {
         return runningFile.exists();
     }
