@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,6 +36,9 @@ public class Main extends Application {
     private static LoginController currentLoginController;
     private static UserController currentUserController;
     private static AdminController currentAdminController;
+
+    private boolean errorsOccuredDuringStartup;
+    private String errorMessage;
 
 
     public static LoginController getCurrentLoginController() {
@@ -105,12 +109,24 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        kernel = new Kernel();
+        try {
+            kernel = new Kernel();
+        } catch (IllegalStateException e) {
+            errorsOccuredDuringStartup = true;
+            errorMessage = e.getMessage();
+        }
     }
 
 
     @Override
     public void start(Stage primaryStage) {
+        if (errorsOccuredDuringStartup) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
+            alert.setHeaderText("Feil i startup");
+            alert.showAndWait();
+            System.exit(1);
+        }
+
         Main.primaryStage = primaryStage;
 
         try {

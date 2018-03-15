@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
+/**
+ *
+ */
 public class Kernel {
 
     public static final String SAVE_DIR = System.getProperty("user.home") + "/.bbdebet2/";
@@ -49,7 +52,12 @@ public class Kernel {
     private TransactionHandler transactionHandler;
 
 
-    public Kernel() {
+    /**
+     * Initializes a new kernel from specifications in ~/.bbdebet2. Creates an empty kernel if nothing is specified in ~/.bbdebet2.
+     *
+     * @throws IllegalStateException If a kernel is allready running on the system.
+     */
+    public Kernel() throws IllegalStateException {
         // Initialize Kernel
         createLogger();
         createRunningFile();
@@ -67,7 +75,14 @@ public class Kernel {
 
 
     public static void main(String[] args) {
-        Kernel kernel = new Kernel();
+        Kernel kernel = null;
+        
+        try {
+            kernel = new Kernel();
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
 
         boolean cont = true;
         Scanner cmdline = new Scanner(System.in);
@@ -166,12 +181,12 @@ public class Kernel {
     }
 
 
-    private void createRunningFile() {
+    private void createRunningFile() throws IllegalStateException {
         runningFile = new File(SAVE_DIR + "running");
         if (runningFile.exists()) {
             logger.log("Error: Kernel already running on system");
             logger.close();
-            System.exit(1);
+            throw new IllegalStateException("Could not instantiate kernel. An instance of bbdebet2 is already running on the system.");
         }
 
         try {
@@ -238,6 +253,11 @@ public class Kernel {
     }
 
 
+    /**
+     * Returns the active transaction handler for this kernel
+     *
+     * @return Active transaction handler
+     */
     public TransactionHandler getTransactionHandler() {
         return transactionHandler;
     }
