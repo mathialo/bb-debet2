@@ -56,7 +56,7 @@ public class Kernel {
      * Initializes a new kernel from specifications in ~/.bbdebet2. Creates an empty kernel if
      * nothing is specified in ~/.bbdebet2.
      *
-     * @throws IllegalStateException If a kernel is allready running on the system.
+     * @throws IllegalStateException If a kernel is already running on the system.
      */
     public Kernel() throws IllegalStateException {
         // Initialize Kernel
