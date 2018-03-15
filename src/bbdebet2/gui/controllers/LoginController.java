@@ -5,22 +5,24 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
+import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.User;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import bbdebet2.kernel.Kernel;
-import bbdebet2.kernel.datastructs.User;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    private Kernel kernel;
-
     @FXML
     public TextField loginNameField;
+
+    private Kernel kernel;
+
 
     @FXML
     public void attemptLogin(ActionEvent event) {
@@ -37,8 +39,20 @@ public class LoginController implements Initializable {
             Main.getCurrentUserController().login(user);
             Main.toUserScreen();
         }
-
     }
+
+
+    @FXML
+    public void exitApplication(ActionEvent event) {
+        Platform.exit();
+    }
+
+
+    @FXML
+    public void attemptToAdminScreen(ActionEvent event) {
+        Main.toAdminScreen();
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
