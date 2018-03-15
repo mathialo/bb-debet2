@@ -20,8 +20,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="Meny">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Til Expærtmodus" />
-              <MenuItem mnemonicParsing="false" text="Avslutt" />
+                  <MenuItem mnemonicParsing="false" onAction="#attemptToAdminScreen" text="Til Expærtmodus" />
+              <MenuItem mnemonicParsing="false" onAction="#exitApplication" text="Avslutt" />
             </items>
           </Menu>
         </menus>

@@ -5,7 +5,6 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
-import bbdebet2.gui.applets.Applet;
 import bbdebet2.gui.applets.NewUserTransaction;
 import bbdebet2.gui.customelements.StorageButton;
 import bbdebet2.gui.modelwrappers.ViewProduct;
@@ -54,12 +53,14 @@ public class UserController implements Initializable {
 
 
     private static String formatTitleString(User user) {
-        return String.format("Logget inn som %s. Saldo: %s.", user.getUserName(), user.getFormatedBalance());
+        return String.format(
+            "Logget inn som %s. Saldo: %s.", user.getUserName(), user.getFormatedBalance());
     }
 
 
     private void updateFavouritesView() {
-        ArrayList<String> favourites = kernel.getSalesHistory().getFavourites(Main.getActiveUser(), 5);
+        ArrayList<String> favourites = kernel.getSalesHistory().getFavourites(
+            Main.getActiveUser(), 5);
 
         favouritesContainer.getChildren().clear();
         for (String s : favourites) {
