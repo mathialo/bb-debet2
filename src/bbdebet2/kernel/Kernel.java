@@ -9,6 +9,7 @@ import bbdebet2.kernel.datastructs.Exportable;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.Sale;
 import bbdebet2.kernel.datastructs.SalesHistory;
+import bbdebet2.kernel.datastructs.SettingsHolder;
 import bbdebet2.kernel.datastructs.Storage;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.datastructs.UserList;
@@ -49,6 +50,7 @@ public class Kernel {
     private UserList userList;
     private Storage storage;
     private SalesHistory salesHistory;
+    private SettingsHolder settingsHolder;
     private TransactionHandler transactionHandler;
 
 
@@ -263,7 +265,27 @@ public class Kernel {
             salesHistory = new SalesHistory();
         }
 
-        this.saveOnExit = new Exportable[]{userList, storage, salesHistory};
+        logger.log("Loading settings");
+        try {
+            settingsHolder = new SettingsHolder(new File(SETTINGS_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to standard settings");
+
+            settingsHolder = new SettingsHolder();
+        }
+
+        this.saveOnExit = new Exportable[]{userList, storage, salesHistory, settingsHolder};
+    }
+
+
+    /**
+     * Returns active settings for this kernel
+     *
+     * @return Current settings
+     */
+    public SettingsHolder getSettingsHolder() {
+        return settingsHolder;
     }
 
 
