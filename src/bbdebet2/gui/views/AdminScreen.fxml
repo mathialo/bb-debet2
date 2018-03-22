@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -22,11 +21,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Meny">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Administrer lager" />
-                  <MenuItem mnemonicParsing="false" text="Administrer brukere" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Innstillinger" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" onAction="#logout" text="Ut av adminmodus" />
             </items>
           </Menu>
@@ -48,7 +43,7 @@
                      <top>
                         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <items>
-                              <Button mnemonicParsing="false" text="Annuler salg" />
+                              <Button mnemonicParsing="false" onAction="#deleteSelectedSale" text="Annuler salg" />
                            </items>
                         </ToolBar>
                      </top>
@@ -107,7 +102,7 @@
                         <TableView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <columns>
                             <TableColumn fx:id="userListIdCol" prefWidth="100.0" text="ID" />
-                            <TableColumn fx:id="userListUsernameCol" prefWidth="300.0" text="Brukernavn" />
+                            <TableColumn fx:id="userListUserNameCol" prefWidth="300.0" text="Brukernavn" />
                               <TableColumn fx:id="userListEmailCol" minWidth="0.0" prefWidth="300.0" text="Epost" />
                               <TableColumn fx:id="userListBalanceCol" prefWidth="300.0" text="Saldo" />
                           </columns>

@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class ViewSale {
 
     private final SimpleStringProperty saleDate;
+    private final SimpleStringProperty userName;
     private final SimpleStringProperty productName;
     private final SimpleStringProperty price;
     private Sale saleObject;
@@ -17,10 +18,21 @@ public class ViewSale {
 
     public ViewSale(Sale sale) {
         this.saleDate = new SimpleStringProperty(sale.getFormattedTimestamp());
+        this.userName = new SimpleStringProperty(sale.getUserName());
         this.productName = new SimpleStringProperty(sale.getProductName());
         this.price = new SimpleStringProperty(sale.getFormattedPrice());
 
         this.saleObject = sale;
+    }
+
+
+    public String getUserName() {
+        return userName.get();
+    }
+
+
+    public SimpleStringProperty userNameProperty() {
+        return userName;
     }
 
 

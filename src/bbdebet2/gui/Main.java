@@ -77,6 +77,7 @@ public class Main extends Application {
 
 
     public static void toAdminScreen() {
+        Main.getCurrentAdminController().repaintAll();
         primaryStage.setScene(adminScene);
     }
 

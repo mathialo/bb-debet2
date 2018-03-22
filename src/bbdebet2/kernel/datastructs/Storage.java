@@ -4,11 +4,15 @@
 
 package bbdebet2.kernel.datastructs;
 
+import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.kernel.Kernel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -147,6 +151,20 @@ public class Storage implements Exportable {
         }
 
         return 0;
+    }
+
+
+
+    public ObservableList<ViewProduct> toObservableList() {
+        ArrayList<ViewProduct> list = new ArrayList<>();
+
+        for (PriorityQueue<Product> queue : storage) {
+            for (Product p : queue) {
+                list.add(new ViewProduct(p));
+            }
+        }
+
+        return FXCollections.observableArrayList(list);
     }
 
 
