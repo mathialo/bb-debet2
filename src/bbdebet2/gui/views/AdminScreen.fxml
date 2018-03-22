@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 
@@ -40,38 +40,38 @@
       </MenuBar>
    </top>
    <center>
-      <Accordion BorderPane.alignment="CENTER">
-        <panes>
-          <TitledPane alignment="CENTER" animated="false" text="Salgshistorikk">
-            <content>
+      <TabPane BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab closable="false" text="Salgshistorikk">
+               <content>
                   <BorderPane>
                      <top>
                         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <items>
-                            <Button mnemonicParsing="false" text="Annuler salg" />
-                          </items>
+                           <items>
+                              <Button mnemonicParsing="false" text="Annuler salg" />
+                           </items>
                         </ToolBar>
                      </top>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <columns>
-                            <TableColumn editable="false" prefWidth="79.0" text="Tid" />
-                            <TableColumn editable="false" minWidth="0.0" prefWidth="71.0" text="Bruker" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Vare" />
-                              <TableColumn editable="false" prefWidth="281.0" text="Pris" />
-                          </columns>
+                        <TableView fx:id="saleHistoryView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <columns>
+                              <TableColumn fx:id="saleHistoryTimeCol" editable="false" prefWidth="250.0" text="Tid" />
+                              <TableColumn fx:id="saleHistoryUserCol" editable="false" minWidth="0.0" prefWidth="250.0" text="Bruker" />
+                              <TableColumn fx:id="saleHistoryProductCol" editable="false" prefWidth="250.0" text="Vare" />
+                              <TableColumn fx:id="saleHistoryPriceCol" editable="false" prefWidth="250.0" text="Pris" />
+                           </columns>
                         </TableView>
                      </center>
                   </BorderPane>
-            </content>
-          </TitledPane>
-          <TitledPane alignment="CENTER" animated="false" text="Lager">
-               <content>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Lagerstatus">
+              <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <top>
                         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <items>
-                            <Button mnemonicParsing="false" text="Nytt vareinnskudd" />
+                            <Button mnemonicParsing="false" onAction="#newAddProductsWindow" text="Nytt vareinnskudd" />
                               <Button mnemonicParsing="false" text="Endre flere" />
                               <Button mnemonicParsing="false" text="Korriger svinn" />
                               <Button mnemonicParsing="false" text="Se svinn" />
@@ -80,20 +80,19 @@
                         </ToolBar>
                      </top>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="storageView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="Vare" />
-                            <TableColumn editable="false" prefWidth="75.0" text="Innkjøpspris" />
-                              <TableColumn prefWidth="75.0" text="Utsalgspris" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Avanse" />
+                            <TableColumn fx:id="storageProductCol" prefWidth="500.0" text="Vare" />
+                            <TableColumn fx:id="storageBuyPriceCol" editable="false" prefWidth="250.0" text="Innkjøpspris" />
+                              <TableColumn fx:id="storageSellPriceCol" prefWidth="250.0" text="Utsalgspris" />
                           </columns>
                         </TableView>
                      </center>
                   </BorderPane>
-               </content>
-          </TitledPane>
-          <TitledPane alignment="CENTER" animated="false" text="Brukere">
-               <content>
+              </content>
+            </Tab>
+            <Tab closable="false" text="Brukere">
+              <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <top>
                         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -105,19 +104,19 @@
                         </ToolBar>
                      </top>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="75.0" text="Brukernavn" />
-                              <TableColumn prefWidth="75.0" text="Epost" />
-                              <TableColumn prefWidth="75.0" text="Saldo" />
+                            <TableColumn fx:id="userListIdCol" prefWidth="100.0" text="ID" />
+                            <TableColumn fx:id="userListUsernameCol" prefWidth="300.0" text="Brukernavn" />
+                              <TableColumn fx:id="userListEmailCol" minWidth="0.0" prefWidth="300.0" text="Epost" />
+                              <TableColumn fx:id="userListBalanceCol" prefWidth="300.0" text="Saldo" />
                           </columns>
                         </TableView>
                      </center>
                   </BorderPane>
-               </content>
-          </TitledPane>
-        </panes>
-      </Accordion>
+              </content>
+            </Tab>
+         </tabs>
+      </TabPane>
    </center>
 </BorderPane>
