@@ -6,6 +6,7 @@ package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
 import bbdebet2.gui.applets.AddProducts;
+import bbdebet2.gui.applets.NewUser;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.gui.modelwrappers.ViewUser;
@@ -140,6 +141,11 @@ public class AdminController implements Initializable {
     @FXML
     public void logout(ActionEvent event) {
         Main.toLoginScreen();
+    }
+
+    @FXML
+    public void newNewUserWindow(ActionEvent event) {
+        NewUser.createAndDisplayDialog();
     }
 
 
