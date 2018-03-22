@@ -37,6 +37,7 @@
                   <Button mnemonicParsing="false" onAction="#attemptLogin" text="Logg inn" />
                </children>
             </HBox>
+            <Label fx:id="errorOutput" textFill="RED" />
          </children>
       </VBox>
    </center>

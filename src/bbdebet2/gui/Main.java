@@ -83,6 +83,7 @@ public class Main extends Application {
 
 
     public static void toLoginScreen() {
+        Main.getCurrentLoginController().resetLogin();
         primaryStage.setScene(loginScene);
     }
 
