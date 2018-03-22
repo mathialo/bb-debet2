@@ -15,9 +15,9 @@ Lister over ferdig funksjonalitet, og funksjonalitet som må på plass før nest
  - Kjøpsfunksjonalitet
  - Overføring av saldo mellom brukere
  - Generering av favoritter
+ - Legge til varer
 
 ### Må fikses
- - Legge til varer
  - Endre varer
  - Føring av svinn
  - Legge til brukere
