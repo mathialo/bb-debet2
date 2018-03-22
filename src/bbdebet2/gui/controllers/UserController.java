@@ -60,7 +60,7 @@ public class UserController implements Initializable {
 
     private void updateFavouritesView() {
         ArrayList<String> favourites = kernel.getSalesHistory().getFavourites(
-            Main.getActiveUser(), 5);
+            Main.getActiveUser(), kernel.getSettingsHolder().getNumOfFavourites());
 
         favouritesContainer.getChildren().clear();
         for (String s : favourites) {
