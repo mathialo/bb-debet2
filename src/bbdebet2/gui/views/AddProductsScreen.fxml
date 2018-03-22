@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<!--
+  ~ Copyright (c) 2018. Mathias Lohne
+  -->
+
+<BorderPane prefHeight="500.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.applets.AddProducts">
+   <top>
+      <ToolBar BorderPane.alignment="CENTER">
+         <items>
+            <TextField fx:id="productNameInput" prefWidth="140.0" promptText="Varenavn" />
+            <TextField fx:id="buyPriceInput" onKeyTyped="#updateAutoSalePrice" prefWidth="100.0" promptText="Innkjøpspris" />
+            <TextField fx:id="packQuantityInput" onKeyTyped="#updateAutoSalePrice" prefWidth="100.0" promptText="Pakkestr." />
+            <ChoiceBox fx:id="markupInput" prefWidth="55.0" />
+            <ToggleButton fx:id="addPantInput" mnemonicParsing="false" onAction="#updateAutoSalePrice" text="Legg til pant" />
+            <TextField fx:id="salePriceInput" prefWidth="100.0" promptText="Salgspris" />
+            <TextField fx:id="quantityInput" prefWidth="100.0" promptText="Antall" />
+            <Button mnemonicParsing="false" onAction="#submitNewProduct" text="Legg til" />
+         </items>
+      </ToolBar>
+   </top>
+   <center>
+      <TableView fx:id="cartTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="productNameView" prefWidth="250.0" resizable="false" sortable="false" text="Vare" />
+          <TableColumn fx:id="buyPriceView" prefWidth="110.0" resizable="false" sortable="false" text="Innkjøpspris" />
+            <TableColumn fx:id="quantityView" prefWidth="110.0" resizable="false" sortable="false" text="Antall" />
+            <TableColumn fx:id="subtotalView" editable="false" prefWidth="110.0" resizable="false" sortable="false" text="Subtotal" />
+            <TableColumn fx:id="saleTotalView" editable="false" prefWidth="110.0" resizable="false" sortable="false" text="Salgstotal" />
+            <TableColumn fx:id="totalMarkupView" editable="false" prefWidth="110.0" resizable="false" sortable="false" text="Total avanse" />
+        </columns>
+      </TableView>
+   </center>
+   <bottom>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <buttons>
+            <Button mnemonicParsing="false" onAction="#deleteSelectedItem" text="Slett vare" />
+          <Button defaultButton="true" mnemonicParsing="false" onAction="#processAllAndExit" text="Legg til" />
+        </buttons>
+      </ButtonBar>
+   </bottom>
+</BorderPane>
