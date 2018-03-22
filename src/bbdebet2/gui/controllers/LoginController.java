@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -19,7 +20,9 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     @FXML
-    public TextField loginNameField;
+    private TextField loginNameField;
+    @FXML
+    private Label errorOutput;
 
     private Kernel kernel;
 
@@ -34,11 +37,18 @@ public class LoginController implements Initializable {
 
         if (user == null) {
             kernel.getLogger().log("New failed login attemppt from '" + userName + "'");
+            errorOutput.setText("Finner ikke bruker '" + userName + "'");
         } else {
             kernel.getLogger().log("New login from " + user);
             Main.getCurrentUserController().login(user);
             Main.toUserScreen();
         }
+    }
+
+
+    public void resetLogin() {
+        loginNameField.setText("");
+        errorOutput.setText("");
     }
 
 
