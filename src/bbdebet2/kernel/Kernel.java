@@ -19,6 +19,7 @@ import bbdebet2.kernel.transactions.TransactionHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 
@@ -95,101 +96,121 @@ public class Kernel {
         boolean cont = true;
         Scanner cmdline = new Scanner(System.in);
 
-        String[] command;
+        String command;
 
         while (cont) {
             System.out.print("  >> ");
-            command = cmdline.nextLine().split("\\s+");
+            command = cmdline.nextLine();
 
-            try {
-                switch (command[0]) {
-                    case "shutDown":
-                        cont = false;
-                        break;
-
-                    case "isRunning":
-                        System.out.println(kernel.isRunning());
-                        break;
-
-                    case "getUserList":
-                        for (User u : kernel.getUserList()) {
-                            System.out.println(u);
-                        }
-                        break;
-
-                    case "addUser":
-                        kernel.getUserList().add(new User(command[1], command[2]));
-                        break;
-
-                    case "removeUser":
-                        kernel.getUserList().remove(kernel.getUserList().find(command[1]));
-                        break;
-
-                    case "addBalance":
-                        kernel.getUserList().find(command[1]).addBalance(
-                            Double.parseDouble(command[2]));
-                        break;
-
-                    case "subtractBalance":
-                        kernel.getUserList().find(command[1]).subtractBalance(
-                            Double.parseDouble(command[2]));
-                        break;
-
-                    case "getBalance":
-                        System.out.println(kernel.getUserList().find(command[1]).getBalance());
-                        break;
-
-                    case "getSalesHistory":
-                        for (Sale s : kernel.getSalesHistory()) {
-                            System.out.println(s.getUserName() + ", " + s);
-                        }
-                        break;
-
-                    case "newSale":
-                        kernel.getTransactionHandler().newPurchase(
-                            kernel.getUserList().find(command[1]),
-                            kernel.getStorage().get(command[2])
-                        );
-                        break;
-
-                    case "getStorage":
-                        System.out.printf("%20s  %6s  %6s\n", "Product", "Price", "Num");
-
-                        for (Product p : kernel.getStorage().getProductSet()) {
-                            System.out.printf(
-                                "%20s  %6.2f  %6d\n", p.getName(), p.getSellPrice(),
-                                kernel.getStorage().getNum(p)
-                            );
-                        }
-                        break;
-
-                    case "addProduct":
-                        kernel.getStorage().add(
-                            new Product(command[1], Double.parseDouble(command[2]),
-                                        Double.parseDouble(command[3])
-                            ));
-                        break;
-
-                    case "newUserTransaction":
-                        kernel.getTransactionHandler().newUserTransaction(
-                            kernel.getUserList().find(command[1]),
-                            kernel.getUserList().find(command[2]), Double.parseDouble(command[3])
-                        );
-                        break;
-
-
-                    default:
-                        System.out.println("Unknown command '" + command[0] + "'");
-                        break;
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("Not enough arguments for '" + command[0] + "'");
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid argument type(s) for '" + command[0] + "'");
-            } catch (Exception e) {
-                kernel.getLogger().log(e);
-            }
+            cont = kernel.parseAndRunCommand(command, System.out);
         }
+    }
+
+
+    /**
+     * Parse a command and execute it
+     *
+     * @param rawCommand   command to execute
+     * @param outputStream where to dump output
+     *
+     * @return
+     */
+    public boolean parseAndRunCommand(String rawCommand, PrintStream outputStream) {
+        boolean cont = true;
+        Kernel kernel = this;
+
+        String[] command = rawCommand.split("\\s+");
+
+        try {
+            switch (command[0]) {
+                case "shutDown":
+                    cont = false;
+                    break;
+
+                case "isRunning":
+                    outputStream.println(kernel.isRunning());
+                    break;
+
+                case "getUserList":
+                    for (User u : kernel.getUserList()) {
+                        outputStream.println(u);
+                    }
+                    break;
+
+                case "addUser":
+                    kernel.getUserList().add(new User(command[1], command[2]));
+                    break;
+
+                case "removeUser":
+                    kernel.getUserList().remove(kernel.getUserList().find(command[1]));
+                    break;
+
+                case "addBalance":
+                    kernel.getUserList().find(command[1]).addBalance(
+                        Double.parseDouble(command[2]));
+                    break;
+
+                case "subtractBalance":
+                    kernel.getUserList().find(command[1]).subtractBalance(
+                        Double.parseDouble(command[2]));
+                    break;
+
+                case "getBalance":
+                    outputStream.println(kernel.getUserList().find(command[1]).getBalance());
+                    break;
+
+                case "getSalesHistory":
+                    for (Sale s : kernel.getSalesHistory()) {
+                        outputStream.println(s.getUserName() + ", " + s);
+                    }
+                    break;
+
+                case "newSale":
+                    kernel.getTransactionHandler().newPurchase(
+                        kernel.getUserList().find(command[1]),
+                        kernel.getStorage().get(command[2])
+                    );
+                    break;
+
+                case "getStorage":
+                    outputStream.printf("%20s  %6s  %6s\n", "Product", "Price", "Num");
+
+                    for (Product p : kernel.getStorage().getProductSet()) {
+                        outputStream.printf(
+                            "%20s  %6.2f  %6d\n", p.getName(), p.getSellPrice(),
+                            kernel.getStorage().getNum(p)
+                        );
+                    }
+                    break;
+
+                case "addProduct":
+                    kernel.getStorage().add(
+                        new Product(command[1], Double.parseDouble(command[2]),
+                                    Double.parseDouble(command[3])
+                        ));
+                    break;
+
+                case "newUserTransaction":
+                    kernel.getTransactionHandler().newUserTransaction(
+                        kernel.getUserList().find(command[1]),
+                        kernel.getUserList().find(command[2]), Double.parseDouble(command[3])
+                    );
+                    break;
+
+
+                default:
+                    outputStream.println("Unknown command '" + command[0] + "'");
+                    break;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            outputStream.println("Not enough arguments for '" + command[0] + "'");
+        } catch (NumberFormatException e) {
+            outputStream.println("Invalid argument type(s) for '" + command[0] + "'");
+        } catch (Exception e) {
+            kernel.getLogger().log(e);
+        }
+
+        return cont;
     }
 
 
