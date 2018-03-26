@@ -4,6 +4,7 @@
 
 package bbdebet2.gui.applets;
 
+import bbdebet2.kernel.Kernel;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -16,7 +17,8 @@ public class TestAppletLauncher extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Console.createAndDisplayDialog("Test Console");
+        Kernel kernel = new Kernel();
+        Console.createAndDisplayDialog("kernel", kernel);
     }
 
 

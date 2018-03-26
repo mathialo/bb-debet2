@@ -23,11 +23,12 @@ public abstract class Applet implements Initializable {
     protected Kernel kernel;
 
 
-    protected static void createAndDisplayDialog(String title, String fxmlFileName) {
+    protected static FXMLLoader createAndDisplayDialog(String title, String fxmlFileName) {
         try {
             Stage stage = new Stage();
 
-            Parent root = FXMLLoader.load(NewUserTransaction.class.getClassLoader().getResource("bbdebet2/gui/views/" + fxmlFileName + ".fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(NewUserTransaction.class.getClassLoader().getResource("bbdebet2/gui/views/" + fxmlFileName + ".fxml"));
+            Parent root = fxmlLoader.load();
 
             Scene scene = new Scene(root);
 
@@ -35,9 +36,12 @@ public abstract class Applet implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
+
+            return fxmlLoader;
         } catch (IOException e) {
             Main.getKernel().getLogger().log(e);
         }
+        return null;
     }
 
 

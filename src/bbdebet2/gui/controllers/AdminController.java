@@ -6,6 +6,7 @@ package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
 import bbdebet2.gui.applets.AddProducts;
+import bbdebet2.gui.applets.Console;
 import bbdebet2.gui.applets.NewUser;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
@@ -148,6 +149,11 @@ public class AdminController implements Initializable {
         NewUser.createAndDisplayDialog();
     }
 
+
+    @FXML
+    public void runKernelConsole(ActionEvent event) {
+        Console.createAndDisplayDialog("Kernel", kernel);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
