@@ -118,6 +118,11 @@ public class Storage implements Exportable {
     }
 
 
+    public Product get(Product product) {
+        return get(product.getName());
+    }
+
+
     public Product find(String productName) {
         for (PriorityQueue<Product> q : storage) {
             // Search for other products with the same name
@@ -130,11 +135,6 @@ public class Storage implements Exportable {
 
         // No entry for requested product, return null
         return null;
-    }
-
-
-    public Product get(Product product) {
-        return get(product.getName());
     }
 
 
@@ -152,7 +152,6 @@ public class Storage implements Exportable {
 
         return 0;
     }
-
 
 
     public ObservableList<ViewProduct> toObservableList() {
@@ -176,5 +175,67 @@ public class Storage implements Exportable {
         }
 
         return productSet;
+    }
+
+
+    public int updateStorageNum(String productName, int newNum) {
+        int oldNum = getNum(productName);
+
+        if (oldNum == 0) throw new IllegalArgumentException(
+            "Cannot update number of products, when no products are present!"
+        );
+
+        if (newNum > oldNum) {
+            // New number is larger, add copies of most expensive product
+            Product copyThis = null;
+            PriorityQueue<Product> storageQueue = null;
+
+            for (PriorityQueue<Product> q : storage) {
+                // Is this the product we're looking for?
+                if (q.peek().getName().equals(productName)) {
+                    storageQueue = q;
+
+                    // Find smallest instance
+                    copyThis = q.peek();
+                    for (Product p : q) {
+                        if (p.getSellPrice() > copyThis.getSellPrice()) {
+                            copyThis = p;
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < newNum - oldNum; i++) {
+                storageQueue.add(new Product(
+                    copyThis.getName(),
+                    copyThis.getSellPrice(),
+                    copyThis.getBuyPrice()
+                ));
+            }
+        } else if (newNum < oldNum) {
+            // New number is smaller, remove the cheapest entries
+            System.out.println(productName);
+
+            for (PriorityQueue<Product> q : storage) {
+                // Is this the product we're looking for?
+                System.out.println(q.peek());
+                if (q.peek().getName().equals(productName)) {
+
+                    // poll from queue (remove from storage)
+                    for (int i = 0; i < oldNum - newNum; i++) {
+                        q.poll();
+                    }
+
+                    if (q.size() == 0) storage.remove(q);
+                }
+            }
+        }
+
+        return newNum - oldNum;
+    }
+
+
+    public void updateStorageNum(Product product, int newNum) {
+        updateStorageNum(product.getName(), newNum);
     }
 }

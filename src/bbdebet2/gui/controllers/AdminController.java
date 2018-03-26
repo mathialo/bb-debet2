@@ -8,11 +8,11 @@ import bbdebet2.gui.Main;
 import bbdebet2.gui.applets.AddProducts;
 import bbdebet2.gui.applets.Console;
 import bbdebet2.gui.applets.NewUser;
+import bbdebet2.gui.applets.Stocktaking;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.gui.modelwrappers.ViewUser;
 import bbdebet2.kernel.Kernel;
-import bbdebet2.kernel.datastructs.Sale;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -132,10 +132,19 @@ public class AdminController implements Initializable {
 
     @FXML
     public void deleteSelectedSale() {
-        Sale sale = saleHistoryView.getSelectionModel().getSelectedItem().getSaleObject();
-        if (sale == null) return;
-        kernel.getTransactionHandler().refund(sale);
+        ViewSale selected = saleHistoryView.getSelectionModel().getSelectedItem();
+
+        // Make sure a sale is selected
+        if (selected == null) return;
+
+        kernel.getTransactionHandler().refund(selected.getSaleObject());
         repaintAll();
+    }
+
+
+    @FXML
+    public void newStocktakingWindow(ActionEvent event) {
+        Stocktaking.createAndDisplayDialog();
     }
 
 
@@ -143,6 +152,7 @@ public class AdminController implements Initializable {
     public void logout(ActionEvent event) {
         Main.toLoginScreen();
     }
+
 
     @FXML
     public void newNewUserWindow(ActionEvent event) {
@@ -154,6 +164,7 @@ public class AdminController implements Initializable {
     public void runKernelConsole(ActionEvent event) {
         Console.createAndDisplayDialog("Kernel", kernel);
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
