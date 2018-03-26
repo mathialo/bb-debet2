@@ -69,7 +69,7 @@
                           <items>
                             <Button mnemonicParsing="false" onAction="#newAddProductsWindow" text="Nytt vareinnskudd" />
                               <Button mnemonicParsing="false" text="Endre flere" />
-                              <Button mnemonicParsing="false" text="Korriger svinn" />
+                              <Button mnemonicParsing="false" onAction="#newStocktakingWindow" text="Vareopptelling" />
                               <Button mnemonicParsing="false" text="Se svinn" />
                               <Button mnemonicParsing="false" text="Generer handleliste" />
                           </items>
