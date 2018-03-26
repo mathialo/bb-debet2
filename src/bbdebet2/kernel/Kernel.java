@@ -4,6 +4,7 @@
 
 package bbdebet2.kernel;
 
+import bbdebet2.kernel.datastructs.CommandLineInterface;
 import bbdebet2.kernel.datastructs.ErrorInFileException;
 import bbdebet2.kernel.datastructs.Exportable;
 import bbdebet2.kernel.datastructs.Product;
@@ -26,7 +27,7 @@ import java.util.Scanner;
 /**
  *
  */
-public class Kernel {
+public class Kernel implements CommandLineInterface {
 
     public static final String SAVE_DIR = System.getProperty("user.home") + "/.bbdebet2/";
 

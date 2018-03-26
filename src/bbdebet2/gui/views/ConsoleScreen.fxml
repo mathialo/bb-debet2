@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<!--
+  ~ Copyright (c) 2018. Mathias Lohne
+  -->
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.applets.Console">
+   <center>
+      <TextArea fx:id="textArea" editable="false" onKeyPressed="#checkKeyPress" prefHeight="200.0" prefWidth="200.0" text="&gt;&gt; " wrapText="true" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="DejaVu Sans Mono" size="13.0" />
+         </font>
+      </TextArea>
+   </center>
+</BorderPane>
