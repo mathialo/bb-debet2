@@ -63,7 +63,7 @@ public class AddProducts extends Applet {
         try {
             String name = productNameInput.getText();
             double buyPrice = Double.parseDouble(buyPriceInput.getText());
-            int packQuantity = Integer.parseInt(packQuantityInput.getText());
+            int packQuantity = packQuantityInput.getText().equals("") ? 1 : Integer.parseInt(packQuantityInput.getText());
             double salePrice = Double.parseDouble(salePriceInput.getText());
             int numPacks = Integer.parseInt(quantityInput.getText());
 
@@ -167,7 +167,6 @@ public class AddProducts extends Applet {
 
             salePriceInput.setText(singleprice + singleprice * markup + pantadd + "");
         } catch (Exception ignored) {
-            kernel.getLogger().log(ignored);
         }
     }
 
