@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Scanner;
@@ -48,7 +49,7 @@ public class Storage implements Exportable {
 
                 String[] line = rawLine.split("\\s*,\\s*");
 
-                add(new Product(line[0], Double.parseDouble(line[1]), Double.parseDouble(line[2])));
+                add(new Product(line[0], Double.parseDouble(line[2]), Double.parseDouble(line[1])));
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new ErrorInFileException("Error in storage file on line " + linenum);
             }
@@ -232,6 +233,61 @@ public class Storage implements Exportable {
         }
 
         return newNum - oldNum;
+    }
+
+
+    public void editProducts(ProductQuery query, String newName, double newSellPrice) {
+        double tolerance = 1e-7;
+
+        for (PriorityQueue<Product> q : storage) {
+            for (Product p : q) {
+                if (query.match(p)) {
+                    if (query.changeName()) p.setName(newName);
+                    if (query.changePrice()) p.setSellPrice(newSellPrice);
+                }
+            }
+        }
+    }
+
+
+    public Set<Product> getSellPriceSet() {
+        Set<Double> priceSet = new HashSet<>();
+        Set<Product> productSet = new HashSet<>();
+
+        for (PriorityQueue<Product> q : storage) {
+            for (Product p : q) {
+                if (!priceSet.contains(p.getSellPrice())) {
+                    priceSet.add(p.getSellPrice());
+                    productSet.add(p);
+                }
+            }
+        }
+
+        return productSet;
+    }
+
+
+    public Set<Product> getSellPriceSet(String productName) {
+        Set<Double> priceSet = new HashSet<>();
+        Set<Product> productSet = new HashSet<>();
+
+        for (PriorityQueue<Product> q : storage) {
+            if (q.peek().getName().equals(productName)) {
+                for (Product p : q) {
+                    if (!priceSet.contains(p.getSellPrice())) {
+                        priceSet.add(p.getSellPrice());                    productSet.add(p);
+                        productSet.add(p);
+                    }
+                }
+            }
+        }
+
+        return productSet;
+    }
+
+
+    public Set<Product> getSellPriceSet(Product product) {
+        return getSellPriceSet(product.getName());
     }
 
 

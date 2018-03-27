@@ -68,7 +68,7 @@
                         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <items>
                             <Button mnemonicParsing="false" onAction="#newAddProductsWindow" text="Nytt vareinnskudd" />
-                              <Button mnemonicParsing="false" text="Endre flere" />
+                              <Button mnemonicParsing="false" onAction="#newEditProductsWindow" text="Endre flere" />
                               <Button mnemonicParsing="false" onAction="#newStocktakingWindow" text="Vareopptelling" />
                               <Button mnemonicParsing="false" text="Se svinn" />
                               <Button mnemonicParsing="false" text="Generer handleliste" />

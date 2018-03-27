@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class TestAppletLauncher extends Application {
+    public static Kernel kernel;
 
     public static void main(String[] args) {
         launch(args);
@@ -17,8 +18,9 @@ public class TestAppletLauncher extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Kernel kernel = new Kernel();
-        Console.createAndDisplayDialog("kernel", kernel);
+        kernel = new Kernel();
+//        Console.createAndDisplayDialog("kernel", kernel);
+        EditProducts.createAndDisplayDialog();
     }
 
 
