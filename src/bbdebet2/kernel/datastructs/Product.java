@@ -62,6 +62,18 @@ public class Product implements Comparable<Product> {
         return formatter.format(sellPrice) + " kr";
     }
 
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public void setSellPrice(double sellPrice) {
+        this.sellPrice = sellPrice;
+
+    }
+
+
     public String getFormattedBuyPrice() {
         return formatter.format(buyPrice)+ " kr";
     }
