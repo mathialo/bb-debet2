@@ -23,13 +23,15 @@ public class SettingsHolder implements Exportable {
 
     private int numOfFavourites = 3;
     private int maxInactiveTime = 30;
-    private String expertPass = "";
+    private String adminPass = "";
+
     private int backupInterval = 12;
     private boolean autoSend = false;
     private boolean autoGet = false;
 
     private boolean autoNagUser = false;
-    private boolean autoNagExpert = false;
+    private boolean sendShoppingList = false;
+    private boolean sendReports = false;
 
     private boolean glasUserActive = true;
     private int glasUserRoundTo = 5;
@@ -107,8 +109,12 @@ public class SettingsHolder implements Exportable {
                         autoNagUser = Boolean.parseBoolean(line[1]);
                         break;
 
-                    case "autoNagExpert":
-                        autoNagExpert = Boolean.parseBoolean(line[1]);
+                    case "sendShoppingList":
+                        sendShoppingList = Boolean.parseBoolean(line[1]);
+                        break;
+
+                    case "sendReports":
+                        sendReports = Boolean.parseBoolean(line[1]);
                         break;
 
                     case "lambda":
@@ -144,26 +150,26 @@ public class SettingsHolder implements Exportable {
         }
 
         // read passwords from dedicated file, as they may contain special characters in encrypted form
-        Scanner scExpertPass = new Scanner(new File(Kernel.SAVE_DIR + ".expertPass"));
+        Scanner scAdminPass = new Scanner(new File(Kernel.SAVE_DIR + ".adminPass"));
         Scanner scEmailPass = new Scanner(new File(Kernel.SAVE_DIR + ".emailPass"));
 
-        String encryptedExpertPass = "";
-        while (scExpertPass.hasNext()) {
-            encryptedExpertPass += scExpertPass.next();
+        StringBuilder encryptedAdminPass = new StringBuilder();
+        while (scAdminPass.hasNext()) {
+            encryptedAdminPass.append(scAdminPass.next());
         }
 
-        expertPass = decipher(encryptedExpertPass);
+        adminPass = decipher(encryptedAdminPass.toString());
 
-        String encryptedEmailPass = "";
+        StringBuilder encryptedEmailPass = new StringBuilder();
         while (scEmailPass.hasNext()) {
-            encryptedEmailPass += scEmailPass.next();
+            encryptedEmailPass.append(scEmailPass.next());
         }
 
-        emailPass = decipher(encryptedEmailPass);
+        emailPass = decipher(encryptedEmailPass.toString());
     }
 
 
-    public String cipher(String rawText) {
+    private String cipher(String rawText) {
         char[] asArr = rawText.toCharArray();
         char[] result = new char[asArr.length];
 
@@ -282,13 +288,13 @@ public class SettingsHolder implements Exportable {
     }
 
 
-    public String getExpertPass() {
-        return expertPass;
+    public String getAdminPass() {
+        return adminPass;
     }
 
 
-    public void setExpertPass(String expertPass) {
-        this.expertPass = expertPass;
+    public void setAdminPass(String adminPass) {
+        this.adminPass = adminPass;
     }
 
 
@@ -332,13 +338,23 @@ public class SettingsHolder implements Exportable {
     }
 
 
-    public boolean isAutoNagExpert() {
-        return autoNagExpert;
+    public boolean isSendShoppingList() {
+        return sendShoppingList;
     }
 
 
-    public void setAutoNagExpert(boolean autoNagExpert) {
-        this.autoNagExpert = autoNagExpert;
+    public void setSendShoppingList(boolean sendShoppingList) {
+        this.sendShoppingList = sendShoppingList;
+    }
+
+
+    public boolean isSendReports() {
+        return sendReports;
+    }
+
+
+    public void setSendReports(boolean sendReports) {
+        this.sendReports = sendReports;
     }
 
 
@@ -408,7 +424,8 @@ public class SettingsHolder implements Exportable {
         pw.println("autoGet=" + autoGet);
         pw.println("maxInactiveTime=" + maxInactiveTime);
         pw.println("autoNagUser=" + autoNagUser);
-        pw.println("autoNagExpert=" + autoNagExpert);
+        pw.println("sendShoppingList=" + sendShoppingList);
+        pw.println("sendReports=" + sendReports);
         pw.println("lambda=" + lambda);
         pw.println("holydayWeeks=" + holydayWeeks);
         pw.println("glasUserActive=" + glasUserActive);
@@ -419,8 +436,8 @@ public class SettingsHolder implements Exportable {
 
 
         // save special files
-        pw = new PrintWriter(new File(Kernel.SAVE_DIR + ".expertPass"));
-        pw.println(cipher(expertPass));
+        pw = new PrintWriter(new File(Kernel.SAVE_DIR + ".adminPass"));
+        pw.println(cipher(adminPass));
         pw.close();
 
         pw = new PrintWriter(new File(Kernel.SAVE_DIR + ".emailPass"));
