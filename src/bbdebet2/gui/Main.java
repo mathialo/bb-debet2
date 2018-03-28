@@ -125,6 +125,7 @@ public class Main extends Application {
         if (errorsOccuredDuringStartup) {
             Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
             alert.setHeaderText("Feil i startup");
+            alert.getDialogPane().setPrefHeight(200);
             alert.showAndWait();
             System.exit(1);
         }

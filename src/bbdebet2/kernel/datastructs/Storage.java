@@ -59,6 +59,11 @@ public class Storage implements Exportable {
     }
 
 
+    public void saveFile(String filepath) throws IOException {
+        saveFile(new File(filepath));
+    }
+
+
     @Override
     public void saveFile(File file) throws IOException {
         PrintWriter pw = new PrintWriter(file);
