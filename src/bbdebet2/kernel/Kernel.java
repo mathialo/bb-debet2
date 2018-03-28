@@ -4,6 +4,7 @@
 
 package bbdebet2.kernel;
 
+import bbdebet2.kernel.backup.AutoSaver;
 import bbdebet2.kernel.datastructs.CommandLineInterface;
 import bbdebet2.kernel.datastructs.ErrorInFileException;
 import bbdebet2.kernel.datastructs.Exportable;
@@ -70,10 +71,10 @@ public class Kernel implements CommandLineInterface {
         createRunningFile();
         readFiles();
         CsvLogger.initialize();
+        setupBackuping();
 
         transactionHandler = new TransactionHandler(this);
         emailSender = new EmailSender(this);
-
 
         // Make sure shutDown is called on exit
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutDown));
@@ -216,6 +217,24 @@ public class Kernel implements CommandLineInterface {
         }
 
         return cont;
+    }
+
+
+    /**
+     * Sets up AutoSaver objects to automatically save data to disk
+     */
+    private void setupBackuping() {
+        // set up autosaving every 3 minutes
+        AutoSaver autoSaver = new AutoSaver(this);
+        autoSaver.start(1);
+
+        // set up backup every x hours (as specified in settings)
+        AutoSaver autoBackup = new AutoSaver(this, "autosave/");
+        autoBackup.placeInSubdirs(true);
+        autoBackup.autoSendToRemoteOnSave(settingsHolder.isAutoSend());
+        if (settingsHolder.getBackupInterval() > 0) {
+            autoBackup.start(60 * settingsHolder.getBackupInterval());
+        }
     }
 
 
