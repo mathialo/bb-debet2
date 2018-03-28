@@ -16,6 +16,7 @@ import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.datastructs.UserList;
 import bbdebet2.kernel.logging.CsvLogger;
 import bbdebet2.kernel.logging.Logger;
+import bbdebet2.kernel.mailing.EmailSender;
 import bbdebet2.kernel.transactions.TransactionHandler;
 
 import java.io.File;
@@ -54,6 +55,7 @@ public class Kernel implements CommandLineInterface {
     private SalesHistory salesHistory;
     private SettingsHolder settingsHolder;
     private TransactionHandler transactionHandler;
+    private EmailSender emailSender;
 
 
     /**
@@ -70,6 +72,8 @@ public class Kernel implements CommandLineInterface {
         CsvLogger.initialize();
 
         transactionHandler = new TransactionHandler(this);
+        emailSender = new EmailSender(this);
+
 
         // Make sure shutDown is called on exit
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutDown));
@@ -298,6 +302,16 @@ public class Kernel implements CommandLineInterface {
         }
 
         this.saveOnExit = new Exportable[]{userList, storage, salesHistory, settingsHolder};
+    }
+
+
+    /**
+     * Returns active EmailSender for this kernel
+     *
+     * @return Current email sender
+     */
+    public EmailSender getEmailSender() {
+        return emailSender;
     }
 
 

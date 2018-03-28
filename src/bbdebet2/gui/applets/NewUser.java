@@ -6,10 +6,14 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.datastructs.User;
+import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import javax.mail.MessagingException;
 
 public class NewUser extends Applet {
 
@@ -17,6 +21,8 @@ public class NewUser extends Applet {
     private TextField userNameInput;
     @FXML
     private TextField userEmailInput;
+    @FXML
+    private TextArea welcomeEmailTextInput;
 
 
     public static void createAndDisplayDialog() {
@@ -35,12 +41,21 @@ public class NewUser extends Applet {
             return;
         }
 
-        Main.getKernel().getUserList().add(
-            new User(
-                userNameInput.getText(),
-                userEmailInput.getText()
-            )
-        );
+        User newUser = new User(userNameInput.getText(), userEmailInput.getText());
+
+        Main.getKernel().getUserList().add(newUser);
+
+        try {
+            Main.getKernel().getEmailSender().sendMail(
+                newUser,
+                "Velkommen til debetboka!",
+                welcomeEmailTextInput.getText()
+            );
+        } catch (InvalidEncryptionException | MessagingException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.setHeaderText("Kunne ikke sende epost");
+            alert.showAndWait();
+        }
 
         Main.getCurrentAdminController().repaintUserList();
         exit(event);
