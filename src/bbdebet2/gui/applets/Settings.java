@@ -5,6 +5,7 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.kernel.mailing.EmailTemplate;
+import bbdebet2.kernel.mailing.EmailTemplateLoader;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -70,11 +71,7 @@ public class Settings extends Applet {
         encryptions.add("STARTTLS");
         emailEncryptionInput.setItems(FXCollections.observableArrayList(encryptions));
 
-        ArrayList<EmailTemplate> templates = new ArrayList<>();
-        templates.add(new EmailTemplate("welcome", "Velkomstmail til nye brukere"));
-        templates.add(new EmailTemplate("turnedNegative", "\"Nå er du i minus\"-påminnelse"));
-        templates.add(new EmailTemplate("moreMoney", "Etter påfyll av saldo"));
-        templateChooser.setItems(FXCollections.observableArrayList(templates));
+        templateChooser.setItems(FXCollections.observableArrayList(EmailTemplate.values()));
         templateChooser.setOnAction(this::updateSelectedTemplate);
     }
 
@@ -122,7 +119,7 @@ public class Settings extends Applet {
     private void saveSelectedTemplate() throws IOException {
         if (selectedTemplate == null) return;
 
-        EmailTemplate.saveTemplate(selectedTemplate, templateInput.getText());
+        EmailTemplateLoader.saveTemplate(selectedTemplate, templateInput.getText());
     }
 
 
@@ -139,7 +136,7 @@ public class Settings extends Applet {
         }
 
         selectedTemplate = templateChooser.getSelectionModel().getSelectedItem();
-        templateInput.setText(EmailTemplate.getTemplate(selectedTemplate));
+        templateInput.setText(EmailTemplateLoader.getTemplate(selectedTemplate));
     }
 
 
