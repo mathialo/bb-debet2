@@ -20,7 +20,7 @@ public class TestAppletLauncher extends Application {
     public void start(Stage primaryStage) {
         kernel = new Kernel();
 //        Console.createAndDisplayDialog("kernel", kernel);
-        EditProducts.createAndDisplayDialog();
+        Settings.createAndDisplayDialog();
     }
 
 
