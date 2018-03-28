@@ -16,15 +16,16 @@ Lister over ferdig funksjonalitet, og funksjonalitet som må på plass før nest
  - Overføring av saldo mellom brukere
  - Generering av favoritter
  - Legge til varer
-
-### Må fikses
  - Endre varer
  - Føring av svinn
  - Legge til brukere
+ - Lagring av instillinger
+
+### Må fikses
  - Endre brukere
  - Legge til saldo på brukere
  - Epostspamming
- - Lagring av instillinger
+ - Endring av innstillinger fra GUI
  - Automatisk mellomlagring
  - Backups (snapshots av hele systemet som lagres separat)
  - Gjenoppretting fra sikkerhetskopier
@@ -43,7 +44,7 @@ Lister over ferdig funksjonalitet, og funksjonalitet som må på plass før nest
 Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
 
 ## 2.0 (pre-alpha)
- - Total omskriving av hele kodebasen for økt stabilitet og vedlikedholdbarhet. Bedre inndeling av kode, og GUI skrevet i FXML. 
+ - Total omskriving av hele kodebasen for økt stabilitet og vedlikedholdbarhet.  
  - Nytt lagersystem. Ulike varer av samme type kan nå ha ulik pris. 
 
 
