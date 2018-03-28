@@ -6,6 +6,8 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.datastructs.User;
+import bbdebet2.kernel.mailing.EmailTemplate;
+import bbdebet2.kernel.mailing.EmailTemplateLoader;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +16,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import javax.mail.MessagingException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class NewUser extends Applet {
 
@@ -33,7 +37,7 @@ public class NewUser extends Applet {
     @FXML
     public void addUserAndExit(ActionEvent event) {
         // Check validity
-        if (Main.getKernel().getUserList().contains(userNameInput.getText())) {
+        if (kernel.getUserList().contains(userNameInput.getText())) {
             Alert alert = new Alert(
                 Alert.AlertType.ERROR, "Det finnes allerede en bruker med det navnet!");
             alert.setHeaderText(null);
@@ -43,10 +47,10 @@ public class NewUser extends Applet {
 
         User newUser = new User(userNameInput.getText(), userEmailInput.getText());
 
-        Main.getKernel().getUserList().add(newUser);
+        kernel.getUserList().add(newUser);
 
         try {
-            Main.getKernel().getEmailSender().sendMail(
+            kernel.getEmailSender().sendMail(
                 newUser,
                 "Velkommen til debetboka!",
                 welcomeEmailTextInput.getText()
@@ -59,5 +63,12 @@ public class NewUser extends Applet {
 
         Main.getCurrentAdminController().repaintUserList();
         exit(event);
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+        welcomeEmailTextInput.setText(EmailTemplateLoader.getTemplate(EmailTemplate.WELCOME));
     }
 }
