@@ -33,7 +33,7 @@ public class EmailSender {
         sendMail(
             user,
             "Du er nå i minus",
-            "Hei %navn!\n\nDu har nå bikket bikket null og har negativ balanse i debetboka. Husk at debetboka er ment til å være en forskuddsløsning, så det hadde vært fint om du satte over penger så fort som mulig :)"
+            EmailTemplateLoader.getTemplate(EmailTemplate.USERTURNEDNEGATIVE)
         );
     }
 
