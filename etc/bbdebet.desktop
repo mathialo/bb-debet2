@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=BBDebet 2
+Comment=Digital debetbok for Biørneblæs
+Exec=/usr/local/share/bbdebet2/run.sh
+Icon=/usr/local/share/bbdebet2/img/bblogo_256.png
+Terminal=false
+Type=Application
+Categories=Utility
