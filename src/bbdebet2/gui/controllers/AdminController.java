@@ -11,6 +11,7 @@ import bbdebet2.gui.applets.Console;
 import bbdebet2.gui.applets.EditProducts;
 import bbdebet2.gui.applets.EditUser;
 import bbdebet2.gui.applets.NewUser;
+import bbdebet2.gui.applets.SendEmail;
 import bbdebet2.gui.applets.Settings;
 import bbdebet2.gui.applets.Stocktaking;
 import bbdebet2.gui.modelwrappers.ViewProduct;
@@ -194,6 +195,12 @@ public class AdminController implements Initializable {
     @FXML
     public void runKernelConsole(ActionEvent event) {
         Console.createAndDisplayDialog("Kernel", kernel);
+    }
+
+
+    @FXML
+    public void newSendEmailWindow(ActionEvent event) {
+        SendEmail.createAndDisplayDialog();
     }
 
 
