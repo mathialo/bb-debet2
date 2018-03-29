@@ -5,6 +5,7 @@
 package bbdebet2.kernel.logging;
 
 import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.User;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class CsvLogger {
 
@@ -28,6 +30,15 @@ public class CsvLogger {
     public static void initialize() {
         String[] head0 = {"From", "To", "Amount"};
         headers.put("usertransactions", head0);
+        String[] head1 = {"Product", "Quantity", "Value"};
+        headers.put("losses", head1);
+        String[] head2 = {"User", "Amount"};
+        headers.put("moneyinserts", head2);
+    }
+
+
+    public static Set<String> getAvailableFileNames() {
+        return headers.keySet();
     }
 
 
@@ -35,13 +46,16 @@ public class CsvLogger {
 
         long timestamp = System.currentTimeMillis() / 1000L;
 
-        String appendline = timestamp + "," + String.join(",", row);
+        String appendline = timestamp + "," + String.join(",", row) + "\n";
 
         String useFilename = filename.endsWith(".csv") ? filename : filename + ".csv";
 
         // try to append to existing file
         try {
-            Files.write(Paths.get(Kernel.SAVE_DIR + useFilename), appendline.getBytes(), StandardOpenOption.APPEND);
+            Files.write(
+                Paths.get(Kernel.SAVE_DIR + useFilename), appendline.getBytes(),
+                StandardOpenOption.APPEND
+            );
         } catch (IOException e) {
             // if file doesn't exist, the above will fail. Try to create a new file, and write to it
             PrintWriter pw = new PrintWriter(Kernel.SAVE_DIR + useFilename);
@@ -52,8 +66,21 @@ public class CsvLogger {
         }
     }
 
+
     public static void addUserTransaction(User from, User to, double amount) throws IOException {
         String[] row = {from.getUserName(), to.getUserName(), amount + ""};
         addRow("usertransactions", row);
+    }
+
+
+    public static void addProductLoss(Product product, int num) throws IOException {
+        String[] row = {product.getName(), num + "", product.getSellPrice() * num + ""};
+        addRow("losses", row);
+    }
+
+
+    public static void addMoneyInserts(User user, double amount) throws IOException {
+        String[] row = {user.getUserName(), amount + ""};
+        addRow("moneyinserts", row);
     }
 }

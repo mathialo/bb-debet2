@@ -232,11 +232,9 @@ public class Storage implements Exportable, Listable<ViewProduct> {
             }
         } else if (newNum < oldNum) {
             // New number is smaller, remove the cheapest entries
-            System.out.println(productName);
 
             for (PriorityQueue<Product> q : storage) {
                 // Is this the product we're looking for?
-                System.out.println(q.peek());
                 if (q.peek().getName().equals(productName)) {
 
                     // poll from queue (remove from storage)

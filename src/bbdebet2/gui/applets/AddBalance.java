@@ -6,6 +6,7 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.datastructs.User;
+import bbdebet2.kernel.logging.CsvLogger;
 import bbdebet2.kernel.mailing.EmailTemplate;
 import bbdebet2.kernel.mailing.EmailTemplateLoader;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
@@ -18,6 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -59,6 +61,11 @@ public class AddBalance extends Applet {
         }
 
         u.addBalance(amount);
+        try {
+            CsvLogger.addMoneyInserts(u, amount);
+        } catch (IOException e) {
+            kernel.getLogger().log(e);
+        }
 
         if (sendEmailInput.isSelected()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Sender epost...");

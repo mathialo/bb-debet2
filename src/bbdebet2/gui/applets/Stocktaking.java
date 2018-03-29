@@ -6,6 +6,7 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.datastructs.Product;
+import bbdebet2.kernel.logging.CsvLogger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -66,6 +68,15 @@ public class Stocktaking extends Applet {
                 kernel.getLogger().log(
                     "Stocktaking: " + productNameView.getText() + " changed by " + diff
                 );
+
+                try {
+                    CsvLogger.addProductLoss(
+                        kernel.getStorage().find(productNameView.getText()),
+                        -diff
+                    );
+                } catch (IOException e) {
+                    kernel.getLogger().log(e);
+                }
             }
         }
     }
