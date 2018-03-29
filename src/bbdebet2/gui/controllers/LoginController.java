@@ -69,4 +69,9 @@ public class LoginController implements Initializable {
         kernel = Main.getKernel();
         Main.setCurrentLoginController(this);
     }
+
+
+    public void postInitialize() {
+
+    }
 }

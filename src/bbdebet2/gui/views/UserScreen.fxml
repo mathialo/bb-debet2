@@ -18,7 +18,6 @@
   ~ Copyright (c) 2018. Mathias Lohne
   -->
 
-
 <BorderPane prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.controllers.UserController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">

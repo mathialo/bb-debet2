@@ -108,6 +108,21 @@ public class Main extends Application {
     }
 
 
+    public static Scene getLoginScene() {
+        return loginScene;
+    }
+
+
+    public static Scene getUserScene() {
+        return userScene;
+    }
+
+
+    public static Scene getAdminScene() {
+        return adminScene;
+    }
+
+
     @Override
     public void init() throws Exception {
         super.init();
@@ -133,20 +148,29 @@ public class Main extends Application {
         Main.primaryStage = primaryStage;
 
         try {
-            loginRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/LoginScreen.fxml"));
+            loginRoot = FXMLLoader.load(
+                getClass().getClassLoader().getResource("bbdebet2/gui/views/LoginScreen.fxml"));
             loginScene = new Scene(loginRoot);
 
-            userRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/UserScreen.fxml"));
+            userRoot = FXMLLoader.load(
+                getClass().getClassLoader().getResource("bbdebet2/gui/views/UserScreen.fxml"));
             userScene = new Scene(userRoot);
 
-            adminRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/AdminScreen.fxml"));
+            adminRoot = FXMLLoader.load(
+                getClass().getClassLoader().getResource("bbdebet2/gui/views/AdminScreen.fxml"));
             adminScene = new Scene(adminRoot);
 
             primaryStage.setTitle("BBDebet 2.0-alpha");
+
             primaryStage.setScene(loginScene);
             primaryStage.setHeight(1000);
             primaryStage.setWidth(1200);
             // primaryStage.setMaximized(true);
+
+            currentLoginController.postInitialize();
+            currentUserController.postInitialize();
+            currentAdminController.postInitialize();
+
             primaryStage.show();
         } catch (IOException e) {
             kernel.getLogger().log(e);

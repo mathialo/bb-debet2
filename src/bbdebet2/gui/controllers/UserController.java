@@ -14,6 +14,7 @@ import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.User;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -21,6 +22,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 
 import java.net.URL;
@@ -216,6 +219,18 @@ public class UserController implements Initializable {
         kernel = Main.getKernel();
         Main.setCurrentUserController(this);
         setUpSalesHistoryView();
+    }
+
+
+    public void postInitialize() {
+        // Escape logs out
+        Main.getUserScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.ESCAPE) {
+                    handleLogout(null);
+                }
+            }
+        });
     }
 
 
