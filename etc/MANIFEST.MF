@@ -1,0 +1,2 @@
+Main-Class: gui.Main
+Class-Path: debetbok.jar lib/javax.mail.jar lib/activation.jar
