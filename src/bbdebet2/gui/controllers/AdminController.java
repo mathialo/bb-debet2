@@ -5,6 +5,7 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
+import bbdebet2.gui.applets.AddBalance;
 import bbdebet2.gui.applets.AddProducts;
 import bbdebet2.gui.applets.Console;
 import bbdebet2.gui.applets.EditProducts;
@@ -162,9 +163,16 @@ public class AdminController implements Initializable {
         NewUser.createAndDisplayDialog();
     }
 
+
     @FXML
     public void newEditUserWindow(ActionEvent event) {
         EditUser.createAndDisplayDialog();
+    }
+
+
+    @FXML
+    public void newAddBalanceWindow(ActionEvent event) {
+        AddBalance.createAndDisplayDialog();
     }
 
 
