@@ -94,7 +94,7 @@
                         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <items>
                             <Button mnemonicParsing="false" onAction="#newNewUserWindow" text="Ny bruker" />
-                              <Button mnemonicParsing="false" text="Endre bruker" />
+                              <Button mnemonicParsing="false" onAction="#newEditUserWindow" text="Endre bruker" />
                               <Button mnemonicParsing="false" text="Slett bruker" />
                               <Button mnemonicParsing="false" text="Send epost" />
                               <Button mnemonicParsing="false" text="Sett inn penger" />
