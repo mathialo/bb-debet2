@@ -3,9 +3,9 @@ BBdebet er en app for å behandle transaksjoner i debetboka. Det er en digital u
 
 
 # Versjon 2
-BBdebet2 er en helt ny versjon av BBdebet. Foreløpig er den ikke ferdig, så bruk versjon 1.x enn så lenge. 
+BBdebet2 er en helt ny versjon av BBdebet. Den er foreløpig i aplha, og _kan_ brukes, men versjon 1.x er fortsatt den stabile releasen.  
 
-## Roadmap til første release av 2.x
+## Roadmap til første stabile release av 2.x
 Lister over ferdig funksjonalitet, og funksjonalitet som må på plass før første utgivelse:
 
 ### Ferdig
@@ -27,7 +27,6 @@ Lister over ferdig funksjonalitet, og funksjonalitet som må på plass før før
  - Endre brukere
  - Legge til saldo på brukere
 
-### Må fikses
 
 ### Bør fikses
  - Gjenoppretting fra sikkerhetskopier via GUI
