@@ -39,7 +39,7 @@
             <Label text="Epost" GridPane.rowIndex="1" />
             <TextField fx:id="userNameInput" GridPane.columnIndex="1" />
             <TextField fx:id="userEmailInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextArea fx:id="welcomeEmailTextInput" prefHeight="250.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+            <TextArea fx:id="welcomeEmailTextInput" prefHeight="250.0" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </center>

@@ -17,7 +17,6 @@
   ~ Copyright (c) 2018. Mathias Lohne
   -->
 
-
 <BorderPane prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.applets.AddBalance">
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -47,7 +46,7 @@
                   <TextField fx:id="moneyInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Send bekreftelsesepost" GridPane.rowIndex="2" />
                   <CheckBox fx:id="sendEmailInput" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextArea fx:id="emailTextInput" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                  <TextArea fx:id="emailTextInput" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>
