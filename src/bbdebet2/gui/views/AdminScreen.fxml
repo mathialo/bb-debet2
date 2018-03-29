@@ -96,7 +96,7 @@
                             <Button mnemonicParsing="false" onAction="#newNewUserWindow" text="Ny bruker" />
                               <Button mnemonicParsing="false" onAction="#newEditUserWindow" text="Endre bruker" />
                               <Button mnemonicParsing="false" text="Slett bruker" />
-                              <Button mnemonicParsing="false" text="Send epost" />
+                              <Button mnemonicParsing="false" onAction="#newSendEmailWindow" text="Send epost" />
                               <Button mnemonicParsing="false" onAction="#newAddBalanceWindow" text="Sett inn penger" />
                               <Button mnemonicParsing="false" text="Se innskudd" />
                           </items>
