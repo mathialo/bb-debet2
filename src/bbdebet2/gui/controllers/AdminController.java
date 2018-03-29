@@ -18,10 +18,13 @@ import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.gui.modelwrappers.ViewUser;
 import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,6 +32,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AdminController implements Initializable {
@@ -201,6 +205,34 @@ public class AdminController implements Initializable {
     @FXML
     public void newSendEmailWindow(ActionEvent event) {
         SendEmail.createAndDisplayDialog();
+    }
+
+
+    @FXML
+    public void askForUserDeletion(ActionEvent event) {
+        ViewUser selectedUser = userListView.getSelectionModel().getSelectedItem();
+
+        if (selectedUser == null) {
+            Alert alert = new Alert(
+                Alert.AlertType.ERROR, "Velg en bruker fra listen for å slettes");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert askForConfirmation = new Alert(
+            Alert.AlertType.CONFIRMATION,
+            "Dette vil fjerne " + selectedUser + " fra systemet. All saldo vil bli fjernet. Er du sikker?"
+        );
+        askForConfirmation.setHeaderText("Bekreft sletting");
+        askForConfirmation.getDialogPane().setPrefHeight(200);
+
+        Optional<ButtonType> result = askForConfirmation.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            User user = selectedUser.getUserObject();
+            kernel.getUserList().remove(user);
+            repaintUserList();
+        }
     }
 
 
