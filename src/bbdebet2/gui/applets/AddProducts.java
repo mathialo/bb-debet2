@@ -5,6 +5,8 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
+import bbdebet2.gui.customelements.SuggestionMenu;
+import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewProductForAddition;
 import bbdebet2.kernel.datastructs.Product;
 import javafx.collections.FXCollections;
@@ -174,9 +176,12 @@ public class AddProducts extends Applet {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+
         setupMarkupChioceBox();
         setupAutoMarkup();
         setupTableView();
+
+        SuggestionMenu<ViewProduct> suggestionMenu = new SuggestionMenu<>(productNameInput, kernel.getStorage());
     }
 
 
