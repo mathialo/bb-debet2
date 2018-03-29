@@ -113,7 +113,7 @@ public class AutoSaver {
 
             kernel.getLogger().log("Sending data to remote server");
             try {
-                ProcessBuilder pb = new ProcessBuilder("senddebetdata");
+                ProcessBuilder pb = new ProcessBuilder("senddebet2data");
                 sendProc = pb.start();
             } catch (IOException e) {
                 kernel.getLogger().log(e);

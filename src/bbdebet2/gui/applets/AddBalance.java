@@ -37,6 +37,7 @@ public class AddBalance extends Applet {
     }
 
 
+    @SuppressWarnings("unchecked")
     @FXML
     public void addMoney(ActionEvent event) {
         User u = kernel.getUserList().find(userNameInput.getText());

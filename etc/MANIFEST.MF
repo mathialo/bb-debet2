@@ -1,2 +1,2 @@
-Main-Class: gui.Main
+Main-Class: bbdebet2.gui.Main
 Class-Path: debetbok.jar lib/javax.mail.jar lib/activation.jar
