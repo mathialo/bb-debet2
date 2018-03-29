@@ -62,8 +62,18 @@ public class User {
     }
 
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+
     public String getMail() {
         return mail;
+    }
+
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
 

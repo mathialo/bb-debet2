@@ -15,10 +15,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class UserList implements Iterable<User>, Exportable {
+public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> {
 
     private LinkedList<User> list;
 
@@ -297,6 +298,17 @@ public class UserList implements Iterable<User>, Exportable {
         }
 
         return FXCollections.observableArrayList(listOfPeople);
+    }
+
+
+    public List<ViewUser> toList() {
+        LinkedList<ViewUser> viewList = new LinkedList<>();
+
+        for (User u : list) {
+            viewList.add(new ViewUser(u));
+        }
+
+        return viewList;
     }
 
 

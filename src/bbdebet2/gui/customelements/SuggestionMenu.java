@@ -27,7 +27,7 @@ public class SuggestionMenu<T> extends ContextMenu {
     }
 
 
-    private void updateContextMenuItems(KeyEvent event) {
+    public void updateContextMenuItems(KeyEvent event) {
         if (! (event.getCode().isLetterKey() || event.getCode().isWhitespaceKey() || event.getCode().isDigitKey())) return;
 
         List<T> list = backend.toList();
