@@ -4,7 +4,7 @@
 
 package bbdebet2.gui.customelements;
 
-import bbdebet2.kernel.datastructs.IsListable;
+import bbdebet2.kernel.datastructs.Listable;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -16,10 +16,10 @@ import java.util.List;
 public class SuggestionMenu<T> extends ContextMenu {
 
     private TextField inputField;
-    private IsListable<T> backend;
+    private Listable<T> backend;
 
 
-    public SuggestionMenu(TextField inputField, IsListable<T> backend) {
+    public SuggestionMenu(TextField inputField, Listable<T> backend) {
         this.inputField = inputField;
         this.backend = backend;
 

@@ -6,7 +6,7 @@ package bbdebet2.kernel.datastructs;
 
 import java.util.List;
 
-public interface IsListable<T> {
+public interface Listable<T> {
 
     public List<T> toList();
 
