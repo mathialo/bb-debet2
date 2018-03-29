@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Storage implements Exportable {
+public class Storage implements Exportable, IsListable<ViewProduct> {
 
     private LinkedList<PriorityQueue<Product>> storage;
 
@@ -173,6 +174,17 @@ public class Storage implements Exportable {
     }
 
 
+    public List<ViewProduct> toList() {
+        LinkedList<ViewProduct> list = new LinkedList<>();
+
+        for (PriorityQueue<Product> queue : storage) {
+            list.add(new ViewProduct(queue.peek()));
+        }
+
+        return list;
+    }
+
+
     public Set<Product> getProductSet() {
         TreeSet<Product> productSet = new TreeSet<>(Comparator.comparing(Product::getName));
 
@@ -280,7 +292,7 @@ public class Storage implements Exportable {
             if (q.peek().getName().equals(productName)) {
                 for (Product p : q) {
                     if (!priceSet.contains(p.getSellPrice())) {
-                        priceSet.add(p.getSellPrice());                    productSet.add(p);
+                        priceSet.add(p.getSellPrice());
                         productSet.add(p);
                     }
                 }
