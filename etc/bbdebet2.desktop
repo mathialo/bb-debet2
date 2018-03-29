@@ -1,5 +1,5 @@
 [Desktop Entry]
-Version=1.0
+Version=2.0
 Name=BBDebet 2
 Comment=Digital debetbok for Biørneblæs
 Exec=/usr/local/share/bbdebet2/run.sh
