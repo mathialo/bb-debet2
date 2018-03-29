@@ -18,11 +18,14 @@ import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.gui.modelwrappers.ViewUser;
 import bbdebet2.kernel.Kernel;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -204,5 +207,17 @@ public class AdminController implements Initializable {
         repaintStorage();
         setupUserListView();
         repaintUserList();
+    }
+
+
+    public void postInitialize() {
+        // Escape logs out
+        Main.getAdminScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.ESCAPE) {
+                    logout(null);
+                }
+            }
+        });
     }
 }
