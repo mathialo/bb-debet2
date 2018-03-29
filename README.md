@@ -24,13 +24,13 @@ Lister over ferdig funksjonalitet, og funksjonalitet som må på plass før før
  - Backups (snapshots av hele systemet som lagres separat)
  - Automatisk mellomlagring
  - Endring av innstillinger fra GUI
-
-### Må fikses
  - Endre brukere
  - Legge til saldo på brukere
- - Gjenoppretting fra sikkerhetskopier
+
+### Må fikses
 
 ### Bør fikses
+ - Gjenoppretting fra sikkerhetskopier via GUI
  - Handlelistegenerering
  - Automatisk statistikkgenerering
  - Glassbruker
