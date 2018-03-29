@@ -22,7 +22,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Storage implements Exportable, IsListable<ViewProduct> {
+public class Storage implements Exportable, Listable<ViewProduct> {
 
     private LinkedList<PriorityQueue<Product>> storage;
 
