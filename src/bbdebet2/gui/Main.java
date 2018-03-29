@@ -142,7 +142,7 @@ public class Main extends Application {
             adminRoot = FXMLLoader.load(getClass().getClassLoader().getResource("bbdebet2/gui/views/AdminScreen.fxml"));
             adminScene = new Scene(adminRoot);
 
-            primaryStage.setTitle("BBDebet 2");
+            primaryStage.setTitle("BBDebet 2.0-alpha");
             primaryStage.setScene(loginScene);
             primaryStage.setHeight(1000);
             primaryStage.setWidth(1200);
