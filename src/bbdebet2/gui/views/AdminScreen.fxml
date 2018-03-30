@@ -71,7 +71,6 @@
                               <Button mnemonicParsing="false" onAction="#newEditProductsWindow" text="Endre flere" />
                               <Button mnemonicParsing="false" onAction="#newStocktakingWindow" text="Vareopptelling" />
                               <Button mnemonicParsing="false" text="Se svinn" />
-                              <Button mnemonicParsing="false" text="Generer handleliste" />
                           </items>
                         </ToolBar>
                      </top>

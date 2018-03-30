@@ -395,13 +395,9 @@ public class Kernel implements CommandLineInterface {
 
 
     /**
-     * Properly shuts down kernel if running.
-     *
-     * Saves all exportable files to SAVE_DIR, deletes "running" file, and closes logger.
+     * Saves all savable data (sales history, settings, storage, etc)
      */
-    public void shutDown() {
-        if (!isRunning()) return;
-
+    public void saveAll() {
         if (saveOnExit != null) {
             for (Exportable e : saveOnExit) {
                 logger.log("Saving " + e.getClass().getSimpleName());
@@ -412,6 +408,18 @@ public class Kernel implements CommandLineInterface {
                 }
             }
         }
+    }
+
+
+    /**
+     * Properly shuts down kernel if running.
+     *
+     * Saves all exportable files to SAVE_DIR, deletes "running" file, and closes logger.
+     */
+    public void shutDown() {
+        if (!isRunning()) return;
+
+        saveAll();
 
         //noinspection ResultOfMethodCallIgnored
         runningFile.delete();
