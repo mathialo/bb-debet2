@@ -12,11 +12,16 @@ import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.User;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -25,9 +30,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -53,6 +61,11 @@ public class UserController implements Initializable {
     private Label shoppingCartTitleLabel;
 
     private Kernel kernel;
+
+    private Timeline logOutTimer;
+    private Alert logOutAlert;
+
+    private List<Alert> openAlertBoxes;
 
 
     private static String formatTitleString(User user) {
@@ -131,6 +144,70 @@ public class UserController implements Initializable {
         updateFavouritesView();
         updateStorageView();
         updateSalesHistoryView();
+
+        // Make sure alert list is cleared
+        openAlertBoxes.clear();
+
+        // New logout timer
+        updateLogoutTimer();
+    }
+
+
+    private void deleteLogoutTimer() {
+        if (logOutTimer != null) {
+            logOutTimer.stop();
+            logOutTimer = null;
+        }
+    }
+
+
+    private void updateLogoutTimer() {
+        // Delete old timer
+        deleteLogoutTimer();
+
+        // make a new one
+        logOutTimer = new Timeline(new KeyFrame(
+            Duration.millis(kernel.getSettingsHolder().getMaxInactiveTime() * 1000),
+            e -> warnLogout()
+        ));
+        logOutTimer.play();
+    }
+
+
+    private void warnLogout() {
+        deleteLogoutTimer();
+
+        ButtonType waitButton = new ButtonType(
+            "Utsett " + kernel.getSettingsHolder().getMaxInactiveTime() + " sek",
+            ButtonBar.ButtonData.OK_DONE
+        );
+        logOutAlert = new Alert(
+            Alert.AlertType.WARNING,
+            "Du blir logget ut om 5 sekunder. Alt du har i handlekurven vil bli kjøpt.",
+            waitButton
+        );
+        logOutAlert.getDialogPane().setPrefHeight(200);
+        logOutAlert.setHeaderText("Automatisk utlogging.");
+        openAlertBoxes.add(logOutAlert);
+        logOutAlert.show();
+
+        // make a new timer
+        logOutTimer = new Timeline(new KeyFrame(
+            Duration.millis(7 * 1000),
+            e -> forceLogout(waitButton)
+        ));
+        logOutTimer.play();
+    }
+
+
+    private void forceLogout(ButtonType waitButton) {
+        if (logOutAlert.getResult() == waitButton) {
+            updateLogoutTimer();
+        } else {
+            kernel.getLogger().log(Main.getActiveUser() + " forcibly logged out");
+            logout();
+            Main.toLoginScreen();
+        }
     }
 
 
@@ -142,6 +219,9 @@ public class UserController implements Initializable {
         updateStorageView();
         updateFavouritesView();
         updateShoppingCartTitleLabel();
+
+        // Reset logout timer
+        updateLogoutTimer();
     }
 
 
@@ -170,6 +250,9 @@ public class UserController implements Initializable {
         updateStorageView();
         updateFavouritesView();
         updateShoppingCartTitleLabel();
+
+        // Reset logout timer
+        updateLogoutTimer();
     }
 
 
@@ -187,6 +270,9 @@ public class UserController implements Initializable {
         updateFavouritesView();
         updateSalesHistoryView();
         updateShoppingCartTitleLabel();
+
+        // Reset logout timer
+        updateLogoutTimer();
     }
 
 
@@ -201,7 +287,19 @@ public class UserController implements Initializable {
     }
 
 
-    public void logout() {
+    private void logout() {
+        // Force through purchase of all goods in cart
+        handleConfirmPurchase(null);
+
+        // Remove logout timer
+        deleteLogoutTimer();
+
+        // Close any open alert boxes
+        for (Alert alert : openAlertBoxes) {
+            alert.close();
+        }
+        openAlertBoxes.clear();
+
         // Set active user
         Main.setActiveUser(null);
     }
@@ -209,6 +307,21 @@ public class UserController implements Initializable {
 
     @FXML
     public void handleLogout(ActionEvent event) {
+        if (!shoppingCartView.getItems().isEmpty()) {
+            Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                "Vennligst bekreft eller tilbakestill handlekurven før du logger ut"
+            );
+            alert.setHeaderText("Du har varer i handlekurven");
+            alert.getDialogPane().setPrefHeight(200);
+            openAlertBoxes.add(alert);
+            alert.showAndWait();
+
+            // Reset logout timer
+            updateLogoutTimer();
+            return;
+        }
+
         logout();
         Main.toLoginScreen();
     }
@@ -219,6 +332,8 @@ public class UserController implements Initializable {
         kernel = Main.getKernel();
         Main.setCurrentUserController(this);
         setUpSalesHistoryView();
+
+        openAlertBoxes = new LinkedList<>();
     }
 
 
@@ -237,5 +352,8 @@ public class UserController implements Initializable {
     @FXML
     public void openNewUserTransactionDialog(ActionEvent event) {
         NewUserTransaction.createAndDisplayDialog();
+
+        // Reset logout timer
+        updateLogoutTimer();
     }
 }

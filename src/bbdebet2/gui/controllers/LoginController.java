@@ -5,16 +5,19 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
+import bbdebet2.gui.customelements.PasswordDialog;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -60,7 +63,18 @@ public class LoginController implements Initializable {
 
     @FXML
     public void attemptToAdminScreen(ActionEvent event) {
-        Main.toAdminScreen();
+        PasswordDialog passwordDialog = new PasswordDialog();
+        Optional<String> result = passwordDialog.showAndWait();
+
+        if (result.isPresent()) {
+            if (result.get().equals(kernel.getSettingsHolder().getAdminPass())) {
+                Main.toAdminScreen();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Prøv på nytt");
+                alert.setHeaderText("Feil passord");
+                alert.showAndWait();
+            }
+        }
     }
 
 
