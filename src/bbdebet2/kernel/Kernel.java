@@ -305,7 +305,7 @@ public class Kernel implements CommandLineInterface {
             salesHistory = new SalesHistory(new File(SALESHISTORY_FILEPATH));
         } catch (IOException | ErrorInFileException e) {
             logger.log(e);
-            logger.log("Falling back to empty storage");
+            logger.log("Falling back to empty sales history");
 
             salesHistory = new SalesHistory();
         }
