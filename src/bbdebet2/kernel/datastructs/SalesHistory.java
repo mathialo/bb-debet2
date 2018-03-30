@@ -106,11 +106,14 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
             // close in stream
             sc.close();
         } catch (NumberFormatException e) {
-            throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + csvFile + " inneholder et element av feil type.");
+            throw new ErrorInFileException(
+                "Feil i inputfil: Linje " + lineNum + " i " + csvFile + " inneholder et element av feil type.");
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + csvFile + " inneholder for få elementer.");
+            throw new ErrorInFileException(
+                "Feil i inputfil: Linje " + lineNum + " i " + csvFile + " inneholder for få elementer.");
         } catch (NoSuchElementException e) {
-            throw new ErrorInFileException("Feil i inputfil: " + csvFile + " inneholder for få linjer.");
+            throw new ErrorInFileException(
+                "Feil i inputfil: " + csvFile + " inneholder for få linjer.");
         }
     }
 
@@ -149,12 +152,19 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
         int i = 0;
         for (Sale s : history) {
             // write sale as csv, with sale counter as first col
-            pw.println(s.getId()+","+s.getTimestamp()+","+s.getUserName()+","+s.getProductName()+","+s.getPricePayed()+","+s.getEarnings());
+            pw.println(
+                s.getId() + "," + s.getTimestamp() + "," + s.getUserName() + "," + s.getProductName() + "," + s.getPricePayed() + "," + s.getEarnings());
             i++;
         }
 
         // close output stream
         pw.close();
+    }
+
+
+    @Override
+    public void saveFile() throws IOException {
+        saveFile(Kernel.SALESHISTORY_FILEPATH);
     }
 
 
@@ -167,12 +177,6 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
      */
     public void saveFile(String filepath) throws IOException {
         saveFile(new File(filepath));
-    }
-
-
-    @Override
-    public void saveFile() throws IOException {
-        saveFile(Kernel.SALESHISTORY_FILEPATH);
     }
 
 
@@ -273,7 +277,7 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
      */
     public void remove(int id) {
         Iterator<Sale> it = history.iterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             Sale temp = it.next();
             if (temp.getId() == id) {
                 it.remove();
@@ -389,5 +393,15 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
      */
     public void reset() {
         history = new LinkedList<Sale>();
+    }
+
+
+    public Sale getFirst() {
+        return history.getFirst();
+    }
+
+
+    public Sale getLast() {
+        return history.getLast();
     }
 }
