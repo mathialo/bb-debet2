@@ -40,11 +40,12 @@ copy_files() {
 	sudo chmod +x /usr/local/share/bbdebet2/senddebet2data.sh
 	sudo chmod +x /usr/local/share/bbdebet2/getdebet2data.sh
 
-	# Lag linker for tilgjengelighet i terminal og startmeny
+	# Lag linker for tilgjengelighet i terminal og startmeny. Ignorer feil, da
+	# det kommer av at filene allerede finnes (hvis man innstallerer ny versjon)
 	sudo cp etc/bbdebet2.desktop /usr/share/applications
-	sudo ln -s /usr/local/share/bbdebet2/run.sh /usr/local/bin/bbdebet2
-	sudo ln -s /usr/local/share/bbdebet2/senddebet2data.sh /usr/local/bin/senddebet2data
-	sudo ln -s /usr/local/share/bbdebet2/getdebet2data.sh /usr/local/bin/getdebet2data
+	sudo ln -s /usr/local/share/bbdebet2/run.sh /usr/local/bin/bbdebet2 2> /dev/null
+	sudo ln -s /usr/local/share/bbdebet2/senddebet2data.sh /usr/local/bin/senddebet2data 2> /dev/null
+	sudo ln -s /usr/local/share/bbdebet2/getdebet2data.sh /usr/local/bin/getdebet2data 2> /dev/null
 }
 
 make_save_dirs() {
