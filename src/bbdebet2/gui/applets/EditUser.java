@@ -79,5 +79,8 @@ public class EditUser extends Applet {
             suggestionMenu.updateContextMenuItems(event);
             updateCurrentContent(event);
         });
+        userNameInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) updateCurrentContent(null);
+        });
     }
 }
