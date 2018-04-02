@@ -27,9 +27,10 @@ Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil også bli i
 ## Versjoner
 Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
 
-### 2.0 (pre-alpha)
+### 2.0 (beta)
  - Total omskriving av hele kodebasen for økt stabilitet og vedlikedholdbarhet.  
  - Nytt lagersystem. Ulike varer av samme type kan nå ha ulik pris. 
+ - Totalt nytt grensesnitt for administrator
 
 
 ### 1.8
@@ -37,7 +38,7 @@ Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
  - Visualisering av svinn og innskudd
  - Favoritter er nå sortert fra mest til minst kjøpt
  - Kan tilbakestille debetboka til et backuppunkt fra programmet
- - Sending av mail til Choostholdsexpært
+ - Sending av mail til administrator
  - Glassbruker
  - Reply-To i mail
  - Bedre handlelistegenerering
@@ -64,15 +65,15 @@ Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
  - Loggføring av innskudd
  - Mulighet for autobackup/-innlasting fra UiO-server
  - La til enkel splash-skjerm siden startupen har blitt småtreg
- - Choostholdsexpært kan sende bekreftelsesmail når brukere setter inn penger
- - Choostholdsexpært kan nå endre hvor fort brukere automatisk logges ut
+ - Administrator kan sende bekreftelsesmail når brukere setter inn penger
+ - Administrator kan nå endre hvor fort brukere automatisk logges ut
 
 
 ### 1.5
 
- - Choostholdsexpært kan nå sende mail til alle i minus og mase om penger
- - Choostholdsexpært kan endre innstillinger i programmet, blant annet expært-passort og mail
- - Autogenerering av handlelister for Choostholdsexpært
+ - Administrator kan nå sende mail til alle i minus og mase om penger
+ - Administrator kan endre innstillinger i programmet, blant annet expært-passort og mail
+ - Autogenerering av handlelister for administrator
  - Brukere får nå opp en liste med sine mest kjøpte varer
  - Noen småfeil rettet opp
 
