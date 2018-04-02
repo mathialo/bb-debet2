@@ -1,7 +1,17 @@
 #! /bin/bash
 
+version="$(cat version)"
+buildnum="$(cat buildnum)"
+
 compile_all() {
 	echo "Kompillerer kildekode"
+
+	# Oppdater versjonsnummer og build-nummer i kildefil
+	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version\3/g"  > sedcommand
+	sed -f sedcommand -i src/bbdebet2/gui/Main.java
+	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1BBdebet $version\\\\nBuild nr $buildnum\3/g" > sedcommand
+	sed -f sedcommand -i src/bbdebet2/gui/Main.java
+	rm sedcommand
 
 	# Finn alle kildefiler
 	javafiles="$(find src/ -name "*java" | sed ':a;N;$!ba;s/\n/ /g')"

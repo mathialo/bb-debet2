@@ -20,7 +20,8 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    public static final String VERSION = "2.0-alpha";
+    public static final String SHORT_VERSION = "2.0-beta";
+    public static final String FULL_VERSION = "BBdebet 2.0-beta\nBuild nr 11";
 
     private static Kernel kernel;
     private static Stage primaryStage;
@@ -162,7 +163,7 @@ public class Main extends Application {
                 getClass().getClassLoader().getResource("bbdebet2/gui/views/AdminScreen.fxml"));
             adminScene = new Scene(adminRoot);
 
-            primaryStage.setTitle("BBDebet " + VERSION);
+            primaryStage.setTitle("BBDebet " + SHORT_VERSION);
 
             primaryStage.setScene(loginScene);
             primaryStage.setHeight(1000);

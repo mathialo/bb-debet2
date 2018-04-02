@@ -195,6 +195,13 @@ public class AdminController implements Initializable {
         Settings.createAndDisplayDialog();
     }
 
+    @FXML
+    public void showVersionNumber(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, Main.FULL_VERSION);
+        alert.setHeaderText(null);
+        alert.show();
+    }
+
 
     @FXML
     public void runKernelConsole(ActionEvent event) {
