@@ -29,7 +29,7 @@
           <Menu mnemonicParsing="false" text="Hjelp">
             <items>
               <MenuItem mnemonicParsing="false" text="Åpne brukermanual" />
-                  <MenuItem mnemonicParsing="false" text="Versjon" />
+                  <MenuItem mnemonicParsing="false" onAction="#showVersionNumber" text="Versjon" />
             </items>
           </Menu>
         </menus>
