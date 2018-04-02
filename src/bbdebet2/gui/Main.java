@@ -21,7 +21,7 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static final String SHORT_VERSION = "2.0-beta";
-    public static final String FULL_VERSION = "BBdebet 2.0-beta\nBuild nr 11";
+    public static final String FULL_VERSION = "BBdebet 2.0-beta\nBuild nr 27";
 
     private static Kernel kernel;
     private static Stage primaryStage;
