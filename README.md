@@ -3,7 +3,7 @@ BBdebet er en app for å behandle transaksjoner i debetboka. Det er en digital u
 
 
 ### Versjon 2
-BBdebet2 er en helt ny versjon av BBdebet. Den er foreløpig i aplha, og _kan_ brukes, men versjon 1.x er fortsatt den stabile releasen.  
+BBdebet2 er en helt ny versjon av BBdebet. Den er foreløpig i beta, og _kan_ brukes, men versjon 1.x er fortsatt den stabile releasen.  
 
 
 ## Installasjonsguide
@@ -20,7 +20,7 @@ $ bash install.sh
 ```
 Installasjonsskriptet vil legge programmet inn i `/usr/local/share/bbdebet2/`, og legge symbolske linker i `/usr/local/bin/` slik at programmet er tilgjengelig fra terminalen. Det vil også legge til ikon i startmenyen for alle GNOME-baserte desktoper. 
 
-Programmet vil bruke `~/.bbdebet2` til datalagring. Denne mappa vil også bli initialisert av installasjonsskriptet. 
+Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil også bli initialisert av installasjonsskriptet. 
  
 
 
