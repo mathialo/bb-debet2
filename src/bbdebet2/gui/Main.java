@@ -10,6 +10,7 @@ import bbdebet2.gui.controllers.UserController;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.User;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,7 +22,7 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static final String SHORT_VERSION = "2.0-beta";
-    public static final String FULL_VERSION = "BBdebet 2.0-beta\nBuild nr 27";
+    public static final String FULL_VERSION = "BBdebet 2.0-beta\nBuild nr 29";
 
     private static Kernel kernel;
     private static Stage primaryStage;
@@ -177,6 +178,7 @@ public class Main extends Application {
             primaryStage.show();
         } catch (IOException e) {
             kernel.getLogger().log(e);
+            Platform.exit();
         }
     }
 }

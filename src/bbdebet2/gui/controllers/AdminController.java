@@ -153,6 +153,9 @@ public class AdminController implements Initializable {
     private void createPluginMenu() {
         File file = new File("/usr/local/share/bbdebet2/plugins");
 
+        // If plugin directory is not created, skip this
+        if (!file.exists()) return;
+
         for (File pluginDir : file.listFiles()) {
             if (!pluginDir.isDirectory()) continue;
 
