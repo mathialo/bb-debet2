@@ -4,6 +4,7 @@
 
 package bbdebet2.gui.applets;
 
+import bbdebet2.gui.customelements.WaitingDialog;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.concurrent.Task;
@@ -40,7 +41,7 @@ public class SendEmail extends Applet {
 
         List<String> failedNames = new LinkedList<>();
 
-        Alert sendingAlert = new Alert(Alert.AlertType.NONE, "Sender eposter...");
+        Alert sendingAlert = new WaitingDialog("Sender eposter...");
         sendingAlert.show();
 
         Task<Void> sendEmailTask = new Task<>() {
