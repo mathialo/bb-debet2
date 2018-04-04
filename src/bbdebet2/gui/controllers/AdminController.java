@@ -25,12 +25,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -67,6 +70,8 @@ public class AdminController implements Initializable {
     private TableColumn<ViewUser, String> userListEmailCol;
     @FXML
     private TableColumn<ViewUser, String> userListBalanceCol;
+    @FXML
+    private Menu pluginMenu;
 
 
     @FXML
@@ -139,6 +144,16 @@ public class AdminController implements Initializable {
         repaintSaleHistory();
         repaintStorage();
         repaintUserList();
+    }
+
+    private void createPluginMenu() {
+        File file = new File("/usr/local/share/bbdebet2/plugins");
+
+        for (File pluginDir : file.listFiles()) {
+            if (!pluginDir.isDirectory()) continue;
+
+            pluginMenu.getItems().add(new MenuItem(pluginDir.getName()));
+        }
     }
 
 
@@ -253,6 +268,7 @@ public class AdminController implements Initializable {
         repaintStorage();
         setupUserListView();
         repaintUserList();
+        createPluginMenu();
     }
 
 
