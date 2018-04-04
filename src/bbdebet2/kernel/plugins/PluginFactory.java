@@ -115,18 +115,6 @@ public class PluginFactory {
         }
 
 
-        private void displayOutput() {
-            Stage stage = new Stage();
-            TextArea textArea = new TextArea(output);
-            textArea.setFont(new Font("DejaVu Sans Mono", 13));
-            textArea.setWrapText(true);
-            Scene scene = new Scene(textArea, 600, 400);
-            stage.setScene(scene);
-            stage.setTitle(properties.get("name"));
-            stage.show();
-        }
-
-
         @Override
         public String getOutputMethod() {
             return properties.getOrDefault("outputtype", null);
@@ -136,6 +124,20 @@ public class PluginFactory {
         @Override
         public void setOnSucceed(EventHandler<WorkerStateEvent> handler) {
             onDone = handler;
+        }
+
+
+        private void displayOutput() {
+            if (properties.get("outputtype").equals("text")) {
+                Stage stage = new Stage();
+                TextArea textArea = new TextArea(output);
+                textArea.setFont(new Font("DejaVu Sans Mono", 13));
+                textArea.setWrapText(true);
+                Scene scene = new Scene(textArea, 600, 400);
+                stage.setScene(scene);
+                stage.setTitle(properties.get("name"));
+                stage.show();
+            }
         }
 
 
