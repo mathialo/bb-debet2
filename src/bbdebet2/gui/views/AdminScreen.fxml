@@ -16,106 +16,106 @@
   -->
 
 <BorderPane prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.controllers.AdminController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Meny">
-            <items>
-                  <MenuItem mnemonicParsing="false" onAction="#newSettingsWindow" text="Innstillinger" />
-                  <MenuItem mnemonicParsing="false" onAction="#runKernelConsole" text="Åpne konsoll" />
-              <MenuItem mnemonicParsing="false" onAction="#logout" text="Ut av adminmodus" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Hjelp">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Åpne brukermanual" />
-                  <MenuItem mnemonicParsing="false" onAction="#showVersionNumber" text="Versjon" />
-            </items>
-          </Menu>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Meny">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#newSettingsWindow" text="Innstillinger" />
+                        <MenuItem mnemonicParsing="false" onAction="#runKernelConsole" text="Åpne konsoll" />
+                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Ut av adminmodus" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Hjelp">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Åpne brukermanual" />
+                        <MenuItem mnemonicParsing="false" onAction="#showVersionNumber" text="Versjon" />
+                    </items>
+                </Menu>
             <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
-        </menus>
-      </MenuBar>
-   </top>
-   <center>
-      <TabPane BorderPane.alignment="CENTER">
-         <tabs>
-            <Tab closable="false" text="Salgshistorikk">
-               <content>
-                  <BorderPane>
-                     <top>
-                        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                           <items>
-                              <Button mnemonicParsing="false" onAction="#deleteSelectedSale" text="Annuler salg" />
-                           </items>
-                        </ToolBar>
-                     </top>
-                     <center>
-                        <TableView fx:id="saleHistoryView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                           <columns>
-                              <TableColumn fx:id="saleHistoryTimeCol" editable="false" prefWidth="250.0" text="Tid" />
-                              <TableColumn fx:id="saleHistoryUserCol" editable="false" minWidth="0.0" prefWidth="250.0" text="Bruker" />
-                              <TableColumn fx:id="saleHistoryProductCol" editable="false" prefWidth="250.0" text="Vare" />
-                              <TableColumn fx:id="saleHistoryPriceCol" editable="false" prefWidth="250.0" text="Pris" />
-                           </columns>
-                        </TableView>
-                     </center>
-                  </BorderPane>
-               </content>
-            </Tab>
-            <Tab closable="false" text="Lagerstatus">
-              <content>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
-                     <top>
-                        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <items>
-                            <Button mnemonicParsing="false" onAction="#newAddProductsWindow" text="Nytt vareinnskudd" />
-                              <Button mnemonicParsing="false" onAction="#newEditProductsWindow" text="Endre flere" />
-                              <Button mnemonicParsing="false" onAction="#newStocktakingWindow" text="Vareopptelling" />
-                              <Button mnemonicParsing="false" text="Se svinn" />
-                          </items>
-                        </ToolBar>
-                     </top>
-                     <center>
-                        <TableView fx:id="storageView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <columns>
-                            <TableColumn fx:id="storageProductCol" prefWidth="500.0" text="Vare" />
-                            <TableColumn fx:id="storageBuyPriceCol" editable="false" prefWidth="250.0" text="Innkjøpspris" />
-                              <TableColumn fx:id="storageSellPriceCol" prefWidth="250.0" text="Utsalgspris" />
-                          </columns>
-                        </TableView>
-                     </center>
-                  </BorderPane>
-              </content>
-            </Tab>
-            <Tab closable="false" text="Brukere">
-              <content>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
-                     <top>
-                        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <items>
-                            <Button mnemonicParsing="false" onAction="#newNewUserWindow" text="Ny bruker" />
-                              <Button mnemonicParsing="false" onAction="#newEditUserWindow" text="Endre bruker" />
-                              <Button mnemonicParsing="false" onAction="#askForUserDeletion" text="Slett bruker" />
-                              <Button mnemonicParsing="false" onAction="#newSendEmailWindow" text="Send epost" />
-                              <Button mnemonicParsing="false" onAction="#newAddBalanceWindow" text="Sett inn penger" />
-                              <Button mnemonicParsing="false" text="Se innskudd" />
-                          </items>
-                        </ToolBar>
-                     </top>
-                     <center>
-                        <TableView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <columns>
-                            <TableColumn fx:id="userListIdCol" prefWidth="100.0" text="ID" />
-                            <TableColumn fx:id="userListUserNameCol" prefWidth="300.0" text="Brukernavn" />
-                              <TableColumn fx:id="userListEmailCol" minWidth="0.0" prefWidth="300.0" text="Epost" />
-                              <TableColumn fx:id="userListBalanceCol" prefWidth="300.0" text="Saldo" />
-                          </columns>
-                        </TableView>
-                     </center>
-                  </BorderPane>
-              </content>
-            </Tab>
-         </tabs>
-      </TabPane>
-   </center>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <TabPane BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab closable="false" text="Salgshistorikk">
+                    <content>
+                        <BorderPane>
+                            <top>
+                                <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <items>
+                                        <Button mnemonicParsing="false" onAction="#deleteSelectedSale" text="Annuler salg" />
+                                    </items>
+                                </ToolBar>
+                            </top>
+                            <center>
+                                <TableView fx:id="saleHistoryView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <columns>
+                                        <TableColumn fx:id="saleHistoryTimeCol" editable="false" prefWidth="250.0" text="Tid" />
+                                        <TableColumn fx:id="saleHistoryUserCol" editable="false" minWidth="0.0" prefWidth="250.0" text="Bruker" />
+                                        <TableColumn fx:id="saleHistoryProductCol" editable="false" prefWidth="250.0" text="Vare" />
+                                        <TableColumn fx:id="saleHistoryPriceCol" editable="false" prefWidth="250.0" text="Pris" />
+                                    </columns>
+                                </TableView>
+                            </center>
+                        </BorderPane>
+                    </content>
+                </Tab>
+                <Tab closable="false" text="Lagerstatus">
+                    <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                            <top>
+                                <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <items>
+                                        <Button mnemonicParsing="false" onAction="#newAddProductsWindow" text="Nytt vareinnskudd" />
+                                        <Button mnemonicParsing="false" onAction="#newEditProductsWindow" text="Endre flere" />
+                                        <Button mnemonicParsing="false" onAction="#newStocktakingWindow" text="Vareopptelling" />
+                                        <Button mnemonicParsing="false" text="Se svinn" />
+                                    </items>
+                                </ToolBar>
+                            </top>
+                            <center>
+                                <TableView fx:id="storageView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <columns>
+                                        <TableColumn fx:id="storageProductCol" prefWidth="500.0" text="Vare" />
+                                        <TableColumn fx:id="storageBuyPriceCol" editable="false" prefWidth="250.0" text="Innkjøpspris" />
+                                        <TableColumn fx:id="storageSellPriceCol" prefWidth="250.0" text="Utsalgspris" />
+                                    </columns>
+                                </TableView>
+                            </center>
+                        </BorderPane>
+                    </content>
+                </Tab>
+                <Tab closable="false" text="Brukere">
+                    <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                            <top>
+                                <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <items>
+                                        <Button mnemonicParsing="false" onAction="#newNewUserWindow" text="Ny bruker" />
+                                        <Button mnemonicParsing="false" onAction="#newEditUserWindow" text="Endre bruker" />
+                                        <Button mnemonicParsing="false" onAction="#askForUserDeletion" text="Slett bruker" />
+                                        <Button mnemonicParsing="false" onAction="#newSendEmailWindow" text="Send epost" />
+                                        <Button mnemonicParsing="false" onAction="#newAddBalanceWindow" text="Sett inn penger" />
+                                        <Button mnemonicParsing="false" text="Se innskudd" />
+                                    </items>
+                                </ToolBar>
+                            </top>
+                            <center>
+                                <TableView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <columns>
+                                        <TableColumn fx:id="userListIdCol" prefWidth="100.0" text="ID" />
+                                        <TableColumn fx:id="userListUserNameCol" prefWidth="300.0" text="Brukernavn" />
+                                        <TableColumn fx:id="userListEmailCol" minWidth="0.0" prefWidth="300.0" text="Epost" />
+                                        <TableColumn fx:id="userListBalanceCol" prefWidth="300.0" text="Saldo" />
+                                    </columns>
+                                </TableView>
+                            </center>
+                        </BorderPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
 </BorderPane>

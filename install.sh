@@ -39,6 +39,7 @@ copy_files() {
 	# Sørg for at /usr/local/share/bbdebet2 finnes og er tom
 	sudo rm -rf /usr/local/share/bbdebet2
 	sudo mkdir -p /usr/local/share/bbdebet2
+    sudo mkdir -p /usr/local/share/bbdebet2/plugins
 
 	# Kopier filer
 	sudo cp bbdebet2.jar /usr/local/share/bbdebet2/
