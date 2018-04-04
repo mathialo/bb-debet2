@@ -25,6 +25,14 @@ compile_all() {
 	mkdir -p out/bbdebet2/gui/views
 	cp -r src/bbdebet2/gui/views out/bbdebet2/gui/
 
+	# Endre tilbake Main.java for å unngå kjipe commits
+	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g"  > sedcommand
+	sed -f sedcommand -i src/bbdebet2/gui/Main.java
+	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g" > sedcommand
+	sed -f sedcommand -i src/bbdebet2/gui/Main.java
+	rm sedcommand
+
+
 	# Pakk alt inn i en JAR
 	cd out
 	classfiles="$(find . -type f | sed ':a;N;$!ba;s/\n/ /g')"
