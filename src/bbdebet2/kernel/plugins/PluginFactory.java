@@ -4,6 +4,7 @@
 
 package bbdebet2.kernel.plugins;
 
+import bbdebet2.gui.customelements.WaitingDialog;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -69,6 +70,11 @@ public class PluginFactory {
 
         @Override
         public void run() throws Exception {
+            WaitingDialog dialog = new WaitingDialog("Kjører beregninger");
+            if (properties.getOrDefault("type", "").equals("computation")) {
+                dialog.show();
+            }
+
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() throws Exception {
@@ -97,7 +103,10 @@ public class PluginFactory {
                 }
             };
 
-            task.setOnSucceeded(event -> displayOutput());
+            task.setOnSucceeded(event -> {
+                dialog.close();
+                displayOutput();
+            });
 
             AtomicReference<Exception> e = new AtomicReference<>();
             task.setOnFailed((WorkerStateEvent event) -> {
