@@ -19,6 +19,8 @@ import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.gui.modelwrappers.ViewUser;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.User;
+import bbdebet2.kernel.plugins.Plugin;
+import bbdebet2.kernel.plugins.PluginFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +36,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -146,13 +149,29 @@ public class AdminController implements Initializable {
         repaintUserList();
     }
 
+
     private void createPluginMenu() {
         File file = new File("/usr/local/share/bbdebet2/plugins");
 
         for (File pluginDir : file.listFiles()) {
             if (!pluginDir.isDirectory()) continue;
 
-            pluginMenu.getItems().add(new MenuItem(pluginDir.getName()));
+            try {
+                Plugin plugin = PluginFactory.loadPlugin(pluginDir);
+                MenuItem menuItem = new MenuItem(plugin.toString());
+
+                menuItem.setOnAction(event -> {
+                    try {
+                        plugin.run();
+                    } catch (Exception e) {
+                        kernel.getLogger().log(e);
+                    }
+                });
+
+                pluginMenu.getItems().add(menuItem);
+            } catch (FileNotFoundException e) {
+                kernel.getLogger().log(e);
+            }
         }
     }
 
@@ -209,6 +228,7 @@ public class AdminController implements Initializable {
     public void newSettingsWindow(ActionEvent event) {
         Settings.createAndDisplayDialog();
     }
+
 
     @FXML
     public void showVersionNumber(ActionEvent event) {
