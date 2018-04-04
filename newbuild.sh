@@ -12,10 +12,11 @@ prev_buildnum="$(cat buildnum)"
 new_buildnum=$((prev_buildnum + 1))
 echo "$new_buildnum" > buildnum
 
-# Sender ny versjon til github
-git add -A
-git commit -m "New build $1.$new_buildnum"
-git push origin master
+# Tagger siste commit med versjon- og build-nummber
+if [[ "$2" == "git" ]]; then
+    git tag "v$1.$new_buildnum"
+    git push origin master
+fi
 
 # Kjør installasjonsskript
 bash install.sh
