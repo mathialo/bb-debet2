@@ -32,6 +32,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#showVersionNumber" text="Versjon" />
             </items>
           </Menu>
+            <Menu fx:id="pluginMenu" mnemonicParsing="false" text="Plugins" />
         </menus>
       </MenuBar>
    </top>
