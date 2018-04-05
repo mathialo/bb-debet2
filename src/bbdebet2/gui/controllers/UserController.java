@@ -267,6 +267,7 @@ public class UserController implements Initializable {
         shoppingCartView.getItems().clear();
 
         // Update gui
+        loginNameView.setText(formatTitleString(Main.getActiveUser()));
         updateFavouritesView();
         updateSalesHistoryView();
         updateShoppingCartTitleLabel();
