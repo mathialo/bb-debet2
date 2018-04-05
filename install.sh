@@ -44,8 +44,7 @@ compile_all() {
 copy_files() {
 	echo "Kopierer filer"
 
-	# Sørg for at /usr/local/share/bbdebet2 finnes og er tom
-	sudo rm -rf /usr/local/share/bbdebet2
+	# Sørg for at /usr/local/share/bbdebet2 finnes
 	sudo mkdir -p /usr/local/share/bbdebet2
     sudo mkdir -p /usr/local/share/bbdebet2/plugins
 
