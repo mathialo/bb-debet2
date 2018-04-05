@@ -6,6 +6,7 @@ package bbdebet2.gui.customelements;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.StackPane;
 
@@ -18,7 +19,7 @@ public class WaitingDialog extends Alert {
         StackPane pane = new StackPane();
         pane.getChildren().add(new ProgressIndicator());
         pane.setPadding(new Insets(20));
-        getButtonTypes().clear();
+        getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
 
         getDialogPane().setPrefWidth(350);
         getDialogPane().setContent(pane);

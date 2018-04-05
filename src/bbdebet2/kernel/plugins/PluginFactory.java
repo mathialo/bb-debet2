@@ -110,6 +110,7 @@ public class PluginFactory {
 
             AtomicReference<Exception> e = new AtomicReference<>();
             task.setOnFailed((WorkerStateEvent event) -> {
+                dialog.close();
                 e.set((Exception) event.getSource().getException());
             });
             if (e.get() != null) throw e.get();
