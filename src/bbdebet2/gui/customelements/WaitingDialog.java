@@ -18,8 +18,13 @@ public class WaitingDialog extends Alert {
         StackPane pane = new StackPane();
         pane.getChildren().add(new ProgressIndicator());
         pane.setPadding(new Insets(20));
+        getButtonTypes().clear();
 
         getDialogPane().setPrefWidth(350);
         getDialogPane().setContent(pane);
+    }
+
+    public void updateMessage(String message) {
+        setHeaderText(message);
     }
 }
