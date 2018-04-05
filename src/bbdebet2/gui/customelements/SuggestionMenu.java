@@ -9,6 +9,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class SuggestionMenu<T> extends ContextMenu {
 
 
     public void updateContextMenuItems(KeyEvent event) {
-        if (! (event.getCode().isLetterKey() || event.getCode().isWhitespaceKey() || event.getCode().isDigitKey())) return;
+        if (! (event.getCode().isLetterKey() || event.getCode() == KeyCode.SPACE || event.getCode().isDigitKey())) return;
 
         List<T> list = backend.toList();
         getItems().clear();
