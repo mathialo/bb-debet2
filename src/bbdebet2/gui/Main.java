@@ -169,7 +169,7 @@ public class Main extends Application {
             primaryStage.setScene(loginScene);
             primaryStage.setHeight(1000);
             primaryStage.setWidth(1200);
-            // primaryStage.setMaximized(true);
+            primaryStage.setMaximized(true);
 
             currentLoginController.postInitialize();
             currentUserController.postInitialize();
