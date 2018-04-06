@@ -30,7 +30,9 @@ public class Product implements Comparable<Product> {
 
 
     public String getName() {
-        return name;
+        String prefix = "";
+        if (custom) prefix = "Annet: ";
+        return prefix + name;
     }
 
 
@@ -87,6 +89,8 @@ public class Product implements Comparable<Product> {
 
     @Override
     public String toString() {
-        return name + ", " + getFormattedSellPrice();
+        String prefix = "";
+        if (custom) prefix = "Annet: ";
+        return prefix + name + ", " + getFormattedSellPrice();
     }
 }

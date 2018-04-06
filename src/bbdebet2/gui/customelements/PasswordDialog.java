@@ -7,7 +7,7 @@ package bbdebet2.gui.customelements;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.PasswordField;
@@ -23,7 +23,7 @@ public class PasswordDialog extends Dialog<String> {
         setTitle("Passord");
         setHeaderText("Skriv inn passord");
 
-        ButtonType passwordButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+        ButtonType passwordButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         getDialogPane().getButtonTypes().addAll(passwordButtonType, ButtonType.CANCEL);
 
         passwordField = new PasswordField();
