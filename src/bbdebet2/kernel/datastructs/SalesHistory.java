@@ -86,8 +86,7 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
                 // read line, split on comma
                 String[] line = sc.nextLine().split("\\s*,\\s*");
 
-                // make new DummySale (since we don't have references to product
-                // and user objects), and add it to list
+                // make new Sale and add it to list
                 history.add(
                     new Sale(
                         Integer.parseInt(line[0]),

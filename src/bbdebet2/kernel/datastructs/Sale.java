@@ -24,7 +24,7 @@ public class Sale {
     private double earnings;
 
 
-    public Sale(int id, long timestamp, String userName, String productName, double pricePayed, double earnings) {
+    Sale(int id, long timestamp, String userName, String productName, double pricePayed, double earnings) {
         this.id = id;
         this.timestamp = timestamp;
         this.userName = userName;
