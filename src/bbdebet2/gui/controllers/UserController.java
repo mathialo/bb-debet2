@@ -6,6 +6,7 @@ package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
 import bbdebet2.gui.applets.NewUserTransaction;
+import bbdebet2.gui.customelements.MakeCustomProductDialog;
 import bbdebet2.gui.customelements.StorageButton;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
@@ -36,6 +37,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -105,6 +107,15 @@ public class UserController implements Initializable {
             button.setOnAction(event -> addProductToCart(p));
             storageContainer.getChildren().add(button);
         }
+
+        // Add "custom" option
+        StorageButton button = new StorageButton();
+        button.setOnAction(event -> {
+            MakeCustomProductDialog dialog = new MakeCustomProductDialog();
+            Optional<Product> result = dialog.showAndWait();
+            if (result.isPresent()) addProductToCart(result.get());
+        });
+        storageContainer.getChildren().add(button);
     }
 
 
@@ -212,8 +223,12 @@ public class UserController implements Initializable {
 
 
     public void addProductToCart(Product product) {
-        // Take product of of storage temporarily, add it to cart list
-        shoppingCartView.getItems().add(new ViewProduct(kernel.getStorage().get(product)));
+        // Take product of of storage temporarily (if not custom), add it to cart list
+        if (product.isCustom()) {
+            shoppingCartView.getItems().add(new ViewProduct(product));
+        } else {
+            shoppingCartView.getItems().add(new ViewProduct(kernel.getStorage().get(product)));
+        }
 
         // Update storage view as prices and availability might have changed
         updateStorageView();
@@ -240,7 +255,9 @@ public class UserController implements Initializable {
     public void handleResetCart(ActionEvent event) {
         // Re-add products to storage
         for (ViewProduct vp : shoppingCartView.getItems()) {
-            kernel.getStorage().add(vp.getProductObject());
+            if (!vp.getProductObject().isCustom()) {
+                kernel.getStorage().add(vp.getProductObject());
+            }
         }
 
         // Empty cart list

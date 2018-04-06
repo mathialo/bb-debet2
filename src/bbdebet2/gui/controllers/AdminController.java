@@ -168,6 +168,9 @@ public class AdminController implements Initializable {
                         plugin.run();
                     } catch (Exception e) {
                         kernel.getLogger().log(e);
+                        Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                        alert.setHeaderText("Feil i kjøring av plugin");
+                        alert.showAndWait();
                     }
                 });
 

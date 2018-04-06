@@ -11,6 +11,14 @@ public class StorageButton extends Button {
 
     private Product product;
 
+    public StorageButton() {
+        super("Annet");
+
+        setWrapText(true);
+        setPrefHeight(100);
+        setPrefWidth(140);
+    }
+
 
     public StorageButton(Product product) {
         super(String.format("%s\n%.2f kr", product.getName(), product.getSellPrice()));
