@@ -39,13 +39,22 @@ public class TransactionHandler {
             throw new RuntimeException("User " + sale.getUserName() + " not found in UserList");
         }
 
-        Product product = new Product(sale.getProductName(), sale.getPricePayed(), sale.getPricePayed() - sale.getEarnings());
+        // Check if product is a custom one, and ad it back if it is not
+        if (!sale.getProductName().startsWith("Annet:")) {
+            Product product = new Product(
+                sale.getProductName(), sale.getPricePayed(),
+                sale.getPricePayed() - sale.getEarnings()
+            );
+
+            // Add product back to storage
+            kernel.getStorage().add(product);
+        }
 
         // Give user money back
         user.addBalance(sale.getPricePayed());
 
-        // Add product back to storage
-        kernel.getStorage().add(product);
+        // Remove from sales history
+        kernel.getSalesHistory().remove(sale.getId());
 
         // Log transaction
         kernel.getLogger().log("Refunded sale '" + sale + "' for " + user);
