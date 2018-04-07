@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,14 +25,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PluginFactory {
 
-    public static Plugin loadPlugin(File pluginDir) throws FileNotFoundException {
+    public static Plugin loadPlugin(File pluginDir) throws IOException {
         Map<String, String> properties = readProperties(findPluginProperties(pluginDir));
 
         return new PluginImplementation(properties, pluginDir);
     }
 
 
-    private static File findPluginProperties(File pluginDir) throws FileNotFoundException {
+    private static File findPluginProperties(File pluginDir) throws IOException {
         for (File file : pluginDir.listFiles()) {
             if (file.getName().endsWith(".bbd2plugin")) return file;
         }
@@ -40,13 +41,17 @@ public class PluginFactory {
     }
 
 
-    private static Map<String, String> readProperties(File file) throws FileNotFoundException {
+    private static Map<String, String> readProperties(File file) throws IOException {
         Scanner sc = new Scanner(file);
         Map<String, String> properties = new HashMap<>();
 
         while (sc.hasNextLine()) {
             String[] line = sc.nextLine().split("\\s*=\\s*");
-            properties.put(line[0], line[1]);
+            try {
+                properties.put(line[0], line[1]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new IOException("Incomplete plugin file for " + file.getPath());
+            }
         }
 
         return properties;
