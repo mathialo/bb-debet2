@@ -177,6 +177,8 @@ public class AdminController implements Initializable {
                 pluginMenu.getItems().add(menuItem);
             } catch (FileNotFoundException e) {
                 kernel.getLogger().log(e);
+            } catch (Exception e) {
+                kernel.getLogger().log(e);
             }
         }
     }
