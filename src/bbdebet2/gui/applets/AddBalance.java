@@ -5,6 +5,7 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
+import bbdebet2.gui.customelements.WaitingDialog;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.logging.CsvLogger;
 import bbdebet2.kernel.mailing.EmailTemplate;
@@ -68,7 +69,7 @@ public class AddBalance extends Applet {
         }
 
         if (sendEmailInput.isSelected()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Sender epost...");
+            Alert alert = new WaitingDialog("Sender epost...");
             alert.show();
             Task sendEmailTask = new Task<Void>() {
                 @Override
