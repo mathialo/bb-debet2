@@ -4,8 +4,6 @@
 
 package bbdebet2.kernel.datastructs;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,7 +11,6 @@ public class Sale {
 
     private static int counter;
 
-    private static NumberFormat formatter = new DecimalFormat("#0.00");
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
 
     private int id;
@@ -96,13 +93,9 @@ public class Sale {
     }
 
 
-    public String getFormattedPrice() {
-        return formatter.format(pricePayed) + " kr";
-    }
-
-
     @Override
     public String toString() {
-        return getFormattedTimestamp() + ":    " + productName + " (" + getFormattedPrice() + ")";
+        return getFormattedTimestamp() + ":    " + productName + " (" + CurrencyFormatter.format(
+            pricePayed) + ")";
     }
 }

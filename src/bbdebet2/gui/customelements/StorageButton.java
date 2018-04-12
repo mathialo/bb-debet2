@@ -4,6 +4,7 @@
 
 package bbdebet2.gui.customelements;
 
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Product;
 import javafx.scene.control.Button;
 
@@ -21,7 +22,7 @@ public class StorageButton extends Button {
 
 
     public StorageButton(Product product) {
-        super(String.format("%s\n%.2f kr", product.getName(), product.getSellPrice()));
+        super(String.format("%s\n%s", product.getName(), CurrencyFormatter.format(product.getSellPrice())));
 
         setWrapText(true);
         setPrefHeight(100);

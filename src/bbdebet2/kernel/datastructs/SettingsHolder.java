@@ -40,6 +40,8 @@ public class SettingsHolder implements Exportable {
     private double lambda = 2;
     private int holydayWeeks = 0;
 
+    private String currencySign = "kr";
+
 
     public SettingsHolder() {
     }
@@ -137,6 +139,11 @@ public class SettingsHolder implements Exportable {
                         glasUserName = line[1];
                         break;
 
+                    case "currencySign":
+                        currencySign = line[1];
+                        break;
+
+
                     default:
                 }
 
@@ -195,6 +202,16 @@ public class SettingsHolder implements Exportable {
 
     private int calculateShift(int i) {
         return (i * 7) % 23 + i + 5;
+    }
+
+
+    public String getCurrencySign() {
+        return currencySign;
+    }
+
+
+    public void setCurrencySign(String currencySign) {
+        this.currencySign = currencySign;
     }
 
 
@@ -431,6 +448,7 @@ public class SettingsHolder implements Exportable {
         pw.println("glasUserActive=" + glasUserActive);
         pw.println("glasUserRoundTo=" + glasUserRoundTo);
         pw.println("glasUserName=" + glasUserName);
+        pw.println("currencySign=" + currencySign);
 
         pw.close();
 

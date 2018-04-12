@@ -4,6 +4,7 @@
 
 package bbdebet2.gui.modelwrappers;
 
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Sale;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -20,7 +21,7 @@ public class ViewSale {
         this.saleDate = new SimpleStringProperty(sale.getFormattedTimestamp());
         this.userName = new SimpleStringProperty(sale.getUserName());
         this.productName = new SimpleStringProperty(sale.getProductName());
-        this.price = new SimpleStringProperty(sale.getFormattedPrice());
+        this.price = new SimpleStringProperty(CurrencyFormatter.format(sale.getPricePayed()));
 
         this.saleObject = sale;
     }

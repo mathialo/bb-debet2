@@ -5,6 +5,7 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.ProductQuery;
 import javafx.event.ActionEvent;
@@ -176,7 +177,7 @@ public class EditProducts extends Applet {
 
         @Override
         protected String getProperty() {
-            return product.getFormattedSellPrice();
+            return CurrencyFormatter.format(product.getSellPrice());
         }
     }
 }

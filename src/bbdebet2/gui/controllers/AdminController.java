@@ -165,6 +165,7 @@ public class AdminController implements Initializable {
 
                 menuItem.setOnAction(event -> {
                     try {
+                        kernel.saveAll(); // save all in case the plugin depends on saved data
                         plugin.run();
                     } catch (Exception e) {
                         kernel.getLogger().log(e);
@@ -182,7 +183,6 @@ public class AdminController implements Initializable {
             }
         }
     }
-
 
     @FXML
     public void deleteSelectedSale() {
