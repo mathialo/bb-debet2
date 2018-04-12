@@ -4,6 +4,7 @@
 
 package bbdebet2.gui.modelwrappers;
 
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.User;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -21,7 +22,7 @@ public class ViewUser {
         this.userId = new SimpleStringProperty(user.getId() + "");
         this.userName = new SimpleStringProperty(user.getUserName());
         this.mail = new SimpleStringProperty(user.getMail());
-        this.balance = new SimpleStringProperty(user.getFormatedBalance());
+        this.balance = new SimpleStringProperty(CurrencyFormatter.format(user.getBalance()));
 
         this.userObject = user;
     }

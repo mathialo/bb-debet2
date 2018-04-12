@@ -6,6 +6,7 @@ package bbdebet2.kernel;
 
 import bbdebet2.kernel.backup.AutoSaver;
 import bbdebet2.kernel.datastructs.CommandLineInterface;
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.ErrorInFileException;
 import bbdebet2.kernel.datastructs.Exportable;
 import bbdebet2.kernel.datastructs.Product;
@@ -67,6 +68,8 @@ public class Kernel implements CommandLineInterface {
      */
     public Kernel() throws IllegalStateException {
         // Initialize Kernel
+        CurrencyFormatter.initilalize(this);
+
         createLogger();
         createRunningFile();
         readFiles();

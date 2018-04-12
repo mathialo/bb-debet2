@@ -4,9 +4,6 @@
 
 package bbdebet2.kernel.datastructs;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 public class User {
 
     private static int counter;
@@ -14,8 +11,6 @@ public class User {
     private String mail;
     private int id;
     private double balance;
-
-    private NumberFormat formatter;
 
 
     /**
@@ -42,8 +37,6 @@ public class User {
 
         this.id = id;
         balance = 0;
-
-        formatter = new DecimalFormat("#0.00");
     }
 
 
@@ -84,11 +77,6 @@ public class User {
 
     public double getBalance() {
         return balance;
-    }
-
-
-    public String getFormatedBalance() {
-        return formatter.format(balance) + " kr";
     }
 
 

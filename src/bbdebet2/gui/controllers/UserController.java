@@ -11,6 +11,7 @@ import bbdebet2.gui.customelements.StorageButton;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.User;
 import javafx.animation.KeyFrame;
@@ -72,7 +73,9 @@ public class UserController implements Initializable {
 
     private static String formatTitleString(User user) {
         return String.format(
-            "Logget inn som %s. Saldo: %s.", user.getUserName(), user.getFormatedBalance());
+            "Logget inn som %s. Saldo: %s.", user.getUserName(),
+            CurrencyFormatter.format(user.getBalance())
+        );
     }
 
 
@@ -155,6 +158,7 @@ public class UserController implements Initializable {
         updateFavouritesView();
         updateStorageView();
         updateSalesHistoryView();
+        updateShoppingCartTitleLabel();
 
         // Make sure alert list is cleared
         openAlertBoxes.clear();
@@ -247,7 +251,8 @@ public class UserController implements Initializable {
             total += vp.getProductObject().getSellPrice();
         }
 
-        shoppingCartTitleLabel.setText(String.format("Handlekurv, total %.2f kr", total));
+        shoppingCartTitleLabel.setText(
+            String.format("Handlekurv, total %s", CurrencyFormatter.format(total)));
     }
 
 
