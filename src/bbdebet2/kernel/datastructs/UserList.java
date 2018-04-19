@@ -265,7 +265,7 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
         for (User u : list) {
 
             // return u if match
-            if (u.getUserName().equals(userName)) return u;
+            if (u.getUserName().equalsIgnoreCase(userName)) return u;
         }
 
         // return null if there are no matches
