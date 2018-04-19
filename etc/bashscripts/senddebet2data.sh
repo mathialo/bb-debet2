@@ -5,4 +5,4 @@ rm -rf ~/.bbdebet2/autosave/*
 ENDSSH
 
 # Send new data
-scp -r ~/.bbdebet2/autosave/ ~/.bbdebet2/transactionhistory.csv ~/.bbdebet2/saleshistory.csv ~/.bbdebet2/users.usl ~/.bbdebet2/storage.csv  bb@login.uio.no:~/.bbdebet2/
+scp -r ~/.bbdebet2/autosave/ ~/.bbdebet2/usertransactions.csv ~/.bbdebet2/saleshistory.csv ~/.bbdebet2/users.usl ~/.bbdebet2/storage.csv  bb@login.uio.no:~/.bbdebet2/
