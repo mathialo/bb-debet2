@@ -73,16 +73,29 @@ public class UserController implements Initializable {
 
     private List<Alert> openAlertBoxes;
 
+    private boolean isGlasUser = false;
 
-    private static String formatTitleString(User user) {
-        return String.format(
-            "Logget inn som %s. Saldo: %s.", user.getUserName(),
-            CurrencyFormatter.format(user.getBalance())
-        );
+
+    private String formatTitleString(User user) {
+        if (isGlasUser) {
+            return String.format(
+                "Logget inn som %s.", user.getUserName()
+            );
+        } else {
+            return String.format(
+                "Logget inn som %s. Saldo: %s.", user.getUserName(),
+                CurrencyFormatter.format(user.getBalance())
+            );
+        }
     }
 
 
     private void updateFavouritesView() {
+        if (isGlasUser) {
+            favouritesContainer.getChildren().clear();
+            return;
+        }
+
         ArrayList<String> favourites = kernel.getSalesHistory().getFavourites(
             Main.getActiveUser(), kernel.getSettingsHolder().getNumOfFavourites());
 
@@ -111,6 +124,7 @@ public class UserController implements Initializable {
         for (Product p : productSelection) {
             StorageButton button = new StorageButton(p);
             button.setOnAction(event -> addProductToCart(p));
+            if (isGlasUser) button.setGlasUser(true);
             storageContainer.getChildren().add(button);
         }
 
@@ -168,6 +182,12 @@ public class UserController implements Initializable {
 
         // New logout timer
         updateLogoutTimer();
+    }
+
+
+    public void loginGlass() {
+        isGlasUser = true;
+        login(new User(kernel.getSettingsHolder().getGlasUserName(), "", -1));
     }
 
 
@@ -251,7 +271,7 @@ public class UserController implements Initializable {
         double total = 0;
 
         for (ViewProduct vp : shoppingCartView.getItems()) {
-            total += vp.getProductObject().getSellPrice();
+            total += convertPrice(vp.getProductObject().getSellPrice());
         }
 
         shoppingCartTitleLabel.setText(
@@ -287,6 +307,9 @@ public class UserController implements Initializable {
 
         // Process purchases
         for (ViewProduct vp : shoppingCartView.getItems()) {
+            if (isGlasUser)
+                vp.getProductObject().setSellPrice(convertPrice(vp.getProductObject().getSellPrice()));
+
             kernel.getTransactionHandler().newPurchase(Main.getActiveUser(), vp.getProductObject());
         }
 
@@ -297,6 +320,9 @@ public class UserController implements Initializable {
                 protected Void call() throws Exception {
                     try {
                         kernel.getEmailSender().sendOutOfMoneyNotification(Main.getActiveUser());
+                        kernel.getLogger().log(
+                            Main.getActiveUser() + " just run out of money, notification sent"
+                        );
                     } catch (MessagingException | InvalidEncryptionException e) {
                         kernel.getLogger().log(e);
                     }
@@ -305,7 +331,6 @@ public class UserController implements Initializable {
             };
 
             new Thread(task).start();
-
         }
 
         // Empty cart list
@@ -333,6 +358,19 @@ public class UserController implements Initializable {
     }
 
 
+    public double convertPrice(double oldPrice) {
+        if (isGlasUser) {
+            double newPrice = 0;
+            while (newPrice < oldPrice) {
+                newPrice += kernel.getSettingsHolder().getGlasUserRoundTo();
+            }
+            return newPrice;
+        } else {
+            return oldPrice;
+        }
+    }
+
+
     private void logout() {
         // Force through purchase of all goods in cart
         handleConfirmPurchase(null);
@@ -348,6 +386,7 @@ public class UserController implements Initializable {
 
         // Set active user
         Main.setActiveUser(null);
+        isGlasUser = false;
     }
 
 

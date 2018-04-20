@@ -31,7 +31,7 @@ public class User {
      * @param mail     Email address
      * @param id       ID of user
      */
-    User(String userName, String mail, int id) {
+    public User(String userName, String mail, int id) {
         this.userName = userName;
         this.mail = mail;
 

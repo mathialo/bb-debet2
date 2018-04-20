@@ -35,6 +35,13 @@ public class LoginController implements Initializable {
         // Extract username
         String userName = loginNameField.getText();
 
+        // Check for glass user
+        if (kernel.getSettingsHolder().isGlasUserActive() && userName.equalsIgnoreCase(kernel.getSettingsHolder().getGlasUserName())) {
+            kernel.getLogger().log("New login from glas user");
+            Main.getCurrentUserController().loginGlass();
+            Main.toUserScreen();
+        }
+
         // Try to find user
         User user = kernel.getUserList().find(userName);
 
