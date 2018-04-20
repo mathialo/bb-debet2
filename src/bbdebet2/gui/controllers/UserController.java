@@ -14,9 +14,11 @@ import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.User;
+import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +36,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.util.Duration;
 
+import javax.mail.MessagingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -280,9 +283,29 @@ public class UserController implements Initializable {
 
     @FXML
     public void handleConfirmPurchase(ActionEvent event) {
+        double preBalance = Main.getActiveUser().getBalance();
+
         // Process purchases
         for (ViewProduct vp : shoppingCartView.getItems()) {
             kernel.getTransactionHandler().newPurchase(Main.getActiveUser(), vp.getProductObject());
+        }
+
+        if (preBalance > 0 && Main.getActiveUser().getBalance() < 0) {
+            // User just went out of money, send notification
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    try {
+                        kernel.getEmailSender().sendOutOfMoneyNotification(Main.getActiveUser());
+                    } catch (MessagingException | InvalidEncryptionException e) {
+                        kernel.getLogger().log(e);
+                    }
+                    return null;
+                }
+            };
+
+            new Thread(task).start();
+
         }
 
         // Empty cart list
