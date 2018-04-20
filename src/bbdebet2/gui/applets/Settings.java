@@ -59,6 +59,13 @@ public class Settings extends Applet {
 
     private EmailTemplate selectedTemplate;
 
+    @FXML
+    private CheckBox activateGlasUserInput;
+    @FXML
+    private TextField glasUserNameInput;
+    @FXML
+    private TextField glasUserRoundToInput;
+
 
     public static void createAndDisplayDialog() {
         Applet.createAndDisplayDialog("Innstillinger", "SettingsView");
@@ -85,32 +92,45 @@ public class Settings extends Applet {
         emailUserInput.setText(kernel.getSettingsHolder().getEmailUser());
         emailServerInput.setText(kernel.getSettingsHolder().getEmailServer());
         emailPortInput.setText(kernel.getSettingsHolder().getEmailPort());
-        emailEncryptionInput.getSelectionModel().select(kernel.getSettingsHolder().getEmailEncryption());
+        emailEncryptionInput.getSelectionModel().select(
+            kernel.getSettingsHolder().getEmailEncryption());
         emailPassInput.setText(kernel.getSettingsHolder().getEmailPass());
         emailReplyToInput.setText(kernel.getSettingsHolder().getEmailReplyTo());
 
         autoNagUserInput.selectedProperty().set(kernel.getSettingsHolder().isAutoNagUser());
-        sendShoppingListInput.selectedProperty().set(kernel.getSettingsHolder().isSendShoppingList());
+        sendShoppingListInput.selectedProperty().set(
+            kernel.getSettingsHolder().isSendShoppingList());
         sendReportsInput.selectedProperty().set(kernel.getSettingsHolder().isSendReports());
+
+        activateGlasUserInput.setSelected(kernel.getSettingsHolder().isGlasUserActive());
+        glasUserNameInput.setText(kernel.getSettingsHolder().getGlasUserName());
+        glasUserRoundToInput.setText(kernel.getSettingsHolder().getGlasUserRoundTo() + "");
     }
 
 
     private void saveCurrentToFile() throws Exception {
-        kernel.getSettingsHolder().setNumOfFavourites(Integer.parseInt(numOfFavouritesInput.getText()));
-        kernel.getSettingsHolder().setMaxInactiveTime(Integer.parseInt(maxInactiveTimeInput.getText()));
+        kernel.getSettingsHolder().setNumOfFavourites(
+            Integer.parseInt(numOfFavouritesInput.getText()));
+        kernel.getSettingsHolder().setMaxInactiveTime(
+            Integer.parseInt(maxInactiveTimeInput.getText()));
         kernel.getSettingsHolder().setAdminPass(adminPassInput.getText());
 
         kernel.getSettingsHolder().setEmailAddr(emailAddrInput.getText());
         kernel.getSettingsHolder().setEmailUser(emailUserInput.getText());
         kernel.getSettingsHolder().setEmailServer(emailServerInput.getText());
         kernel.getSettingsHolder().setEmailPort(emailPortInput.getText());
-        kernel.getSettingsHolder().setEmailEncryption(emailEncryptionInput.getSelectionModel().getSelectedItem());
+        kernel.getSettingsHolder().setEmailEncryption(
+            emailEncryptionInput.getSelectionModel().getSelectedItem());
         kernel.getSettingsHolder().setEmailPass(emailPassInput.getText());
         kernel.getSettingsHolder().setEmailReplyTo(emailReplyToInput.getText());
 
         kernel.getSettingsHolder().setAutoNagUser(autoNagUserInput.isSelected());
         kernel.getSettingsHolder().setSendShoppingList(sendShoppingListInput.isSelected());
         kernel.getSettingsHolder().setSendReports(sendReportsInput.isSelected());
+
+        kernel.getSettingsHolder().setGlasUserActive(activateGlasUserInput.isSelected());
+        kernel.getSettingsHolder().setGlasUserName(glasUserNameInput.getText());
+        kernel.getSettingsHolder().setGlasUserRoundTo(Integer.parseInt(glasUserRoundToInput.getText()));
 
         saveSelectedTemplate();
     }
