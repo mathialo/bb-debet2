@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -165,6 +166,14 @@ public class Main extends Application {
             adminScene = new Scene(adminRoot);
 
             primaryStage.setTitle("BBDebet " + SHORT_VERSION);
+
+            primaryStage.getIcons().addAll(
+                new Image("file:/usr/local/share/bbdebet2/img/bblogo_32.png"),
+                new Image("file:/usr/local/share/bbdebet2/img/bblogo_64.png"),
+                new Image("file:/usr/local/share/bbdebet2/img/bblogo_128.png"),
+                new Image("file:/usr/local/share/bbdebet2/img/bblogo_256.png"),
+                new Image("file:/usr/local/share/bbdebet2/img/bblogo_512.png")
+            );
 
             primaryStage.setScene(loginScene);
             primaryStage.setHeight(1000);
