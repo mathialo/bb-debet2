@@ -67,12 +67,29 @@ public class Kernel implements CommandLineInterface {
      * @throws IllegalStateException If a kernel is already running on the system.
      */
     public Kernel() throws IllegalStateException {
+        this(false);
+    }
+
+
+    public Kernel(boolean force) throws IllegalStateException {
         // Initialize Kernel
         CurrencyFormatter.initilalize(this);
 
-        createLogger();
-        createRunningFile();
-        readFiles();
+        try {
+            createLogger();
+        } catch (Exception e) {
+            if (! force) throw e;
+        }
+        try {
+            createRunningFile();
+        } catch (Exception e) {
+            if (! force) throw e;
+        }
+        try {
+            readFiles();
+        } catch (Exception e) {
+            if (! force) throw e;
+        }
         CsvLogger.initialize();
         setupBackuping();
 
