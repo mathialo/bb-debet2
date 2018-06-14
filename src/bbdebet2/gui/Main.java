@@ -15,10 +15,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class Main extends Application {
 
@@ -143,11 +146,23 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         if (errorsOccuredDuringStartup) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Feilmelding:\n" + errorMessage + "\n\nVil du likevel tvinge en oppstart?");
             alert.setHeaderText("Feil i startup");
-            alert.getDialogPane().setPrefHeight(200);
-            alert.showAndWait();
-            System.exit(1);
+            alert.getDialogPane().setPrefHeight(300);
+            alert.getDialogPane().setPrefWidth(400);
+
+            ButtonType buttonTypeYes = new ButtonType("Ja");
+            ButtonType buttonTypeCancel = new ButtonType("Nei", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == buttonTypeYes) {
+                kernel = new Kernel(true);
+            } else {
+                System.exit(1);
+            }
         }
 
         Main.primaryStage = primaryStage;
