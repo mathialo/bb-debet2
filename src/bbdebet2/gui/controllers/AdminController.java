@@ -8,6 +8,7 @@ import bbdebet2.gui.Main;
 import bbdebet2.gui.applets.AddBalance;
 import bbdebet2.gui.applets.AddProducts;
 import bbdebet2.gui.applets.Console;
+import bbdebet2.gui.applets.CsvViewer;
 import bbdebet2.gui.applets.EditProducts;
 import bbdebet2.gui.applets.EditUser;
 import bbdebet2.gui.applets.NewUser;
@@ -37,6 +38,7 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -184,6 +186,7 @@ public class AdminController implements Initializable {
         }
     }
 
+
     @FXML
     public void deleteSelectedSale() {
         ViewSale selected = saleHistoryView.getSelectionModel().getSelectedItem();
@@ -235,6 +238,38 @@ public class AdminController implements Initializable {
     @FXML
     public void newSettingsWindow(ActionEvent event) {
         Settings.createAndDisplayDialog();
+    }
+
+
+    @FXML
+    public void viewMoneyInserts(ActionEvent event) {
+        File file = new File(kernel.SAVE_DIR + "moneyinserts.csv");
+        try {
+            CsvViewer.createAndDisplayDialog(file, "Innskudd");
+        } catch (IOException e) {
+            Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                "Kunne ikke finne fil for å vise innskud. Den kan være tom."
+            );
+            alert.getDialogPane().setPrefHeight(200);
+            alert.showAndWait();
+        }
+    }
+
+
+    @FXML
+    public void viewLosses(ActionEvent event) {
+        File file = new File(kernel.SAVE_DIR + "losses.csv");
+        try {
+            CsvViewer.createAndDisplayDialog(file, "Svinn");
+        } catch (IOException e) {
+            Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                "Kunne ikke finne fil for å vise svinn. Den kan være tom."
+            );
+            alert.getDialogPane().setPrefHeight(200);
+            alert.showAndWait();
+        }
     }
 
 
