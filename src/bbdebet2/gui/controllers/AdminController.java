@@ -7,6 +7,7 @@ package bbdebet2.gui.controllers;
 import bbdebet2.gui.Main;
 import bbdebet2.gui.applets.AddBalance;
 import bbdebet2.gui.applets.AddProducts;
+import bbdebet2.gui.applets.BackupRestore;
 import bbdebet2.gui.applets.Console;
 import bbdebet2.gui.applets.CsvViewer;
 import bbdebet2.gui.applets.EditProducts;
@@ -238,6 +239,12 @@ public class AdminController implements Initializable {
     @FXML
     public void newSettingsWindow(ActionEvent event) {
         Settings.createAndDisplayDialog();
+    }
+
+
+    @FXML
+    public void newBackupRestoreWindow(ActionEvent event) {
+        BackupRestore.createAndDisplayDialog();
     }
 
 

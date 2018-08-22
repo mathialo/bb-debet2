@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<!--
+  ~ Copyright (c) 2018. Mathias Lohne
+  -->
+
+<BorderPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.applets.BackupRestore">
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="deleteBackupButton" mnemonicParsing="false" onAction="#deleteSelectedBackup" prefHeight="70.0" prefWidth="200.0" text="Slett backup" />
+            <Button fx:id="restoreBackupButton" mnemonicParsing="false" onAction="#restoreSelectedBackup" prefHeight="70.0" prefWidth="200.0" text="Tilbakestill" />
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <ListView fx:id="backupListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

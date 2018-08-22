@@ -34,7 +34,10 @@ public class Storage implements Exportable, Listable<ViewProduct> {
 
     public Storage(File file) throws IOException, ErrorInFileException {
         this();
+        readFile(file);
+    }
 
+    private void readFile(File file) throws  IOException, ErrorInFileException {
         Scanner sc = new Scanner(file);
 
         // Skip header line
@@ -308,5 +311,11 @@ public class Storage implements Exportable, Listable<ViewProduct> {
 
     public void updateStorageNum(Product product, int newNum) {
         updateStorageNum(product.getName(), newNum);
+    }
+
+
+    public void resetToFile(File file) throws IOException, ErrorInFileException {
+        storage = new LinkedList<>();
+        readFile(file);
     }
 }
