@@ -31,6 +31,11 @@ public class Settings extends Applet {
     private PasswordField adminPassInput;
 
     @FXML
+    private TextField autoSaveIntervalInput;
+    @FXML
+    private TextField backupIntervalInput;
+
+    @FXML
     private TextField emailAddrInput;
     @FXML
     private TextField emailUserInput;
@@ -88,6 +93,9 @@ public class Settings extends Applet {
         maxInactiveTimeInput.setText(kernel.getSettingsHolder().getMaxInactiveTime() + "");
         adminPassInput.setText(kernel.getSettingsHolder().getAdminPass());
 
+        autoSaveIntervalInput.setText(kernel.getSettingsHolder().getAutoSaveInterval() + "");
+        backupIntervalInput.setText(kernel.getSettingsHolder().getBackupInterval() + "");
+
         emailAddrInput.setText(kernel.getSettingsHolder().getEmailAddr());
         emailUserInput.setText(kernel.getSettingsHolder().getEmailUser());
         emailServerInput.setText(kernel.getSettingsHolder().getEmailServer());
@@ -114,6 +122,9 @@ public class Settings extends Applet {
         kernel.getSettingsHolder().setMaxInactiveTime(
             Integer.parseInt(maxInactiveTimeInput.getText()));
         kernel.getSettingsHolder().setAdminPass(adminPassInput.getText());
+
+        kernel.getSettingsHolder().setAutoSaveInterval(Integer.parseInt(autoSaveIntervalInput.getText()));
+        kernel.getSettingsHolder().setBackupInterval(Integer.parseInt(backupIntervalInput.getText()));
 
         kernel.getSettingsHolder().setEmailAddr(emailAddrInput.getText());
         kernel.getSettingsHolder().setEmailUser(emailUserInput.getText());
