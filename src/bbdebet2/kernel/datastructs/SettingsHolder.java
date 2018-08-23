@@ -25,6 +25,7 @@ public class SettingsHolder implements Exportable {
     private int maxInactiveTime = 30;
     private String adminPass = "";
 
+    private int autoSaveInterval = 2;
     private int backupInterval = 12;
     private boolean autoSend = false;
     private boolean autoGet = false;
@@ -36,9 +37,6 @@ public class SettingsHolder implements Exportable {
     private boolean glasUserActive = true;
     private int glasUserRoundTo = 5;
     private String glasUserName = "glass";
-
-    private double lambda = 2;
-    private int holydayWeeks = 0;
 
     private String currencySign = "kr";
 
@@ -99,6 +97,10 @@ public class SettingsHolder implements Exportable {
                         backupInterval = Integer.parseInt(line[1]);
                         break;
 
+                    case "autoSaveInterval":
+                        autoSaveInterval = Integer.parseInt(line[1]);
+                        break;
+
                     case "autoGet":
                         autoGet = Boolean.parseBoolean(line[1]);
                         break;
@@ -117,14 +119,6 @@ public class SettingsHolder implements Exportable {
 
                     case "sendReports":
                         sendReports = Boolean.parseBoolean(line[1]);
-                        break;
-
-                    case "lambda":
-                        lambda = Double.parseDouble(line[1]);
-                        break;
-
-                    case "holydayWeeks":
-                        holydayWeeks = Integer.parseInt(line[1]);
                         break;
 
                     case "glasUserActive":
@@ -315,6 +309,16 @@ public class SettingsHolder implements Exportable {
     }
 
 
+    public int getAutoSaveInterval() {
+        return autoSaveInterval;
+    }
+
+
+    public void setAutoSaveInterval(int autoSaveInterval) {
+        this.autoSaveInterval = autoSaveInterval;
+    }
+
+
     public int getBackupInterval() {
         return backupInterval;
     }
@@ -405,26 +409,6 @@ public class SettingsHolder implements Exportable {
     }
 
 
-    public double getLambda() {
-        return lambda;
-    }
-
-
-    public void setLambda(double lambda) {
-        this.lambda = lambda;
-    }
-
-
-    public int getHolydayWeeks() {
-        return holydayWeeks;
-    }
-
-
-    public void setHolydayWeeks(int holydayWeeks) {
-        this.holydayWeeks = holydayWeeks;
-    }
-
-
     @Override
     public void saveFile(File file) throws IOException {
         PrintWriter pw = new PrintWriter(file);
@@ -436,6 +420,7 @@ public class SettingsHolder implements Exportable {
         pw.println("emailEncryption=" + emailEncryption);
         pw.println("emailReplyTo=" + emailReplyTo);
         pw.println("numOfFavourites=" + numOfFavourites);
+        pw.println("autoSaveInterval=" + autoSaveInterval);
         pw.println("backupInterval=" + backupInterval);
         pw.println("autoSend=" + autoSend);
         pw.println("autoGet=" + autoGet);
@@ -443,8 +428,6 @@ public class SettingsHolder implements Exportable {
         pw.println("autoNagUser=" + autoNagUser);
         pw.println("sendShoppingList=" + sendShoppingList);
         pw.println("sendReports=" + sendReports);
-        pw.println("lambda=" + lambda);
-        pw.println("holydayWeeks=" + holydayWeeks);
         pw.println("glasUserActive=" + glasUserActive);
         pw.println("glasUserRoundTo=" + glasUserRoundTo);
         pw.println("glasUserName=" + glasUserName);

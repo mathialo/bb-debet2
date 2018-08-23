@@ -244,9 +244,9 @@ public class Kernel implements CommandLineInterface {
      * Sets up AutoSaver objects to automatically save data to disk
      */
     private void setupBackuping() {
-        // set up autosaving every 2 minutes
+        // set up autosaving every x minutes (as specified by user)
         AutoSaver autoSaver = new AutoSaver(this);
-        autoSaver.start(2);
+        autoSaver.start(settingsHolder.getAutoSaveInterval());
 
         // set up backup every x hours (as specified in settings)
         AutoSaver autoBackup = new AutoSaver(this, "autosave/");
