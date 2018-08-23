@@ -107,6 +107,7 @@ public class EmailSender {
         text = text.replaceAll("%saldo", numberFormatter.format(user.getBalance()));
         text = text.replaceAll("%gjeld", numberFormatter.format(-user.getBalance()));
         text = text.replaceAll("%navn", capitalizeFirstLetter(user.getUserName()));
+        text = text.replaceAll("%konto", settings.getAccountNumber());
         return text;
     }
 }

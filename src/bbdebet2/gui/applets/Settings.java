@@ -61,8 +61,11 @@ public class Settings extends Applet {
     private ChoiceBox<EmailTemplate> templateChooser;
     @FXML
     private TextArea templateInput;
-
     private EmailTemplate selectedTemplate;
+
+    @FXML
+    private TextField accountNumberInput;
+
 
     @FXML
     private CheckBox activateGlasUserInput;
@@ -105,6 +108,8 @@ public class Settings extends Applet {
         emailPassInput.setText(kernel.getSettingsHolder().getEmailPass());
         emailReplyToInput.setText(kernel.getSettingsHolder().getEmailReplyTo());
 
+        accountNumberInput.setText(kernel.getSettingsHolder().getAccountNumber());
+
         autoNagUserInput.selectedProperty().set(kernel.getSettingsHolder().isAutoNagUser());
         sendShoppingListInput.selectedProperty().set(
             kernel.getSettingsHolder().isSendShoppingList());
@@ -134,6 +139,8 @@ public class Settings extends Applet {
             emailEncryptionInput.getSelectionModel().getSelectedItem());
         kernel.getSettingsHolder().setEmailPass(emailPassInput.getText());
         kernel.getSettingsHolder().setEmailReplyTo(emailReplyToInput.getText());
+
+        kernel.getSettingsHolder().setAccountNumber(accountNumberInput.getText());
 
         kernel.getSettingsHolder().setAutoNagUser(autoNagUserInput.isSelected());
         kernel.getSettingsHolder().setSendShoppingList(sendShoppingListInput.isSelected());

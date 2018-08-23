@@ -20,6 +20,7 @@ public class SettingsHolder implements Exportable {
     private String emailEncryption = "null";
     private String emailPass = "";
     private String emailReplyTo = "null";
+    private String accountNumber = "null";
 
     private int numOfFavourites = 3;
     private int maxInactiveTime = 30;
@@ -83,6 +84,10 @@ public class SettingsHolder implements Exportable {
 
                     case "emailReplyTo":
                         emailReplyTo = line[1];
+                        break;
+
+                    case "accountNumber":
+                        accountNumber = line[1];
                         break;
 
                     case "numOfFavourites":
@@ -206,6 +211,16 @@ public class SettingsHolder implements Exportable {
 
     public void setCurrencySign(String currencySign) {
         this.currencySign = currencySign;
+    }
+
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
 
@@ -419,6 +434,7 @@ public class SettingsHolder implements Exportable {
         pw.println("emailPort=" + emailPort);
         pw.println("emailEncryption=" + emailEncryption);
         pw.println("emailReplyTo=" + emailReplyTo);
+        pw.println("accountNumber=" + accountNumber);
         pw.println("numOfFavourites=" + numOfFavourites);
         pw.println("autoSaveInterval=" + autoSaveInterval);
         pw.println("backupInterval=" + backupInterval);
