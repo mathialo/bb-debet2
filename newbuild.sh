@@ -1,10 +1,5 @@
 #! /bin/bash
 
-if [[ "$#" -eq 1 ]]; then
-	echo "Oppdatterer versjon"
-    echo "$1" > version
-fi
-
 # Oppdatter versjon og buildnum
 echo "Oppdatter buildnum"
 prev_buildnum="$(cat buildnum)"
@@ -15,12 +10,8 @@ echo "$new_buildnum" > buildnum
 version="$(cat version)"
 
 # Tagger siste commit med versjon- og build-nummber
-if [[ "$2" == "git" ]]; then
-	git add buildnum
-	git commit -m "new build $new_buildnum"
-    git tag "v$version.$new_buildnum"
-    git push origin master
-fi
+git add -A
+git commit -m "$version.$new_buildnum: $*"
+git tag "v$version.$new_buildnum"
+#git push origin master
 
-# Kjør installasjonsskript
-bash install.sh
