@@ -7,6 +7,7 @@ package bbdebet2.gui.applets;
 import bbdebet2.gui.customelements.WaitingDialog;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,15 +68,19 @@ public class SendEmail extends Applet {
 
         sendEmailTask.setOnSucceeded(e -> {
             sendingAlert.close();
+            Platform.runLater(() -> {
+
             if (!failedNames.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Kunne ikke sende til " + failedNames.toString());
-                alert.showAndWait();
+                alert.show();
             } else {
-                Alert alert = new Alert(Alert.AlertType.NONE, "Eposter sendt!");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Eposter sendt!");
+                alert.setHeaderText(null);
                 alert.showAndWait();
                 exit(event);
             }
 
+            });
         });
 
         new Thread(sendEmailTask).start();
