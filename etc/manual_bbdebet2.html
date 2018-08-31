@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Brukermanual for BBDebet for versjon v2.0</title>
+  <style type="text/css">
+code{white-space: pre;}
+html {
+  font-size: 100%;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  color: #444;
+  font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+  font-size: 12px;
+  line-height: 1.7;
+  padding: 1em;
+  margin: auto;
+  max-width: 42em;
+  background: #fefefe;
+}
+
+a {
+  color: #0645ad;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #0b0080;
+}
+
+a:hover {
+  color: #06e;
+}
+
+a:active {
+  color: #faa700;
+}
+
+a:focus {
+  outline: thin dotted;
+}
+
+*::-moz-selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #000;
+}
+
+*::selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #000;
+}
+
+a::-moz-selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #0645ad;
+}
+
+a::selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #0645ad;
+}
+
+p {
+  margin: 1em 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #111;
+  line-height: 125%;
+  margin-top: 2em;
+  font-weight: normal;
+}
+
+h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1.2em;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+h6 {
+  font-size: 0.9em;
+}
+
+blockquote {
+  color: #666666;
+  margin: 0;
+  padding-left: 3em;
+  border-left: 0.5em #EEE solid;
+}
+
+hr {
+  display: block;
+  height: 2px;
+  border: 0;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #eee;
+  margin: 1em 0;
+  padding: 0;
+}
+
+pre, code, kbd, samp {
+  color: #000;
+  font-family: monospace, monospace;
+  _font-family: 'courier new', monospace;
+  font-size: 0.98em;
+}
+
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+dfn {
+  font-style: italic;
+}
+
+ins {
+  background: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+ul, ol {
+  margin: 1em 0;
+  padding: 0 0 0 2em;
+}
+
+li p:last-child {
+  margin-bottom: 0;
+}
+
+ul ul, ol ol {
+  margin: .3em 0;
+}
+
+dl {
+  margin-bottom: 1em;
+}
+
+dt {
+  font-weight: bold;
+  margin-bottom: .8em;
+}
+
+dd {
+  margin: 0 0 .8em 2em;
+}
+
+dd:last-child {
+  margin-bottom: 0;
+}
+
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+  vertical-align: middle;
+}
+
+figure {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+figure img {
+  border: none;
+  margin: 0 auto;
+}
+
+figcaption {
+  font-size: 0.8em;
+  font-style: italic;
+  margin: 0 0 .8em;
+}
+
+table {
+  margin-bottom: 2em;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+table th {
+  padding: .2em 1em;
+  background-color: #eee;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+
+table td {
+  padding: .2em 1em;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.author {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+@media only screen and (min-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    filter: none !important;
+    -ms-filter: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+
+  a, a:visited {
+    text-decoration: underline;
+  }
+
+  hr {
+    height: 1px;
+    border: 0;
+    border-bottom: 1px solid black;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+    content: "";
+  }
+
+  pre, blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  tr, img {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  @page :left {
+    margin: 15mm 20mm 15mm 10mm;
+}
+
+  @page :right {
+    margin: 15mm 10mm 15mm 20mm;
+}
+
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2, h3 {
+    page-break-after: avoid;
+  }
+}
+</style>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Brukermanual for BBDebet<br />
+for versjon v2.0</h1>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#litt-bakgrunn">Litt bakgrunn</a><ul>
+<li><a href="#tekniske-ting-og-installasjonsguide">Tekniske ting og installasjonsguide</a></li>
+</ul></li>
+<li><a href="#for-brukere">For brukere</a><ul>
+<li><a href="#kjøp-av-varer">Kjøp av varer</a></li>
+<li><a href="#overføre-til-en-annnen-bruker">Overføre til en annnen bruker</a></li>
+</ul></li>
+<li><a href="#for-administratorer">For administratorer</a><ul>
+<li><a href="#salgshistorikk">Salgshistorikk</a><ul>
+<li><a href="#annulere-salg">Annulere salg</a></li>
+</ul></li>
+<li><a href="#lagerstatus">Lagerstatus</a><ul>
+<li><a href="#nytt-vareinnskudd">Nytt vareinnskudd</a></li>
+<li><a href="#endre-varer">Endre varer</a></li>
+<li><a href="#sec:vareopptelling">Vareopptelling</a></li>
+<li><a href="#se-svinn">Se svinn</a></li>
+</ul></li>
+<li><a href="#brukere">Brukere</a><ul>
+<li><a href="#ny-bruker">Ny bruker</a></li>
+<li><a href="#endre-bruker">Endre bruker</a></li>
+<li><a href="#slett-bruker">Slett bruker</a></li>
+<li><a href="#sende-eposter">Sende eposter</a></li>
+<li><a href="#sette-inn-penger">Sette inn penger</a></li>
+<li><a href="#se-innskudd">Se innskudd</a></li>
+</ul></li>
+<li><a href="#innstillinger">Innstillinger</a></li>
+<li><a href="#sec:backup">Sikkerhetskopiering</a><ul>
+<li><a href="#Autolagring">Autolagring</a></li>
+<li><a href="#sikkerhetskopiering">Sikkerhetskopiering</a></li>
+</ul></li>
+<li><a href="#epost">Epost</a><ul>
+<li><a href="#epostinstillinger">Epostinstillinger</a></li>
+<li><a href="#maler">Maler</a></li>
+<li><a href="#sec:epost-kodeord">Kodeord</a></li>
+</ul></li>
+<li><a href="#glassbruker">Glassbruker</a></li>
+</ul></li>
+<li><a href="#chap:plugins">Plugins</a></li>
+</ul>
+</nav>
+<h1 id="litt-bakgrunn">Litt bakgrunn</h1>
+<p>Ølkassa er et spleiselag blant de fleste medlemmene i Biørneblæs. Det har lenge fungert ved at medlemmene setter over penger til en bankkonto eller legger penger i et glass, og når de gjør det skriver de beløpet de satte over på en papirlapp i grava. Deretter trekker man prisen på varene man tar fra beløpet på lappen. Dette fungerte greit en stund, men med tiden økte svinnet ganske kraftig. Mot slutten av den anaolge debetbokas tid var svinnet på omlag 25% av omsetningen til Ølkassa.</p>
+<p>Generølforsamlingen mistenkte at dette hadde mer med aritmetikkegenskapene til berusede BBere å gjøre, enn bevist stjeling. Det ble dermed foreslått å digitalisere debetboka for å kunne eliminere regnefeil som årsak til svinn.</p>
+<p>Innføringen av en digital debetbok har også gjort det mulig å tracke lagerbeholdning med større presisjon enn tidligere. Hvis Choostholdsexpært passer på å føre alle utlegg, innskudd og svinnkorrigeringer vil programmet kunne holde styr på hvor mye svinnet har vært ned til hver eneste boks. Det vil også være mulig å sette prisene til mindre runde tall en tidligere, da tallene måtte være lette å regne med, og ble ofte satt til nærmeste hele femmer.</p>
+<p>Den første utgaven av BBDebet bar veldig preg av å være et demoprodukt. Kodebasen var stor, tungvint skrevet og vanskelig å vedlikedholde. Versjon 2.0 er en helt ny versjon skrevet fra bunnen av, selv om mye ser likt ut fra 1.x.</p>
+<h2 id="tekniske-ting-og-installasjonsguide">Tekniske ting og installasjonsguide</h2>
+<p>Debetboka er utviklet i Java, R og bash, og trenger derfor disse programmene innstallert på maskinen for å kunne virke. Minstekravet for Java er Java 8, siden GUIen benytter seg av JavaFX. Uten R vil ikke mye av analyseverktøyene virke, og uten bash vil ikke synkronisering og backup til hjemmeområdet virke.</p>
+<p>Programmet er først og fremst utviklet for Linux (selvfølgelig). Siste versjon finnes alltid på utviklers GitHub repository<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>..</p>
+<p>Før du installerer debetboka må du sørge for at Java og R er installert på maskinen. For å installere Oracle Java går du inn på Oracle sine nettsider og laster ned siste versjon av <span><em>“Java JDK”</em></span> som en <code>tar.gz</code>-fil for enten <code>Linux x64</code> (med mindre systemet ditt er 32 bits, men come on..). Utfør følgende kommandoer i terminalen (fra samme mappe som den nedlastede fila ligger i):</p>
+<pre><code>  $ sudo mkdir /opt/java/jdk/VERSJON
+  $ sudo tar -vxzf nedlastetfil.tar.gz -C 
+    /opt/java/jdk/VERSJON
+  $ sudo update-alternatives --install 
+    /usr/bin/java java /opt/java/jdk/VERSJON/bin/java 100
+  $ sudo update-alternatives --install 
+    /usr/bin/javac javac /opt/java/jdk/VERSJON/bin/javac 100
+  $ sudo update-alternatives --install 
+    /usr/bin/jar jar /opt/java/jdk/VERSJON/bin/jar 100
+  $ sudo update-alternatives --install
+    /usr/bin/javadoc javadoc /opt/java/jdk/VERSJON/bin/javadoc 100</code></pre>
+<p>R kan du installere fra pakke-manageren din, for Debian/Ubuntu-basert Linux skriver du:</p>
+<pre><code>  $ sudo apt-get update
+  $ sudo apt-get install r-base</code></pre>
+<p>for Red Hat-basert Linux skriver du</p>
+<pre><code>  $ sudo yum update
+  $ sudo yum install R-core</code></pre>
+<p>Du er nå klar til å installere debetboka. For å installere på en linuxmaskin, laster du ned repositoryet og kjører installasjons-skriptet:</p>
+<pre><code>  $ git clone https://github.com/mathialo/bb-debet2.git
+  $ cd bb-debet2
+  $ ./install.sh</code></pre>
+<p>for å oppdatere en installert versjon beveger du deg inn i det lokale git repositoryet og skriver:</p>
+<pre><code>  $ git pull origin release
+  $ ./install.sh</code></pre>
+<p>Programmet vil nå være tilgjengelig som <code>bbdebet2</code> i terminalen, samt at det skal være tilgjengelig i startmenyen som <span><em>“BBDebet 2”</em></span></p>
+<p><b>Merk:</b> Aldri kjør make-skriptet som <code>sudo</code>, da vil mappen <code>~/.bbdebet2</code> få feil eier, og ingenting kan lagres!</p>
+<h1 id="for-brukere">For brukere</h1>
+<p>I midten av skjermen vises alle varer som er på lager. Øverst vises de varene du handler mest. Saldoen vises helt i toppen. Til høyre vises handlekurven, det er de varene du er i ferd med å handle. Neders til høyre finnes knapper for å bekrefte eller tilbakestille handlekurven. Nederst finner du også en oversikt over alle dine kjøp dette semesteret.</p>
+<p>For å logge ut, trykk <em>Escape</em>, velg <span><em>“Logg ut”</em></span> fra menyen, eller bare vent en kort stund så blir du automatisk logget ut. Hvis du har varer i handlekurven når du blir automatisk logget ut vil de varene bli kjøpt av deg.</p>
+<h2 id="kjøp-av-varer">Kjøp av varer</h2>
+<p>For å kjøpe en vare klikker du på den/de varen(e) du vil ha fra lagervisningen, og trykker <span><em>“Bekreft”</em></span>. Saldoen blir da trukket, og varen blir registrert som kjøpt. Dine mest kjøpte varer dukker opp under <span><em>“Favoritter”</em></span></p>
+<h5 id="returannulering-av-salg">Retur/annulering av salg</h5>
+<p>Bruker har ikke selv anledning til å slette et salg som er gjort. Hvis du trykket feil eller ikke vil ha varen likevel kontakter du administrator som kan tilbakestille salget.</p>
+<h2 id="overføre-til-en-annnen-bruker">Overføre til en annnen bruker</h2>
+<p>Debetboka har alltid fungert som en måte for BBere å gjøre opp småbeløper seg imellom. For å sende penger til en annen bruker velger du <span><em>“Overfør penger til en annen bruker”</em></span> fra menyen. En dialogboks vil vises der du velger bruker fra en dropdown-meny og skriver inn belopet som skal overføres.</p>
+<h1 id="for-administratorer">For administratorer</h1>
+<p>I administratormodus er det tre faner: <em>Salgshistorikk</em>, <em>Lagerstatus</em> og <em>Brukere</em>. I tilleg er flere vinduer tilgjengelige fra menyen. I administratormodus har du også mulighet til å kjøre plugins, mer om det i [chap:plugins].</p>
+<p>Du finner administratorvinduet ved å velge <span><em>“Til adminmodus”</em></span> fra startskjermen. Administratormodus er passordbeskyttet av et passord satt av administrator.</p>
+<h2 id="salgshistorikk">Salgshistorikk</h2>
+<p>Alt som har med salg og salgshistorikk å gjøre, kan gjøres fra <span><em>“Salgshistorikk”</em></span>-fanen i administratormodus.</p>
+<h3 id="annulere-salg">Annulere salg</h3>
+<p>Hvis en bruker har gjort et salg han/hun/hen angrer på, kan du tilbakestille salget i <em>Salgshistorikk</em>-fanen ved å trykke på salget som skal slettes, og klikke på <span><em>“Annuler salg”</em></span>-knappen. Pengene blir da tilbakeført til brukeren, og varen blir gjenoppført på lager.</p>
+<h2 id="lagerstatus">Lagerstatus</h2>
+<p>Alt som har med administrering av lageret å gjøre, kan gjøres fra <span><em>“Lagerstatus”</em></span>-fanen i administratormodus.</p>
+<h3 id="nytt-vareinnskudd">Nytt vareinnskudd</h3>
+<p>For å legge til nyinnkjøpte varer i lager-databasen til BBDebet trykker du på <span><em>“Nytt vareinnskudd”</em></span>-knappen i panelet øverst i <span><em>“Lagerstatus”</em></span>-fanen. Vinduet for lagerinnskudd vil vises.</p>
+<p>Øverst er en rad der informasjonen som varen som skal legges til skrives inn. Første felt er <strong>varenavn</strong>. Finnes varen på lager fra før vil forslag til navnet vises. Neste felt er <strong>innkjøpspris</strong>. Med innkjøpspris menes den totale prisen for varen (feks, har man kjøpt en sekspakning for 149.40 kr, skriver man inn 149.40 kr). Neste felt er <strong>pakkestørrelse</strong>. Her menes hvor mange enheter som finnes i en pakke (så for eksempelet over med en sekspakning skriver man her inn 6). De neste to feltene bestemmer <strong>avanse</strong>n. Først er det en prosent-velger. Dette bestemmer hvor mye avanse som skal legges på som buffer. Salgsprisen vil automatisk satt etter den. Neste avanse-bestemmelse er om <strong>pant</strong>en skal legges inn i utsalgsprisen, eller om du forventer å samle inn all pant etterpå. Neste felt er ut<strong>salgspris</strong>. Dette er prisen som brukere vil se for de ulike varene. Denne blir automatisk regnet ut basert på informasjonen du har gitt, men kan overskrides manuelt dersom du ønsker det. Siste felt er <strong>antall</strong>, og her menes antall pakker, og <em>ikke</em> antall enheter. Har du for eksempel kjøpt <em><span>é</span>n</em> sekspakning, og skrevet 6 i pakkestørrelse, skal du her skrive 1.</p>
+<p>Når en vare er ferdig beskrevet trykker du <span><em>“Legg til”</em></span>-knappen. Den blir så lagt til i lista over varer som skal legges på lager. Når alle varer er beskrevet trykker du på den blå <span><em>“Legg til”</em></span>-knappen nederst til høyre.</p>
+<p>Hvis du har skrevet feil i en varebeskrivelse kan du velge varen fra lista, og velge <span><em>“Slett vare”</em></span>.</p>
+<h3 id="endre-varer">Endre varer</h3>
+<p>For å endre info om varer velger du <span><em>“Endre flere”</em></span>-knappen i panelet øverst i <span><em>“Lagerstatus”</em></span>-fanen. Vinduet for å endre vareinfo kommer opp. I øverste rad bygger du søke-kriteriet. Feltet <span><em>“ALLE”</em></span> matcher alle varer. Raden under beksriver hva feltet skal endres til. La teksten <span><em>“UENDRET”</em></span> stå hvis du ikke ønsker å endre feltet.</p>
+<p>Eksempel: Du ønsker å navne om alle <span><em>“Kaffe”</em></span>-varer til <span><em>“Kaffekapsler”</em></span> uten å endre prisen. Da velger du <span><em>“Kaffe”</em></span> og <span><em>“ALLE”</em></span> i øverste rad, og skriver <span><em>“Kaffekapsler”</em></span> og <span><em>“UENDRET”</em></span> i andre rad.</p>
+<p><b>Merk:</b> Ønsker du å endre antall på grunn av svinn, bruker du <span><em>“”</em></span> i stedet.</p>
+<h3 id="sec:vareopptelling">Vareopptelling</h3>
+<p>Når du skal gjøre en varetelling velger du <span><em>“Vareopptelling”</em></span>-knappen i panelet øverst i <span><em>“Lagerstatus”</em></span>-fanen. Du får da fram en kondensert visning av lageret. Endre verdiene i tekstfeltene til å stemme over ens med den reelle statusen på lageret, og klikk <span><em>“Oppdatter antall”</em></span>. Setter du antall til 0 blir varen tatt ut av lageret.</p>
+<p>All manuell endring i vareantall gjennom <span><em>“Vareopptelling”</em></span> blir ført som svinn (negativt svinn om nye tall er lavere, positivt svinn om nye tall er høyere).</p>
+<h3 id="se-svinn">Se svinn</h3>
+<p>For å se en logg over hvor mye svinn som er registrert i løpet av semesteret trykker du på <span><em>“Se svinn”</em></span>-knappen i <span><em>“Lagerstatus”</em></span>-fanen i administratormodus.</p>
+<h2 id="brukere">Brukere</h2>
+<p>Alt som har med administrering av brukere å gjøre, kan gjøres fra <span><em>“Brukere”</em></span>-fanen i administratormodus.</p>
+<h3 id="ny-bruker">Ny bruker</h3>
+<p>For å legge til en ny bruker velger du <span><em>“Ny bruker”</em></span>-knappen i panelet øverst i <span><em>“Brukere”</em></span>-fanen. Skriv inn unikt brukernavn (programmet sjekker om brukernavnet er ledig) og epostadresse til brukeren. Når brukeren opprettes sendes det en infoepost. Eposten fylles automatisk ut etter malen som er satt i epostinstillingene, men du kan endre den i tekstfeltet før den sendes.</p>
+<h3 id="endre-bruker">Endre bruker</h3>
+<p>For å endre info om en bruker velger du <span><em>“Endre bruker”</em></span>-knappen i panelet øverst i <span><em>“Brukere”</em></span>-fanen. Skriv først inn brukernavnet på brukeren som skal endres. De to feltene i bunn fylles automatisk ut når programmet finner en bruker som passer med brukernavnet som er skrevet inn. Fyll inn nytt brukernavn og ny epost, og trykk <span><em>“Oppdatter info”</em></span>.</p>
+<h3 id="slett-bruker">Slett bruker</h3>
+<p>For å slette en bruker velger du brukeren som skal slettes fra listen og trykker <span><em>“Slett bruker”</em></span>-knappen i panelet øverst i <span><em>“Brukere”</em></span>-fanen. Du blir bedt om å bekrefte slettingen.</p>
+<p><b>Merk:</b> Sletting av brukere er permanent og kan ikke gjøres om på utenom å tilbakestille hele debetboka til et backup-punkt. Se seksjonen om <span><em>“”</em></span>.</p>
+<h3 id="sende-eposter">Sende eposter</h3>
+<p>Vil du sende en epost til brukere velger du <span><em>“send epost”</em></span>-knappen i panelet øverst i <span><em>“Brukere”</em></span>-fanen. Skriv inn brukernavnene på de som skal motta eposten, adskilt med komma. Skriv deretter inn emne og brødtekst for eposten og trykk <span><em>“Send”</em></span>.</p>
+<p>BBDebet har innebygde kodeord for å lettere sende ut individuelle eposter til store grupper (for å feks sette inn navnet til brukeren, nåværende saldo, ...). Se seksjonen <span><em>“”</em></span> på side for detaljer</p>
+<h3 id="sette-inn-penger">Sette inn penger</h3>
+<p>Skal du sette inn penger for brukere velger du <span><em>“Sett inn penger”</em></span>-knappen i panelet øverst i <span><em>“Brukere”</em></span>-fanen. Skriv inn brukernavn og beløp og trykk <span><em>“Legg til penger”</em></span>.</p>
+<p>Som standard vil programmet sende en bekreftelsesepost til brukere om at pengene har kommet inn på kontoen, hvis du ønsker å skru av dette huker du vekk <span><em>“Send bekreftelsesepost”</em></span>-boksen. Epostteksten som sendes kan endres i tekstfeltet underst, og settes til malen bestemt i epostinstillingene som standard.</p>
+<h3 id="se-innskudd">Se innskudd</h3>
+<p>Vil du se hvilke innskud som er registrert velger du <span><em>“Se innskudd”</em></span>-knappen i panelet øverst i <span><em>“Brukere”</em></span>-fanen. CSV-filen over registrerte innskudd blir vist.</p>
+<h2 id="innstillinger">Innstillinger</h2>
+<p>For å endre instillingene til BBDebet velger du <span><em>“Innstillinger”</em></span> fra menyen øverst i administratormodus. Her kan du endre på deler av oppførselen til programmet. De individuelle innstillingskategoriene beskrives i detalj i egne seksjoner, under følger en kort beskrivelse av innstillingene i <span><em>“Generelt(!)”</em></span>-fanen.</p>
+<p><strong>Antall favoritter</strong> bestemmer hvor mange varer som skal vises i <span><em>“Favoritter”</em></span>-biten av brukerskjermen. <strong>Auto-loggut etter (sek)</strong> bestemmer hvor mange sekunder med inaktivitet det skal være før advarselen om at brukeren snart blir logget ut vises. Når brukeren automatisk blir logget ut vil eventuelle varer i handlekurven bli kjøpt automatisk. <strong>Administratorpassord</strong> er passordet som kreves for å kunne logge på administratormodus.</p>
+<h2 id="sec:backup">Sikkerhetskopiering</h2>
+<p>Systemet har to former for backup: Autolagring og sikkerhetskopiering. Forskjellene blir beskrevet under.</p>
+<h3 id="Autolagring">Autolagring</h3>
+<p>BBDebet autolagrer all info jevnlig i et satt intervall. Intervallet settes av administrator i <span><em>“Sikkerhetskopiering”</em></span>-fanen av innstillingene. Det anbefales at dette er satt som et lavt tall.</p>
+<p>Autolagring innebærer at prgrammet lagrer nåværende lagerstatus, brukerstatus og salgsdata og overskriver tidligere lagret informasjon. Vanligvis lagres disse dataene når programmet avslutter (selv om det skulle skje gjennom et SIGINT-signal), men hvis noe skulle skje som gjør at programmet ikke fikk avsluttet på riktig måte er det viktig at så lite data som mulig skal gå tapt om dette skjer.</p>
+<h3 id="sikkerhetskopiering">Sikkerhetskopiering</h3>
+<p>Sikkerhetskopieringa minner litt om autolagring i at den lagrer informasjon jevnlig, men sikkerhetskopieringa lagrer fulle kopier av debetboka, slik at debetboka kan gjenopprettes til et tidligere tidspunkt om noe skulle skje med de nåværende filene. Denne kan være mye skjeldnere enn autolagringa.</p>
+<p>Du kan se hvilke sikkerhetskopieringer som er gjort ved å velge <span><em>“Behandle backups”</em></span> i menyen i administratormodus. Her kan du også velge å slette eller gjennoprette fra backup-punkter. Det anbefales at man går inn og sletter noen av de gamle backupene etterhvert da disse kan ta stor plass etterhvert.</p>
+<p>BBDebet2 kommer også med to kommandolinjeverktøy: <code>senddebet2data</code> og <code>getdebet2data</code>. Disse sender/henter alle dataene, innkludert alle backups, til/fra BBs hjemmeområde på UiO. Disse forutsetter at SSH-nøkler er satt opp slik at du ikke trenger å skrive inn noe passord. Det anbefales at det settes opp en CRON-job i operativsystemet som kaller <code>senddebet2data</code> jevnlig.</p>
+<h2 id="epost">Epost</h2>
+<p>BBDebet inneholder enn del funksjonalitet for å sende ut eposter til brukere ved ulike anledninger.</p>
+<p>Innstillinger for hvordan BBDebet skal sende ut epost finnes i <span><em>“Epost”</em></span>-fanen i Innstillingsvinduet.</p>
+<h3 id="epostinstillinger">Epostinstillinger</h3>
+<p>For at programmet skal kunne sende eposter, trenger det en epostserver å sende epost fra. Info om denne serveren skrives inn i <span><em>“Serverinnstillinger”</em></span>-fanen under epostinnstillingene. Epostadressen som settes som sender i programmet vil ikke være den som står som sender for mottaker. Programmet vil spoofe <code>noreply@grava.uio.no</code> som sender. Senderadressen må likevel være en gyldig adresse. Det anbefales at man bruker UiO-eposten sin da denne serveren er testet grundig og vil virke godt.</p>
+<p>Programmet inneholder også noen innstillinger for automatisk utsending av epost, slik som når brukere går i minus. Innstillingene for dette finnes i <span><em>“Spamming”</em></span>-fanen av epostinnstillingene.</p>
+<h3 id="maler">Maler</h3>
+<p>I <span><em>“Maler”</em></span>-fanen av epostinnstillingene kan du skrive ulike maler for epost, slik som velkomstbrevet nye brukere får tilsendt, innholdet i spammailer om påfyll av penger, osv.</p>
+<h3 id="sec:epost-kodeord">Kodeord</h3>
+<p>Før mailen blir sendt går den gjennom en parser som oversetter visse kodeord. Disse er gitt slik:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Kodeord</th>
+<th style="text-align: left;">Blir erstattet med...</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">%navn</td>
+<td style="text-align: left;">Navnet på brukeren</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">%gjeld</td>
+<td style="text-align: left;">Brukerens gjeld (dvs -saldo)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">%saldo</td>
+<td style="text-align: left;">Brukerens saldo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">%konto</td>
+<td style="text-align: left;">Kontonummer for innskudd (satt i epostinnstillingene)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="glassbruker">Glassbruker</h2>
+<p>Programmet inneholder en mulighet for å åpne for en spesialbruker der prisene blir rundet av til priser som er enklere å betale uten en bruker. Programmet kaller denne brukeren for <span><em>“Glassbruker”</em></span>, selv om administrator kan sette innloggingsnavnet til å være hva som helst.</p>
+<p>Glassbrukeren kan aktiveres i <span><em>“Glassbruker”</em></span>-fanen av innstillingene. Der kan man også sette innloggingsnavnet og hvor mye som skal rundes av.</p>
+<h1 id="chap:plugins">Plugins</h1>
+<p>Programmet har en begrenset mulighet for plugins. Plugins plasseres som egne mapper i <code>/usr/local/share/bbdebet2/plugins</code>. Plugins spesifiseres i en <code>.bbd2plugin</code>-fil. Formatet på pluginfiler er spesifiesrt i hodet til utvikler, spør han hvis du er superinteressert.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://github.com/mathialo/bb-debet2" class="uri">https://github.com/mathialo/bb-debet2</a><a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+</body>
+</html>
