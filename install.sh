@@ -57,6 +57,7 @@ copy_files() {
 	sudo cp etc/bashscripts/* /usr/local/share/bbdebet2/
 	sudo chmod +x /usr/local/share/bbdebet2/senddebet2data.sh
 	sudo chmod +x /usr/local/share/bbdebet2/getdebet2data.sh
+	sudo cp etc/manual_bbdebet2.html /usr/local/share/bbdebet2/
 
 	# Lag linker for tilgjengelighet i terminal og startmeny. Ignorer feil, da
 	# det kommer av at filene allerede finnes (hvis man innstallerer ny versjon)

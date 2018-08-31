@@ -27,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
@@ -36,6 +37,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -285,6 +289,20 @@ public class AdminController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, Main.FULL_VERSION);
         alert.setHeaderText(null);
         alert.show();
+    }
+
+
+    @FXML
+    public void showUserManual(ActionEvent event) {
+        WebView browser = new WebView();
+        WebEngine webEngine = browser.getEngine();
+        webEngine.load("file:/usr/local/share/bbdebet2/manual_bbdebet2.html");
+        Stage stage = new Stage();
+        Scene scene = new Scene(browser, 850, 650);
+
+        stage.setScene(scene);
+        stage.setTitle("Brukermanual");
+        stage.show();
     }
 
 
