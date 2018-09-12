@@ -6,6 +6,9 @@ bb_debet2.iml
 # Compiled class file
 *.class
 
+# Documentation (generate from source if you want it)
+doc/
+
 # Log file
 *.log
 
