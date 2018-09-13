@@ -41,8 +41,9 @@ public class BackupRestore extends Applet {
         // If no element is selected, stop
         if (backupListView.getSelectionModel().isEmpty()) return;
 
-        File dir = new File(getSelectedBackupTimestamp());
+        File dir = new File(Kernel.SAVE_DIR + "autosave" +  getSelectedBackupTimestamp());
         deleteDir(dir);
+        kernel.getLogger().log("Deleting backup " + getSelectedBackupTimestamp());
 
         backupTimestamps.remove(getSelectedIndex());
         backupListView.getItems().remove(getSelectedIndex());
@@ -65,6 +66,8 @@ public class BackupRestore extends Applet {
         if (result.get() != ButtonType.OK){
             return;
         }
+
+        kernel.getLogger().log("Restoring to backup " + getSelectedBackupTimestamp());
 
         // Reload all backuped files in dir into kernel
         try {
@@ -108,6 +111,7 @@ public class BackupRestore extends Applet {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        kernel = TestAppletLauncher.kernel;
 
         backupDir = new File(Kernel.SAVE_DIR + "autosave/");
         File[] backups = backupDir.listFiles(File::isDirectory);
