@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -76,39 +77,43 @@
             </Label>
          </top>
          <center>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <top>
-                  <BorderPane BorderPane.alignment="CENTER">
+            <ScrollPane fitToHeight="true" fitToWidth="true">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <top>
-                        <Label cache="true" text="Favoritter" BorderPane.alignment="CENTER">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <BorderPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </BorderPane.margin>
-                        </Label>
+                        <BorderPane BorderPane.alignment="CENTER">
+                           <top>
+                              <Label cache="true" text="Favoritter" BorderPane.alignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </Label>
+                           </top>
+                           <center>
+                              <FlowPane fx:id="favouritesContainer" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
                      </top>
                      <center>
-                        <FlowPane fx:id="favouritesContainer" BorderPane.alignment="CENTER" />
+                        <BorderPane BorderPane.alignment="CENTER">
+                           <top>
+                              <Label text="Alle varer" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </Label>
+                           </top>
+                           <center>
+                              <FlowPane fx:id="storageContainer" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
                      </center>
                   </BorderPane>
-               </top>
-               <center>
-                  <BorderPane BorderPane.alignment="CENTER">
-                     <top>
-                        <Label text="Alle varer" BorderPane.alignment="CENTER">
-                           <BorderPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </BorderPane.margin>
-                        </Label>
-                     </top>
-                     <center>
-                        <FlowPane fx:id="storageContainer" BorderPane.alignment="CENTER" />
-                     </center>
-                  </BorderPane>
-               </center>
-            </BorderPane>
+               </content>
+            </ScrollPane>
          </center>
       </BorderPane>
    </center>
