@@ -111,7 +111,6 @@ public class BackupRestore extends Applet {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        kernel = TestAppletLauncher.kernel;
 
         backupDir = new File(Kernel.SAVE_DIR + "autosave/");
         File[] backups = backupDir.listFiles(File::isDirectory);
