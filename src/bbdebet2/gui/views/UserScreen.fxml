@@ -77,7 +77,7 @@
             </Label>
          </top>
          <center>
-            <ScrollPane fitToHeight="true" fitToWidth="true">
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <top>
