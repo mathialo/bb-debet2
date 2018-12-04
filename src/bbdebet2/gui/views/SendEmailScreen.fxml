@@ -28,7 +28,14 @@
         </rowConstraints>
          <children>
             <Label text="Til (brukernavn adskilt med komma)" />
-            <TextField fx:id="userNamesInput" GridPane.columnIndex="1" />
+            <BorderPane GridPane.columnIndex="1">
+               <center>
+                  <TextField fx:id="userNamesInput" />
+               </center>
+               <right>
+                  <Button fx:id="addUsersButton" mnemonicParsing="false" onAction="#openAddUsersDialog" text="Legg til" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
             <Label text="Emne" GridPane.rowIndex="1" />
             <TextField fx:id="emailSubjectInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
