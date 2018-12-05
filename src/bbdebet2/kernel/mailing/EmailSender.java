@@ -83,7 +83,7 @@ public class EmailSender {
                 InternetAddress.parse(user.getMail())
             );
             message.setReplyTo(new Address[]{new InternetAddress(settings.getEmailReplyTo())});
-            message.setSubject(subject);
+            message.setSubject(formatText(subject, user));
             message.setText(formatText(text, user));
 
             Transport.send(message);
