@@ -47,7 +47,8 @@ public class SendEmail extends Applet {
         ALL("Alle brukere"),
         ACTIVE("Aktive siste 2 mnd"),
         POSITIVE("Positiv balanse"),
-        NEGATIVE("Negativ balanse");
+        NEGATIVE("Negativ balanse"),
+        LESS_THAN_100("Minde enn 100 kr");
 
         private String showName;
 
@@ -125,6 +126,14 @@ public class SendEmail extends Applet {
 
                 case NEGATIVE:
                     if (u.getBalance() < 0) {
+                        if (!first) stringBuilder.append(", ");
+                        stringBuilder.append(u.getUserName());
+                        first = false;
+                    }
+                    break;
+
+                case LESS_THAN_100:
+                    if (u.getBalance() < 100 && u.getBalance() > 0) {
                         if (!first) stringBuilder.append(", ");
                         stringBuilder.append(u.getUserName());
                         first = false;
