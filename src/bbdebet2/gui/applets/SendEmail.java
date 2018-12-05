@@ -15,7 +15,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -75,18 +75,25 @@ public class SendEmail extends Applet {
 
         Scene scene = new Scene(pane);
 
-        pane.add(new Label("Velg regel:"), 0, 0);
+        pane.add(new Label("Velg regler"), 0, 0);
 
-        ComboBox<UserSelectionRule> selectionRuleComboBox = new ComboBox<>();
-        selectionRuleComboBox.getItems().addAll(UserSelectionRule.values());
-        pane.add(selectionRuleComboBox, 1, 0);
+        CheckBox[] checkBoxes = new CheckBox[UserSelectionRule.values().length];
+        int i = 0;
+        for (i = 0; i < checkBoxes.length; i++) {
+            checkBoxes[i] = new CheckBox(UserSelectionRule.values()[i].toString());
+            pane.add(checkBoxes[i], 1, i);
+        }
 
         Button button = new Button("Legg til");
         button.setOnAction(e -> {
-            handleAddUsers(selectionRuleComboBox.getSelectionModel().getSelectedItem());
+            List<UserSelectionRule> selectionRules = new LinkedList<>();
+            for (int j = 0; j < checkBoxes.length; j++)
+                if (checkBoxes[j].isSelected())
+                    selectionRules.add(UserSelectionRule.values()[j]);
+            handleAddUsers(selectionRules);
             dialog.close();
         });
-        pane.add(button, 1, 1);
+        pane.add(button, 1, i);
 
         dialog.setScene(scene);
         dialog.setTitle("Velg brukere");
@@ -94,11 +101,8 @@ public class SendEmail extends Applet {
     }
 
 
-    private void handleAddUsers(UserSelectionRule selectionRule) {
-        if (selectionRule == null) return;
-
-        // Add trailing comma if to-field is non-empty
-        System.out.println("'" + userNamesInput.getText().replaceAll("\\s+", "") + "'");
+    private void handleAddUsers(List<UserSelectionRule> selectionRules) {
+        if (selectionRules.isEmpty()) return;
 
         if (! userNamesInput.getText().replaceAll("\\s+", "").equals("")) {
             userNamesInput.setText(userNamesInput.getText() + ", ");
@@ -108,45 +112,48 @@ public class SendEmail extends Applet {
         boolean first = true;
 
         for (User u : kernel.getUserList()) {
-            switch (selectionRule) {
-                case ALL:
-                    if (!first) stringBuilder.append(", ");
-                    stringBuilder.append(u.getUserName());
-                    first = false;
-                    break;
+            boolean addThisUser = true;
 
-                case ACTIVE:
-                    if (!kernel.getSalesHistory().filterLast(60 * 60 * 24 * 30 * 2).filterOnUser(
-                        u).isEmpty()) {
-                        if (!first) stringBuilder.append(", ");
-                        stringBuilder.append(u.getUserName());
-                        first = false;
-                    }
-                    break;
+            selectionSearch:
+            for (UserSelectionRule selectionRule : selectionRules) {
+                switch (selectionRule) {
+                    case ALL:
+                        break;
 
-                case NEGATIVE:
-                    if (u.getBalance() < 0) {
-                        if (!first) stringBuilder.append(", ");
-                        stringBuilder.append(u.getUserName());
-                        first = false;
-                    }
-                    break;
+                    case ACTIVE:
+                        if (kernel.getSalesHistory().filterLast(60 * 60 * 24 * 30 * 2).filterOnUser(u).isEmpty()) {
+                            addThisUser = false;
+                            break selectionSearch;
+                        }
+                        break;
 
-                case LESS_THAN_100:
-                    if (u.getBalance() < 100 && u.getBalance() > 0) {
-                        if (!first) stringBuilder.append(", ");
-                        stringBuilder.append(u.getUserName());
-                        first = false;
-                    }
-                    break;
+                    case NEGATIVE:
+                        if (!(u.getBalance() < 0)) {
+                            addThisUser = false;
+                            break selectionSearch;
+                        }
+                        break;
 
-                case POSITIVE:
-                    if (u.getBalance() > 0) {
-                        if (!first) stringBuilder.append(", ");
-                        stringBuilder.append(u.getUserName());
-                        first = false;
-                    }
-                    break;
+                    case LESS_THAN_100:
+                        if (!(u.getBalance() < 100)) {
+                            addThisUser = false;
+                            break selectionSearch;
+                        }
+                        break;
+
+                    case POSITIVE:
+                        if (!(u.getBalance() > 0)) {
+                            addThisUser = false;
+                            break selectionSearch;
+                        }
+                        break;
+                }
+            }
+
+            if (addThisUser) {
+                if (!first) stringBuilder.append(", ");
+                stringBuilder.append(u.getUserName());
+                first = false;
             }
         }
 
