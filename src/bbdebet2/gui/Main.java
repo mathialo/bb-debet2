@@ -107,7 +107,12 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+        if (args.length > 0 && args[0].equals("--nogui")) {
+            Kernel.main(args);
+            Platform.exit();
+        } else {
+            launch(args);
+        }
     }
 
 
