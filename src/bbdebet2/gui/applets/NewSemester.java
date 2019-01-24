@@ -4,6 +4,7 @@
 
 package bbdebet2.gui.applets;
 
+import bbdebet2.gui.Main;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.logging.CsvLogger;
 import javafx.event.ActionEvent;
@@ -82,6 +83,7 @@ public class NewSemester extends Applet {
             return;
         }
 
+        Main.getCurrentAdminController().repaintAll();
         exit(event);
     }
 
