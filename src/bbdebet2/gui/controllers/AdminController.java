@@ -12,6 +12,7 @@ import bbdebet2.gui.applets.Console;
 import bbdebet2.gui.applets.CsvViewer;
 import bbdebet2.gui.applets.EditProducts;
 import bbdebet2.gui.applets.EditUser;
+import bbdebet2.gui.applets.NewSemester;
 import bbdebet2.gui.applets.NewUser;
 import bbdebet2.gui.applets.SendEmail;
 import bbdebet2.gui.applets.Settings;
@@ -243,6 +244,12 @@ public class AdminController implements Initializable {
     @FXML
     public void newSettingsWindow(ActionEvent event) {
         Settings.createAndDisplayDialog();
+    }
+
+
+    @FXML
+    public void newNewSemesterWindow(ActionEvent event) {
+        NewSemester.createAndDisplayDialog();
     }
 
 

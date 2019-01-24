@@ -23,6 +23,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#newSettingsWindow" text="Innstillinger" />
                   <MenuItem mnemonicParsing="false" onAction="#newBackupRestoreWindow" text="Behandle backups" />
+                  <MenuItem mnemonicParsing="false" onAction="#newNewSemesterWindow" text="Nytt semester" />
                         <MenuItem mnemonicParsing="false" onAction="#runKernelConsole" text="Åpne konsoll" />
                         <MenuItem mnemonicParsing="false" onAction="#logout" text="Ut av adminmodus" />
                     </items>
