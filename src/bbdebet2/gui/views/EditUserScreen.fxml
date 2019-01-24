@@ -40,7 +40,7 @@
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-          <Button defaultButton="true" mnemonicParsing="false" onAction="#saveAndExit" text="Button" />
+          <Button defaultButton="true" mnemonicParsing="false" onAction="#saveAndExit" text="Endre bruker" />
         </buttons>
       </ButtonBar>
    </bottom>
