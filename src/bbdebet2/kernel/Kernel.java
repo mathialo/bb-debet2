@@ -24,6 +24,7 @@ import bbdebet2.kernel.transactions.TransactionHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 
@@ -126,9 +127,15 @@ public class Kernel implements CommandLineInterface {
 
         while (cont) {
             System.out.print("  >> ");
-            command = cmdline.nextLine();
+            try {
+                command = cmdline.nextLine();
+                cont = kernel.parseAndRunCommand(command, System.out);
 
-            cont = kernel.parseAndRunCommand(command, System.out);
+            } catch (NoSuchElementException e) {
+                // Caused by an EOF in nextLine()
+                System.out.println("EOF!");
+                cont = false;
+            }
         }
     }
 
