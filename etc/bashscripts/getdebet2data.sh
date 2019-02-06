@@ -1,2 +1,2 @@
 #! /bin/bash
-scp -r bb@login.uio.no:~/.bbdebet2 ~
+rsync --update --info=progress2 --partial -t -r bb@login.uio.no:~/.bbdebet2 ~
