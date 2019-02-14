@@ -31,6 +31,21 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
         list = new LinkedList<>();
     }
 
+    private User parseLine(String[] line) throws Exception {
+        User temp = new User(line[1], line[2], Integer.parseInt(line[0].replaceAll("\\s+", "")));
+
+        // add the money to the user
+        temp.addBalance(Double.parseDouble(line[3]));
+
+        // read whether user has accepted eula or not. try/catch for legacy reasons
+        try {
+            if (Boolean.parseBoolean(line[4])) temp.acceptEula();
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            // Ignore exception. EULA attribute will default to false.
+        }
+
+        return temp;
+    }
 
     /**
      * Reads given file and initializes a user list from the file
@@ -41,50 +56,7 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
      * @throws ErrorInFileException if there is an error in the file (file is on an incorrect format)
      */
     public UserList(File userlist) throws IOException, ErrorInFileException {
-        // start on line 1 (0 for programmers, 1 for humans). this is for the error
-        // message generated in the catch-es below.
-        int lineNum = 1;
-
-        try {
-            // create empty list
-            list = new LinkedList<>();
-
-            // create file reader
-            Scanner sc = new Scanner(userlist);
-
-            // read first line, and update User's ID-counter
-            User.setCounter(Integer.parseInt(sc.nextLine()));
-
-            // update line num
-            lineNum++;
-
-            // read rest of file as csv
-            while (sc.hasNextLine()) {
-                // read line, split on commas
-                String[] line = sc.nextLine().split(",");
-
-                // skip empty lines
-                if (line.length == 0) continue;
-
-                // create new user from line
-                User temp = new User(line[1], line[2], Integer.parseInt(line[0].replaceAll("\\s+", "")));
-
-                // add the money to the user
-                temp.addBalance(Double.parseDouble(line[3]));
-
-                // add user to list and update line num
-                list.add(temp);
-                lineNum++;
-            }
-
-            sc.close();
-        } catch (NumberFormatException e) {
-            throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + userlist + " inneholder et element av feil type.");
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + userlist + " inneholder for få elementer.");
-        } catch (NoSuchElementException e) {
-            throw new ErrorInFileException("Feil i inputfil: " + userlist + " inneholder for få linjer.");
-        }
+        resetToFile(userlist);
     }
 
 
@@ -115,10 +87,7 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
                 if (line.length == 0) continue;
 
                 // create new user from line
-                User temp = new User(line[1], line[2], Integer.parseInt(line[0].replaceAll("\\s+", "")));
-
-                // add the money to the user
-                temp.addBalance(Double.parseDouble(line[3]));
+                User temp = parseLine(line);
 
                 // add user to list and update line num
                 list.add(temp);
@@ -132,6 +101,8 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
             throw new ErrorInFileException("Feil i inputfil: Linje " + lineNum + " i " + userlist + " inneholder for få elementer.");
         } catch (NoSuchElementException e) {
             throw new ErrorInFileException("Feil i inputfil: " + userlist + " inneholder for få linjer.");
+        } catch (Exception e) {
+            throw new ErrorInFileException("Uventet feil i input: " + e.getMessage());
         }
     }
 

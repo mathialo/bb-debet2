@@ -11,6 +11,7 @@ public class User {
     private String mail;
     private int id;
     private double balance;
+    private boolean acceptedEula;
 
 
     /**
@@ -47,6 +48,16 @@ public class User {
 
     protected static void setCounter(int counter) {
         User.counter = counter;
+    }
+
+
+    public boolean hasAcceptedEula() {
+        return acceptedEula;
+    }
+
+
+    public void acceptEula() {
+        acceptedEula = true;
     }
 
 
