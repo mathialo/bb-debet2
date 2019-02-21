@@ -6,6 +6,7 @@ package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
 import bbdebet2.gui.applets.NewUserTransaction;
+import bbdebet2.gui.customelements.EulaConfirmation;
 import bbdebet2.gui.customelements.MakeCustomProductDialog;
 import bbdebet2.gui.customelements.StorageButton;
 import bbdebet2.gui.modelwrappers.ViewProduct;
@@ -166,7 +167,7 @@ public class UserController implements Initializable {
     }
 
 
-    public void login(User user) {
+    public boolean login(User user) {
         // Set active user
         Main.setActiveUser(user);
 
@@ -182,11 +183,20 @@ public class UserController implements Initializable {
 
         // Present EULA if requested and not previously shown
         if (kernel.getSettingsHolder().isRequireEula() && !user.hasAcceptedEula()) {
-            // Show EULA
+            EulaConfirmation eulaConfirmation = new EulaConfirmation();
+            Optional<ButtonType> result = eulaConfirmation.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                user.acceptEula();
+            } else {
+                logout();
+                return false;
+            }
         }
 
         // New logout timer
         updateLogoutTimer();
+        return true;
     }
 
 

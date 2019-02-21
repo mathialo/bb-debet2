@@ -29,6 +29,8 @@ public class Settings extends Applet {
     private TextField maxInactiveTimeInput;
     @FXML
     private PasswordField adminPassInput;
+    @FXML
+    private CheckBox requireEulaInput;
 
     @FXML
     private TextField autoSaveIntervalInput;
@@ -95,6 +97,7 @@ public class Settings extends Applet {
         numOfFavouritesInput.setText(kernel.getSettingsHolder().getNumOfFavourites() + "");
         maxInactiveTimeInput.setText(kernel.getSettingsHolder().getMaxInactiveTime() + "");
         adminPassInput.setText(kernel.getSettingsHolder().getAdminPass());
+        requireEulaInput.setSelected(kernel.getSettingsHolder().isRequireEula());
 
         autoSaveIntervalInput.setText(kernel.getSettingsHolder().getAutoSaveInterval() + "");
         backupIntervalInput.setText(kernel.getSettingsHolder().getBackupInterval() + "");
@@ -127,6 +130,7 @@ public class Settings extends Applet {
         kernel.getSettingsHolder().setMaxInactiveTime(
             Integer.parseInt(maxInactiveTimeInput.getText()));
         kernel.getSettingsHolder().setAdminPass(adminPassInput.getText());
+        kernel.getSettingsHolder().setRequireEula(requireEulaInput.isSelected());
 
         kernel.getSettingsHolder().setAutoSaveInterval(Integer.parseInt(autoSaveIntervalInput.getText()));
         kernel.getSettingsHolder().setBackupInterval(Integer.parseInt(backupIntervalInput.getText()));
