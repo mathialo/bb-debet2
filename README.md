@@ -27,10 +27,11 @@ Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil også bli i
 ## Versjoner
 Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
 
-### 2.0 (beta)
- - Total omskriving av hele kodebasen for økt stabilitet og vedlikedholdbarhet.  
+### 2.0
+ - Total omskriving av hele kodebasen. Store forbedringer for stabilitet, kjøretid og vedlikedholdbarhet.  
  - Nytt lagersystem. Ulike varer av samme type kan nå ha ulik pris. 
- - Totalt nytt grensesnitt for administrator
+ - Totalt nytt brukergrensesnitt for administrator
+ - Flere nye funksjoner slik som mulighet for EULA og plugins
 
 
 ### 1.8
