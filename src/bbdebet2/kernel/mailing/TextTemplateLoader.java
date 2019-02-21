@@ -11,9 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class EmailTemplateLoader {
+public class TextTemplateLoader {
 
-    public static String getTemplate(EmailTemplate template) {
+    public static String getTemplate(TextTemplate template) {
         StringBuilder content = new StringBuilder();
 
         try {
@@ -32,7 +32,7 @@ public class EmailTemplateLoader {
     }
 
 
-    public static void saveTemplate(EmailTemplate template, String newContent) {
+    public static void saveTemplate(TextTemplate template, String newContent) {
         try {
             PrintWriter writer = new PrintWriter(
                 new File(Kernel.SAVE_DIR + "templates/" + template.getFilename()));

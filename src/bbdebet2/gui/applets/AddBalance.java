@@ -8,8 +8,8 @@ import bbdebet2.gui.Main;
 import bbdebet2.gui.customelements.WaitingDialog;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.logging.CsvLogger;
-import bbdebet2.kernel.mailing.EmailTemplate;
-import bbdebet2.kernel.mailing.EmailTemplateLoader;
+import bbdebet2.kernel.mailing.TextTemplate;
+import bbdebet2.kernel.mailing.TextTemplateLoader;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -95,6 +95,6 @@ public class AddBalance extends Applet {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
 
-        emailTextInput.setText(EmailTemplateLoader.getTemplate(EmailTemplate.USERADDEDMONEY));
+        emailTextInput.setText(TextTemplateLoader.getTemplate(TextTemplate.USERADDEDMONEY));
     }
 }

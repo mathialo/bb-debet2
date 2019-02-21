@@ -4,8 +4,8 @@
 
 package bbdebet2.gui.applets;
 
-import bbdebet2.kernel.mailing.EmailTemplate;
-import bbdebet2.kernel.mailing.EmailTemplateLoader;
+import bbdebet2.kernel.mailing.TextTemplate;
+import bbdebet2.kernel.mailing.TextTemplateLoader;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,10 +58,10 @@ public class Settings extends Applet {
     private CheckBox sendReportsInput;
 
     @FXML
-    private ChoiceBox<EmailTemplate> templateChooser;
+    private ChoiceBox<TextTemplate> templateChooser;
     @FXML
     private TextArea templateInput;
-    private EmailTemplate selectedTemplate;
+    private TextTemplate selectedTemplate;
 
     @FXML
     private TextField accountNumberInput;
@@ -86,7 +86,7 @@ public class Settings extends Applet {
         encryptions.add("STARTTLS");
         emailEncryptionInput.setItems(FXCollections.observableArrayList(encryptions));
 
-        templateChooser.setItems(FXCollections.observableArrayList(EmailTemplate.values()));
+        templateChooser.setItems(FXCollections.observableArrayList(TextTemplate.values()));
         templateChooser.setOnAction(this::updateSelectedTemplate);
     }
 
@@ -157,7 +157,7 @@ public class Settings extends Applet {
     private void saveSelectedTemplate() throws IOException {
         if (selectedTemplate == null) return;
 
-        EmailTemplateLoader.saveTemplate(selectedTemplate, templateInput.getText());
+        TextTemplateLoader.saveTemplate(selectedTemplate, templateInput.getText());
     }
 
 
@@ -174,7 +174,7 @@ public class Settings extends Applet {
         }
 
         selectedTemplate = templateChooser.getSelectionModel().getSelectedItem();
-        templateInput.setText(EmailTemplateLoader.getTemplate(selectedTemplate));
+        templateInput.setText(TextTemplateLoader.getTemplate(selectedTemplate));
     }
 
 

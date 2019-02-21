@@ -33,7 +33,7 @@ public class EmailSender {
         sendMail(
             user,
             "Du er nå i minus",
-            EmailTemplateLoader.getTemplate(EmailTemplate.USERTURNEDNEGATIVE)
+            TextTemplateLoader.getTemplate(TextTemplate.USERTURNEDNEGATIVE)
         );
     }
 

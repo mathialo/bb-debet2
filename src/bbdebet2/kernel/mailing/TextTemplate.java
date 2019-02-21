@@ -4,17 +4,18 @@
 
 package bbdebet2.kernel.mailing;
 
-public enum EmailTemplate {
+public enum TextTemplate {
     WELCOME("welcome", "Velkomstmail"),
     USERTURNEDNEGATIVE("userTurnedNegative", "\"Nå er du i minus\"-påminnelse"),
-    USERADDEDMONEY("userAddedMoney", "Etter påfyll av saldo");
+    USERADDEDMONEY("userAddedMoney", "Etter påfyll av saldo"),
+    EULA("eula", "EULA (End-User License Agreement)");
 
 
     private String filename;
     private String displayText;
 
 
-    EmailTemplate(String filename, String displayText) {
+    TextTemplate(String filename, String displayText) {
         this.filename = filename;
         this.displayText = displayText;
     }
@@ -25,7 +26,7 @@ public enum EmailTemplate {
     }
 
 
-    public boolean equals(EmailTemplate other) {
+    public boolean equals(TextTemplate other) {
         return filename.equals(other.getFilename());
     }
 
