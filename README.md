@@ -3,7 +3,7 @@ BBdebet er en app for å behandle transaksjoner i debetboka. Det er en digital u
 
 
 ### Versjon 2
-BBdebet2 er en helt ny versjon av BBdebet. Den er foreløpig i beta, og _kan_ brukes, men versjon 1.x er fortsatt den stabile releasen.  
+BBdebet2 er en helt ny versjon av BBdebet, bygd på nytt fra bunnen av. 
 
 
 ## Installasjonsguide
@@ -29,7 +29,7 @@ Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
 
 ### 2.0
  - Total omskriving av hele kodebasen. Store forbedringer for stabilitet, kjøretid og vedlikedholdbarhet.  
- - Nytt lagersystem. Ulike varer av samme type kan nå ha ulik pris. 
+ - Nytt og forbedret lagersystem. Ulike varer av samme type kan nå ha ulik pris. Mulighet for å beregne avanse per vare.
  - Totalt nytt brukergrensesnitt for administrator
  - Flere nye funksjoner slik som mulighet for EULA og plugins
 
