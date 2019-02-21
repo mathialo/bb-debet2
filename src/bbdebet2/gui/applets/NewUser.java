@@ -6,8 +6,8 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.datastructs.User;
-import bbdebet2.kernel.mailing.EmailTemplate;
-import bbdebet2.kernel.mailing.EmailTemplateLoader;
+import bbdebet2.kernel.mailing.TextTemplate;
+import bbdebet2.kernel.mailing.TextTemplateLoader;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,6 +69,6 @@ public class NewUser extends Applet {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        welcomeEmailTextInput.setText(EmailTemplateLoader.getTemplate(EmailTemplate.WELCOME));
+        welcomeEmailTextInput.setText(TextTemplateLoader.getTemplate(TextTemplate.WELCOME));
     }
 }
