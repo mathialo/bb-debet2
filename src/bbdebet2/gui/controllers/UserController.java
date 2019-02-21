@@ -180,6 +180,11 @@ public class UserController implements Initializable {
         // Make sure alert list is cleared
         openAlertBoxes.clear();
 
+        // Present EULA if requested and not previously shown
+        if (kernel.getSettingsHolder().isRequireEula() && !user.hasAcceptedEula()) {
+            // Show EULA
+        }
+
         // New logout timer
         updateLogoutTimer();
     }

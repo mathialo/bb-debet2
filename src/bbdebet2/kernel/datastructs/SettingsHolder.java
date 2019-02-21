@@ -41,6 +41,8 @@ public class SettingsHolder implements Exportable {
 
     private String currencySign = "kr";
 
+    private boolean requireEula = false;
+
 
     public SettingsHolder() {
     }
@@ -140,6 +142,10 @@ public class SettingsHolder implements Exportable {
 
                     case "currencySign":
                         currencySign = line[1];
+                        break;
+
+                    case "requireEula":
+                        requireEula = Boolean.parseBoolean(line[1]);
                         break;
 
 
@@ -424,6 +430,16 @@ public class SettingsHolder implements Exportable {
     }
 
 
+    public boolean isRequireEula() {
+        return requireEula;
+    }
+
+
+    public void setRequireEula(boolean requireEula) {
+        this.requireEula = requireEula;
+    }
+
+
     @Override
     public void saveFile(File file) throws IOException {
         PrintWriter pw = new PrintWriter(file);
@@ -448,6 +464,7 @@ public class SettingsHolder implements Exportable {
         pw.println("glasUserRoundTo=" + glasUserRoundTo);
         pw.println("glasUserName=" + glasUserName);
         pw.println("currencySign=" + currencySign);
+        pw.println("requireEula=" + requireEula);
 
         pw.close();
 

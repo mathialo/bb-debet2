@@ -14,7 +14,7 @@ public class ViewUser {
     private final SimpleStringProperty userName;
     private final SimpleStringProperty mail;
     private final SimpleStringProperty balance;
-
+    private final SimpleStringProperty acceptedEula;
     private User userObject;
 
 
@@ -23,6 +23,9 @@ public class ViewUser {
         this.userName = new SimpleStringProperty(user.getUserName());
         this.mail = new SimpleStringProperty(user.getMail());
         this.balance = new SimpleStringProperty(CurrencyFormatter.format(user.getBalance()));
+        String acceptedEulaText = "Nei";
+        if (user.hasAcceptedEula()) acceptedEulaText = "Ja";
+        this.acceptedEula = new SimpleStringProperty(acceptedEulaText);
 
         this.userObject = user;
     }
@@ -61,6 +64,16 @@ public class ViewUser {
 
     public SimpleStringProperty mailProperty() {
         return mail;
+    }
+
+
+    public String getAcceptedEula() {
+        return acceptedEula.get();
+    }
+
+
+    public SimpleStringProperty acceptedEulaProperty() {
+        return acceptedEula;
     }
 
 

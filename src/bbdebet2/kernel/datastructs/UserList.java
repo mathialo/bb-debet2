@@ -129,7 +129,7 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
 
         // print all users as csv
         for (User u : list) {
-            pw.println(u.getId() + "," + u.getUserName() + "," + u.getMail() + "," + u.getBalance());
+            pw.println(u.getId() + "," + u.getUserName() + "," + u.getMail() + "," + u.getBalance() + "," + u.hasAcceptedEula());
         }
 
         // close stream
