@@ -49,9 +49,12 @@ public class LoginController implements Initializable {
             kernel.getLogger().log("New failed login attemppt from '" + userName + "'");
             errorOutput.setText("Finner ikke bruker '" + userName + "'");
         } else {
-            kernel.getLogger().log("New login from " + user);
-            Main.getCurrentUserController().login(user);
-            Main.toUserScreen();
+            if (Main.getCurrentUserController().login(user)) {
+                kernel.getLogger().log("New login from " + user);
+                Main.toUserScreen();
+            } else {
+                kernel.getLogger().log("Failed login attempt from " + user + ". User did not accept EULA.");
+            }
         }
     }
 
