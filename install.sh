@@ -7,7 +7,7 @@ compile_all() {
 	echo "Kompillerer kildekode"
 
 	# Oppdater versjonsnummer og build-nummer i kildefil
-	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version.$buildnum\3/g"  > sedcommand
+	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version:$buildnum\3/g"  > sedcommand
 	sed -f sedcommand -i src/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1BBdebet $version\\\\nBuild nr $buildnum\3/g" > sedcommand
 	sed -f sedcommand -i src/bbdebet2/gui/Main.java
