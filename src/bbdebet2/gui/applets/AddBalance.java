@@ -62,6 +62,8 @@ public class AddBalance extends Applet {
         }
 
         u.addBalance(amount);
+        kernel.getLogger().log("Added " + amount + kernel.getSettingsHolder().getCurrencySign() + " to user " + u);
+
         try {
             CsvLogger.addMoneyInserts(u, amount);
         } catch (IOException e) {

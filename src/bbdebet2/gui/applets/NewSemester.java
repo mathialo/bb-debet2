@@ -73,6 +73,8 @@ public class NewSemester extends Applet {
                 }
             }
 
+            kernel.getLogger().log("Beginning new semester");
+
         } catch (IOException e) {
             kernel.getLogger().log(e);
 

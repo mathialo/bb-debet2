@@ -48,11 +48,10 @@ public class EditUser extends Applet {
                 alert.showAndWait();
                 return;
             } else {
+                kernel.getLogger().log("Changing name of user: " + u.getUserName() + " -> " + newUserNameInput.getText());
                 u.setUserName(newUserNameInput.getText());
             }
         }
-
-        u.setMail(newEmailInput.getText());
 
         Main.getCurrentAdminController().repaintUserList();
         exit(event);

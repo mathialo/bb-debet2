@@ -71,6 +71,7 @@ public class EditProducts extends Applet {
         }
 
         kernel.getStorage().editProducts(query, newName, newPrice);
+
         Main.getCurrentAdminController().repaintStorage();
         exit(event);
     }
