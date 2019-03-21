@@ -63,7 +63,7 @@ public class AddProducts extends Applet {
     @FXML
     public void submitNewProduct(ActionEvent event) {
         try {
-            String name = productNameInput.getText();
+            String name = productNameInput.getText().trim();
             double buyPrice = Double.parseDouble(buyPriceInput.getText());
             int packQuantity = packQuantityInput.getText().equals("") ? 1 : Integer.parseInt(packQuantityInput.getText());
             double salePrice = Double.parseDouble(salePriceInput.getText());
