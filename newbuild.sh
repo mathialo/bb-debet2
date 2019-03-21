@@ -11,7 +11,7 @@ version="$(cat version)"
 
 # Tagger siste commit med versjon- og build-nummber
 git add -A
-git commit -m "$version.$new_buildnum: $*"
-git tag "v$version.$new_buildnum"
+git commit -m "$version:$new_buildnum: $*"
+git tag "v$version:$new_buildnum"
 #git push origin master
 
