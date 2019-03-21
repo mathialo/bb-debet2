@@ -60,6 +60,7 @@ public class TransactionHandler {
         kernel.getLogger().log("Refunded sale '" + sale + "' for " + user);
     }
 
+
     public void newUserTransaction(User from, User to, double amount) {
         // process transaction
         to.addBalance(amount);
@@ -67,6 +68,9 @@ public class TransactionHandler {
 
         // log transaction
         try {
+            kernel.getLogger().log(
+                "Transfering " + amount + kernel.getSettingsHolder().getCurrencySign() + " from " + from + " to " + to
+            );
             CsvLogger.addUserTransaction(from, to, amount);
         } catch (IOException e) {
             kernel.getLogger().log(e);
