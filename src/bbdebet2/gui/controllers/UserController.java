@@ -215,15 +215,17 @@ public class UserController implements Initializable {
 
 
     private void updateLogoutTimer() {
-        // Delete old timer
-        deleteLogoutTimer();
+        if (Main.getActiveUser() != null) {
+            // Delete old timer
+            deleteLogoutTimer();
 
-        // make a new one
-        logOutTimer = new Timeline(new KeyFrame(
-            Duration.millis(kernel.getSettingsHolder().getMaxInactiveTime() * 1000),
-            e -> warnLogout()
-        ));
-        logOutTimer.play();
+            // make a new one
+            logOutTimer = new Timeline(new KeyFrame(
+                Duration.millis(kernel.getSettingsHolder().getMaxInactiveTime() * 1000),
+                e -> warnLogout()
+            ));
+            logOutTimer.play();
+        }
     }
 
 
