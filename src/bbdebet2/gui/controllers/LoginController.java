@@ -40,6 +40,7 @@ public class LoginController implements Initializable {
             kernel.getLogger().log("New login from glas user");
             Main.getCurrentUserController().loginGlass();
             Main.toUserScreen();
+            return;
         }
 
         // Try to find user

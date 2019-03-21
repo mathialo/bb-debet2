@@ -182,7 +182,7 @@ public class UserController implements Initializable {
         openAlertBoxes.clear();
 
         // Present EULA if requested and not previously shown
-        if (kernel.getSettingsHolder().isRequireEula() && !user.hasAcceptedEula()) {
+        if (kernel.getSettingsHolder().isRequireEula() && !user.hasAcceptedEula() && !isGlasUser) {
             EulaConfirmation eulaConfirmation = new EulaConfirmation();
             Optional<ButtonType> result = eulaConfirmation.showAndWait();
 
