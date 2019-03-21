@@ -296,14 +296,19 @@ public class UserController implements Initializable {
     }
 
 
-    @FXML
-    public void handleResetCart(ActionEvent event) {
-        // Re-add products to storage
+    public void reAddCartToStorage() {
         for (ViewProduct vp : shoppingCartView.getItems()) {
             if (!vp.getProductObject().isCustom()) {
                 kernel.getStorage().add(vp.getProductObject());
             }
         }
+    }
+
+
+    @FXML
+    public void handleResetCart(ActionEvent event) {
+        // Re-add products to storage
+        reAddCartToStorage();
 
         // Empty cart list
         shoppingCartView.getItems().clear();
