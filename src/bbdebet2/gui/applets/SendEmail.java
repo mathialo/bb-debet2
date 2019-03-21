@@ -46,6 +46,7 @@ public class SendEmail extends Applet {
     private enum UserSelectionRule {
         ALL("Alle brukere"),
         ACTIVE("Aktive siste 2 mnd"),
+        INACTIVE("Inaktive nåværende periode"),
         POSITIVE("Positiv balanse"),
         NEGATIVE("Negativ balanse"),
         LESS_THAN_100("Minde enn 100 kr");
@@ -122,6 +123,14 @@ public class SendEmail extends Applet {
 
                     case ACTIVE:
                         if (kernel.getSalesHistory().filterLast(60 * 60 * 24 * 30 * 2).filterOnUser(u).isEmpty()) {
+                            addThisUser = false;
+                            break selectionSearch;
+                        }
+                        break;
+
+
+                    case INACTIVE:
+                        if (!kernel.getSalesHistory().filterOnUser(u).isEmpty()) {
                             addThisUser = false;
                             break selectionSearch;
                         }
