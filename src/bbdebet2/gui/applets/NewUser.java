@@ -45,7 +45,10 @@ public class NewUser extends Applet {
             return;
         }
 
-        User newUser = new User(userNameInput.getText(), userEmailInput.getText());
+        User newUser = new User(
+            userNameInput.getText().replaceAll("\\s+", "").toLowerCase(),
+            userEmailInput.getText().replaceAll("\\s+", "").toLowerCase()
+        );
 
         kernel.getUserList().add(newUser);
 
