@@ -164,6 +164,17 @@ public class Storage implements Exportable, Listable<ViewProduct> {
     }
 
 
+    public Product findIgnoreCase(String productName) {
+        for (PriorityQueue<Product> q : storage) {
+            if (q.peek().getName().equalsIgnoreCase(productName)) {
+                return q.peek();
+            }
+        }
+
+        return null;
+    }
+
+
     public ObservableList<ViewProduct> toObservableList() {
         ArrayList<ViewProduct> list = new ArrayList<>();
 
