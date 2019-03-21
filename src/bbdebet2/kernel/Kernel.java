@@ -4,6 +4,7 @@
 
 package bbdebet2.kernel;
 
+import bbdebet2.gui.Main;
 import bbdebet2.kernel.backup.AutoSaver;
 import bbdebet2.kernel.datastructs.CommandLineInterface;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
@@ -445,6 +446,14 @@ public class Kernel implements CommandLineInterface {
      */
     public void shutDown() {
         if (!isRunning()) return;
+
+        logger.log("Initiating safe shutdown");
+
+        // If in GUI mode, we must empty cart so no items are lost
+        if (Main.getCurrentUserController() != null) {
+            logger.log("Making sure no items are left in the cart");
+            Main.getCurrentUserController().reAddCartToStorage();
+        }
 
         saveAll();
 
