@@ -12,17 +12,33 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SuggestionMenu<T> extends ContextMenu {
 
     private TextField inputField;
-    private Listable<T> backend;
+    private List<Listable<T>> backends;
+    private HashSet<String> previouslyAdded;
 
 
     public SuggestionMenu(TextField inputField, Listable<T> backend) {
         this.inputField = inputField;
-        this.backend = backend;
+        backends = new LinkedList<Listable<T>>();
+        backends.add(backend);
+
+        previouslyAdded = new HashSet<>();
+
+        inputField.setOnKeyPressed(this::updateContextMenuItems);
+    }
+
+
+    public SuggestionMenu(TextField inputField, List<Listable<T>> backends) {
+        this.inputField = inputField;
+        this.backends = backends;
+
+        previouslyAdded = new HashSet<>();
 
         inputField.setOnKeyPressed(this::updateContextMenuItems);
     }
@@ -31,14 +47,20 @@ public class SuggestionMenu<T> extends ContextMenu {
     public void updateContextMenuItems(KeyEvent event) {
         if (! (event.getCode().isLetterKey() || event.getCode() == KeyCode.SPACE || event.getCode().isDigitKey())) return;
 
-        List<T> list = backend.toList();
         getItems().clear();
+        previouslyAdded.clear();
 
-        for (T item : list) {
-            if (item.toString().toLowerCase().contains(inputField.getText().toLowerCase())) {
-                MenuItem menuItem = new MenuItem(item.toString());
-                menuItem.setOnAction(e -> inputField.setText(item.toString()));
-                getItems().add(menuItem);
+        for (Listable<T> backend: backends) {
+            List<T> list = backend.toList();
+
+            for (T item : list) {
+                if (!previouslyAdded.contains(item.toString()) && item.toString().toLowerCase().contains(inputField.getText().toLowerCase())) {
+                    previouslyAdded.add(item.toString());
+
+                    MenuItem menuItem = new MenuItem(item.toString());
+                    menuItem.setOnAction(e -> inputField.setText(item.toString()));
+                    getItems().add(menuItem);
+                }
             }
         }
 

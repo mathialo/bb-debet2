@@ -77,6 +77,10 @@ public class Sale {
         return productName;
     }
 
+    public Product getProduct() {
+        return new Product(productName, pricePayed, pricePayed-earnings);
+    }
+
 
     public double getPricePayed() {
         return pricePayed;
