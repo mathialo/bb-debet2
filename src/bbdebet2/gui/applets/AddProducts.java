@@ -8,6 +8,7 @@ import bbdebet2.gui.Main;
 import bbdebet2.gui.customelements.SuggestionMenu;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewProductForAddition;
+import bbdebet2.kernel.datastructs.Listable;
 import bbdebet2.kernel.datastructs.Product;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddProducts extends Applet {
@@ -188,7 +191,10 @@ public class AddProducts extends Applet {
         setupAutoMarkup();
         setupTableView();
 
-        SuggestionMenu<ViewProduct> suggestionMenu = new SuggestionMenu<>(productNameInput, kernel.getStorage());
+        List<Listable<ViewProduct>> searchHere = new LinkedList<>();
+        searchHere.add(kernel.getStorage());
+        searchHere.add(kernel.getSalesHistory());
+        SuggestionMenu<ViewProduct> suggestionMenu = new SuggestionMenu<>(productNameInput, searchHere);
     }
 
 

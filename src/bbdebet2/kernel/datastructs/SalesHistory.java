@@ -4,10 +4,11 @@
 
 package bbdebet2.kernel.datastructs;
 
+import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
+import bbdebet2.kernel.Kernel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import bbdebet2.kernel.Kernel;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,11 +18,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class SalesHistory implements Iterable<Sale>, Exportable {
+public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Exportable {
 
     private LinkedList<Sale> history;
 
@@ -354,6 +356,24 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
     }
 
 
+    public List<ViewProduct> toList() {
+        ListIterator<Sale> lit = history.listIterator(history.size() - 1);
+        List<ViewProduct> list = new LinkedList<>();
+
+        int maxThreshold = 100;
+        int counter = 0;
+
+        Product p;
+
+        while (lit.hasPrevious() && counter < maxThreshold) {
+            list.add(new ViewProduct(lit.previous().getProduct()));
+            counter++;
+        }
+
+        return list;
+    }
+
+
     public HashMap<String, Integer> getSummary() {
         HashMap<String, Integer> dict = new HashMap<String, Integer>();
 
@@ -404,3 +424,4 @@ public class SalesHistory implements Iterable<Sale>, Exportable {
         return history.getLast();
     }
 }
+

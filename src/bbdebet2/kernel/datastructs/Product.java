@@ -67,6 +67,9 @@ public class Product implements Comparable<Product> {
         return custom;
     }
 
+    public boolean equals(Product o) {
+        return name.equals(o.getName());
+    }
 
     @Override
     public int compareTo(Product o) {
