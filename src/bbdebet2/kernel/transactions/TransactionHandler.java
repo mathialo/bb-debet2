@@ -32,13 +32,7 @@ public class TransactionHandler {
     }
 
 
-    public void refund(Sale sale) {
-        // Get user and product
-        User user = kernel.getUserList().find(sale.getUserName());
-        if (user == null) {
-            throw new RuntimeException("User " + sale.getUserName() + " not found in UserList");
-        }
-
+    private void restock(Sale sale) {
         // Check if product is a custom one, and ad it back if it is not
         if (!sale.getProductName().startsWith("Annet:")) {
             Product product = new Product(
@@ -49,15 +43,29 @@ public class TransactionHandler {
             // Add product back to storage
             kernel.getStorage().add(product);
         }
+    }
+
+    private void giveMoneyBack(Sale sale) {
+        // If sale was made by glass user, there's no user to refund money to
+        if (sale.getUserName().equals(kernel.getSettingsHolder().getGlasUserName())) return;
+
+        // Get user and product
+        User user = kernel.getUserList().find(sale.getUserName());
+        if (user == null) {
+            throw new RuntimeException("User " + sale.getUserName() + " not found in UserList");
+        }
 
         // Give user money back
         user.addBalance(sale.getPricePayed());
+    }
 
-        // Remove from sales history
+    public void refund(Sale sale) {
+        restock(sale);
+        giveMoneyBack(sale);
         kernel.getSalesHistory().remove(sale.getId());
 
         // Log transaction
-        kernel.getLogger().log("Refunded sale '" + sale + "' for " + user);
+        kernel.getLogger().log("Refunded sale '" + sale + "' for " + sale.getUserName());
     }
 
 
