@@ -61,8 +61,7 @@ public class AddBalance extends Applet {
             return;
         }
 
-        u.addBalance(amount);
-        kernel.getLogger().log("Added " + amount + kernel.getSettingsHolder().getCurrencySign() + " to user " + u);
+        kernel.getTransactionHandler().newMoneyInsert(u, amount);
 
         try {
             CsvLogger.addMoneyInserts(u, amount);
@@ -90,6 +89,12 @@ public class AddBalance extends Applet {
         }
 
         Main.getCurrentAdminController().repaintUserList();
+    }
+
+
+    @FXML
+    public void newHandleXLSFileView(ActionEvent event) {
+        HandleXLSFile.createAndDisplayDialog();
     }
 
 

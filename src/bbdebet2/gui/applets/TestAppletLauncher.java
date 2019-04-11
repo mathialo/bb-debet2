@@ -19,7 +19,7 @@ public class TestAppletLauncher extends Application {
     @Override
     public void start(Stage primaryStage) {
         kernel = new Kernel();
-        BackupRestore.createAndDisplayDialog();
+        HandleXLSFile.createAndDisplayDialog();
     }
 
 

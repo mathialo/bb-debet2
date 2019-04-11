@@ -36,6 +36,7 @@ public class Kernel implements CommandLineInterface {
 
     public static final String SAVE_DIR = System.getProperty("user.home") + "/.bbdebet2/";
 
+    public static final String PROCESSEDINSETS_FILENAME = "processedInsets";
     public static final String SALESHISTORY_FILENAME = "saleshistory.csv";
     public static final String USERLIST_FILENAME = "users.usl";
     public static final String STORAGE_FILENAME = "storage.csv";
@@ -49,6 +50,7 @@ public class Kernel implements CommandLineInterface {
     public static final String TRANSACTIONHIST_FILEPATH = SAVE_DIR + TRANSACTIONHIST_FILENAME;
     public static final String SETTINGS_FILEPATH = SAVE_DIR + SETTINGS_FILENAME;
     public static final String LOG_FILEPATH = SAVE_DIR + LOG_FILENAME;
+    public static final String PROCESSEDINSETS_FILEPATH = SAVE_DIR + PROCESSEDINSETS_FILENAME;
 
     private Logger logger;
     private File runningFile;

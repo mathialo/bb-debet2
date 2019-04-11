@@ -69,6 +69,12 @@ public class TransactionHandler {
     }
 
 
+    public void newMoneyInsert(User user, double amount) {
+        user.addBalance(amount);
+        kernel.getLogger().log("Added " + amount + kernel.getSettingsHolder().getCurrencySign() + " to user " + user);
+    }
+
+
     public void newUserTransaction(User from, User to, double amount) {
         // process transaction
         to.addBalance(amount);
