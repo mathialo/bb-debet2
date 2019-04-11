@@ -21,7 +21,7 @@ compile_all() {
 	mkdir -p out
 
 	# Kompiller
-	javac -d out -Xlint:unchecked -cp src:lib/javax.mail.jar:lib/activation.jar $javafiles
+	javac -d out -Xlint:unchecked -cp src:lib/javax.mail.jar:lib/activation.jar:lib/poi-4.0.1.jar $javafiles
 	mkdir -p out/bbdebet2/gui/views
 	cp -r src/bbdebet2/gui/views out/bbdebet2/gui/
 
