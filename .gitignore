@@ -3,6 +3,10 @@
 out
 bb_debet2.iml
 
+# From sublime
+*.sublime-project
+*.sublime-workspace
+
 # Compiled class file
 *.class
 
