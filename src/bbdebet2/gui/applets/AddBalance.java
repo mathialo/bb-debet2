@@ -63,12 +63,6 @@ public class AddBalance extends Applet {
 
         kernel.getTransactionHandler().newMoneyInsert(u, amount);
 
-        try {
-            CsvLogger.addMoneyInserts(u, amount);
-        } catch (IOException e) {
-            kernel.getLogger().log(e);
-        }
-
         if (sendEmailInput.isSelected()) {
             Alert alert = new WaitingDialog("Sender epost...");
             alert.show();
