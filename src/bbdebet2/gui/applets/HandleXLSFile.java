@@ -5,6 +5,7 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import bbdebet2.kernel.mailing.TextTemplate;
@@ -65,11 +66,6 @@ public class HandleXLSFile extends Applet {
     }
 
 
-    public static void main(String[] args) throws IOException {
-
-    }
-
-
     private static boolean unqualifiedInputLine(String line) {
         return line.replaceAll("\\s+", "").equals("");
     }
@@ -96,7 +92,8 @@ public class HandleXLSFile extends Applet {
             if (row.getCell(0).toString().startsWith("Sum")) break;
 
             // Qualify current transaction
-            if (row.getCell(1).toString().equals("Omkostninger")
+            if (row.getCell(1).toString().equalsIgnoreCase("Omkostninger")
+                || row.getCell(1).toString().equalsIgnoreCase("Renter")
                 || !row.getCell(4).toString().equals("")) continue;
 
             fileInsets.add(new MoneyInsets(row.getCell(0), row.getCell(2), row.getCell(5)));
@@ -110,7 +107,7 @@ public class HandleXLSFile extends Applet {
 
         Scanner inputFile = null;
         try {
-            inputFile = new Scanner(new File(kernel.PROCESSEDINSETS_FILEPATH));
+            inputFile = new Scanner(new File(Kernel.PROCESSEDINSERTS_FILEPATH));
         } catch (FileNotFoundException e) {
             kernel.getLogger().log(e);
             kernel.getLogger().log("Could not read processed bank transactions");
@@ -244,7 +241,7 @@ public class HandleXLSFile extends Applet {
 
     private boolean saveNewProcessedInsetsFile() {
         try {
-            PrintWriter pw = new PrintWriter(new File(kernel.PROCESSEDINSETS_FILEPATH));
+            PrintWriter pw = new PrintWriter(new File(Kernel.PROCESSEDINSERTS_FILEPATH));
 
             pw.println("[KNOWN MAPPINGS]");
             for (String name : nameToUsername.keySet()) {
