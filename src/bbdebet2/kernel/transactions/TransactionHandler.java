@@ -72,6 +72,13 @@ public class TransactionHandler {
     public void newMoneyInsert(User user, double amount) {
         user.addBalance(amount);
         kernel.getLogger().log("Added " + amount + kernel.getSettingsHolder().getCurrencySign() + " to user " + user);
+
+        try {
+            CsvLogger.addMoneyInserts(user, amount);
+        } catch (IOException e) {
+            kernel.getLogger().log(e);
+        }
+
     }
 
 
