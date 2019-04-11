@@ -7,6 +7,7 @@ package bbdebet2.gui.customelements;
 import bbdebet2.kernel.datastructs.Product;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -39,6 +40,15 @@ public class MakeCustomProductDialog extends Dialog<Product> {
 
         setResultConverter(dialogButton -> {
             if (dialogButton == productButtonType) {
+                double price = Double.parseDouble(priceInput.getText());
+
+                if (price < 0) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Du kan selvfølgelig ikke kjøpe noe til en negativ pris. Tulling.");
+                    alert.getDialogPane().setPrefHeight(200);
+                    alert.setHeaderText("Din slask");
+                    alert.showAndWait();
+                    return null;
+                }
                 return new Product(
                     titleInput.getText(),
                     Double.parseDouble(priceInput.getText()),
