@@ -7,6 +7,9 @@ bb_debet2.iml
 *.sublime-project
 *.sublime-workspace
 
+# JavaFX path, ask user to provide in install.sh
+JAVAFX_PATH
+
 # Compiled class file
 *.class
 
