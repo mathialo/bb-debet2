@@ -1,5 +1,18 @@
 /*
- * Copyright (c) 2018. Mathias Lohne
+ * Copyright (C) 2019  Mathias Lohne
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package bbdebet2.gui.applets;
@@ -105,7 +118,7 @@ public class SendEmail extends Applet {
     private void handleAddUsers(List<UserSelectionRule> selectionRules) {
         if (selectionRules.isEmpty()) return;
 
-        if (! userNamesInput.getText().replaceAll("\\s+", "").equals("")) {
+        if (!userNamesInput.getText().replaceAll("\\s+", "").equals("")) {
             userNamesInput.setText(userNamesInput.getText() + ", ");
         }
 
@@ -191,7 +204,7 @@ public class SendEmail extends Applet {
 
                     try {
                         kernel.getEmailSender().sendMail(
-                            user, emailSubjectInput.getText(), emailTextInput.getText());
+                                user, emailSubjectInput.getText(), emailTextInput.getText());
                     } catch (MessagingException | InvalidEncryptionException e) {
                         kernel.getLogger().log(e);
                         failedNames.add(username);
@@ -207,7 +220,7 @@ public class SendEmail extends Applet {
 
                 if (!failedNames.isEmpty()) {
                     Alert alert = new Alert(
-                        Alert.AlertType.ERROR, "Kunne ikke sende til " + failedNames.toString());
+                            Alert.AlertType.ERROR, "Kunne ikke sende til " + failedNames.toString());
                     alert.show();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "Eposter sendt!");

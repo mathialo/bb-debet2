@@ -1,2 +1,2 @@
 Main-Class: bbdebet2.gui.Main
-Class-Path: debetbok.jar lib/javax.mail.jar lib/activation.jar lib/poi-4.0.1.jar
+Class-Path: debetbok.jar lib/javax.mail.jar lib/poi-4.0.1.jar
