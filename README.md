@@ -18,9 +18,9 @@ Da vil siste versjon bli lastet ned og installert. Har du allerede en lokal vers
 $ git pull origin master
 $ bash install.sh
 ```
-Installasjonsskriptet vil legge programmet inn i `/usr/local/share/bbdebet2/`, og legge symbolske linker i `/usr/local/bin/` slik at programmet er tilgjengelig fra terminalen. Det vil også legge til ikon i startmenyen for alle GNOME-baserte desktoper. 
+Installasjonsskriptet vil legge programmet inn i `/usr/local/share/bbdebet2/`, og legge symbolske linker i `/usr/local/bin/` slik at programmet er tilgjengelig fra terminalen. Det vil også legge til ikon i startmenyen. 
 
-Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil også bli initialisert av installasjonsskriptet. 
+Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil bli initialisert av installasjonsskriptet. 
  
 
 
@@ -29,7 +29,7 @@ Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
 
 ### 2.1
  - Riktig lisenshåndtering for dependencies
- - Shipper nå med OpenJDK og OpenJFX for å gjøre installering enklere
+ - Shipper nå med OpenJDK og OpenJFX for å gjøre installering enklere. Bruker trenger ikke lenger ha en installasjon av java på systemet. Vi er heller ikke avhengige av OracleJDK som gjør lisensendringen i versjon 11 uproblematisk for bruken av BBDebet2. 
  - Oppdattert installeringsskript
 
 ### 2.0
