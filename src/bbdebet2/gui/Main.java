@@ -33,6 +33,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -216,6 +217,12 @@ public class Main extends Application {
             currentLoginController.postInitialize();
             currentUserController.postInitialize();
             currentAdminController.postInitialize();
+
+            // Close splash screen and show application
+            SplashScreen splash = SplashScreen.getSplashScreen();
+            if(splash != null) {
+                splash.close();
+            }
 
             primaryStage.show();
         } catch (IOException e) {
