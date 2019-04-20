@@ -15,7 +15,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 if [[ "$1" == "--nogui" ]]; then
-    /usr/local/share/bbdebet2/jdk/jdk-12.0.1/bin/java -Dfile.encoding=UTF-8 --module-path JAVAFX_PATH --add-modules ALL-MODULE-PATH -jar /usr/local/share/bbdebet2/bbdebet2.jar $*
+    JAVA_PATH -Dfile.encoding=UTF-8 --module-path JAVAFX_PATH --add-modules ALL-MODULE-PATH -jar INSTALL_PATH/bbdebet2.jar $*
 else
-    /usr/local/share/bbdebet2/jdk/jdk-12.0.1/bin/java -Dfile.encoding=UTF-8 --module-path JAVAFX_PATH --add-modules ALL-MODULE-PATH -splash:/usr/local/share/bbdebet2/img/splash.png -jar /usr/local/share/bbdebet2/bbdebet2.jar $*
+    JAVA_PATH -Dfile.encoding=UTF-8 --module-path JAVAFX_PATH --add-modules ALL-MODULE-PATH -splash:INSTALL_PATH/img/splash.png -jar INSTALL_PATH/bbdebet2.jar $*
 fi
