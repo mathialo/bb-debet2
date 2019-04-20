@@ -1,26 +1,98 @@
 #! /bin/bash
+# Copyright (C) 2019  Mathias Lohne
+
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 # Les info fra filer
 version="$(cat version)"
 buildnum="$(cat buildnum)"
 
-javafx_path="$(cat JAVAFX_PATH 2> /dev/null)"
+# Installasjonsstier
+jdk_path="/usr/local/share/bbdebet2/jdk/jdk-12.0.1/bin"
+javafx_path="/usr/local/share/bbdebet2/jdk/javafx-sdk-12/lib/"
 
-# Skriv feilmelding dersom filen ikke finnes
-if [[ $javafx_path == "" ]]; then
-	echo "Feil: Ingen 'JAVAFX_PATH'-fil"
+
+infoprint() {
+	echo "Installasjonsskript for BBDebet2."
 	echo ""
-	echo "Installasjonsskriptet trenger 'JAVAFX_PATH' som inneholder adressen"
-	echo "til JavaFX-installasjonen. Filen er laget, du må fikse innholdet før"
-	echo "neste kjøring."
+}
 
-	echo "/PATH/TO/JAVAFX/lib" > JAVAFX_PATH
-	exit
-fi
+
+licence_review() {
+	echo "BBDebet2 er lisensiert under GPLv3. I tillegg bygger BBDebet2 på følgende"
+	echo "pakker med tilhørende lisenser:"
+	echo ""
+	echo "  - OpenJDK, lisensiert under GPLv2 + CP"
+	echo "  - OpenJFX, lisensiert under GPLv2 + CP"
+	echo "  - JavaMail, lisensiert under CDDL og GPLv2 + CP"
+	echo "  - Apache POI, lisensiert under Apache v2"
+
+	while [[ 1 ]]; do
+		echo ""
+		echo "Godtar du lisensene?"
+		echo "[y]  Godta"
+		echo "[n]  Avbryt"
+		echo "[l]  Se gjennom"
+		read -p "[y/n/l]:   " yn
+		
+		case $yn in
+			[Yy]* ) return;;
+			[Nn]* ) echo "Lisensene må godtas for å kunne installere. Avbryter.";exit;;
+			[Ll]* ) echo;;
+			* ) echo "Ugyldig input. Antar avvisning av lisenser. Avbryter"; exit;;
+		esac
+
+		echo "Viser lisenser. Trykk [Enter] for å åpne, trykk [q] for å lukke."
+		echo -n "  - BBDebet2 "
+		read
+		less LICENSE
+		echo -n "  - OpenJDK "
+		read 
+		less jdk/openjdk-12.license
+		echo -n "  - OpenJFX "
+		read 
+		less jdk/openjfx-12.license
+		echo -n "  - JavaMail "
+		read 
+		less lib/javax.mail.license
+		echo -n "  - Apache POI "
+		read 
+		less lib/poi-4.0.1.license
+	done
+}
+
+
+make_install_dirs() {
+	sudo mkdir -p /usr/local/share/bbdebet2
+	sudo mkdir -p /usr/local/share/bbdebet2/jdk
+	sudo mkdir -p /usr/local/share/bbdebet2/plugins
+}
+
+
+jdk_install() {
+	echo "[i] Installerer dependencies"
+	echo " - OpenJDK (for lokalt bruk, eksisterende java-installasjoner blir"
+	echo "   ikke påvirket)"
+	sudo tar -xzf jdk/openjdk-12.0.1_linux-x64_bin.tar.gz -C /usr/local/share/bbdebet2/jdk/
+	echo " - OpenJFX"
+	sudo tar -xzf jdk/openjfx-12_linux-x64_bin-sdk.tar.gz -C /usr/local/share/bbdebet2/jdk/
+}
 
 
 preprocess_sources() {
-	echo "Konfigurerer build"
+	echo "[i] Konfigurerer build"
 
 	# Oppdater versjonsnummer og build-nummer i kildefil
 	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version:$buildnum\3/g"  > sedcommand
@@ -28,7 +100,17 @@ preprocess_sources() {
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1BBdebet $version\\\\nBuild nr $buildnum\3/g" > sedcommand
 	sed -f sedcommand -i src/bbdebet2/gui/Main.java
 
-	# Dytt JavaFX-sti inn i run.sh
+	# Dytt JDK og JavaFX inn i run.sh
+	# Escape / i $jdk_path
+	echo "$jdk_path/java" > JDK_PATH_ESCAPED_SLASHES
+	sed 's/\//\\\//g' -i JDK_PATH_ESCAPED_SLASHES
+	jdk_path_escaped_slashes="$(cat JDK_PATH_ESCAPED_SLASHES)"
+	rm JDK_PATH_ESCAPED_SLASHES
+
+	echo "s/JAVA_PATH/$jdk_path_escaped_slashes/g" > sedcommand
+	sed -f sedcommand -i etc/run.sh
+	rm sedcommand
+
 	# Escape / i $javafx_path
 	echo "$javafx_path" > JAVAFX_PATH_ESCAPED_SLASHES
 	sed 's/\//\\\//g' -i JAVAFX_PATH_ESCAPED_SLASHES
@@ -43,7 +125,7 @@ preprocess_sources() {
 
 postprocess_sources() {
 	# Endre tilbake for å unngå kjipe commits
-	echo "Rydder opp"
+	echo "[i] Rydder opp"
 
 	# Main.java 
 	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g"  > sedcommand
@@ -60,8 +142,7 @@ postprocess_sources() {
 
 
 compile_all() {
-	echo "Kompillerer kildekode"
-
+	echo "[i] Kompillerer kildekode"
 
 	# Finn alle kildefiler
 	javafiles="$(find src/ -name "*java" | sed ':a;N;$!ba;s/\n/ /g')"
@@ -71,24 +152,21 @@ compile_all() {
 	mkdir -p out
 
 	# Kompiller
-	javac -d out -Xlint:unchecked --module-path /usr/lib/jvm/javafx-sdk-11.0.2/lib --add-modules ALL-MODULE-PATH -cp src:lib/javax.mail.jar:lib/activation.jar:lib/poi-4.0.1.jar $javafiles
+	$jdk_path/javac -d out -Xlint:unchecked --module-path /usr/lib/jvm/javafx-sdk-11.0.2/lib --add-modules ALL-MODULE-PATH -cp src:lib/javax.mail.jar:lib/poi-4.0.1.jar $javafiles
 	mkdir -p out/bbdebet2/gui/views
 	cp -r src/bbdebet2/gui/views out/bbdebet2/gui/
-
-
-
 
 	# Pakk alt inn i en JAR
 	cd out
 	classfiles="$(find . -type f | sed ':a;N;$!ba;s/\n/ /g')"
-	jar cfm bbdebet2.jar ../etc/MANIFEST.MF $classfiles
+	$jdk_path/jar cfm bbdebet2.jar ../etc/MANIFEST.MF $classfiles
 	cd ..
 	mv out/bbdebet2.jar .
 }
 
 
 copy_files() {
-	echo "Kopierer filer"
+	echo "[i] Kopierer filer"
 
 	# Sørg for at /usr/local/share/bbdebet2 finnes
 	sudo mkdir -p /usr/local/share/bbdebet2
@@ -127,9 +205,22 @@ cleanup() {
 
 
 install_bbdebet2() {
+	# Info og lisensstyr
+	infoprint
+	licence_review
+
+	echo ""
+	echo "Begynner installasjon"
+
 	# Sjekk at vi kan være root om vi vil
-	echo "Sjekker privilegier"
+	echo "[i] Sjekker privilegier"
 	sudo echo "Root-tilgang OK!"
+
+	# Sørg for at /usr/local/share/bbdebet2 finnes
+	make_install_dirs
+
+	# Spør om JDK
+	jdk_install
 
 	# Gjør småendringer i kildefiler
 	preprocess_sources

@@ -7,7 +7,7 @@ BBdebet2 er en helt ny versjon av BBdebet, bygd på nytt fra bunnen av.
 
 
 ## Installasjonsguide
-BBdebet2 er skrevet i Java, og du trenger JDK 8 eller høyere på maskinen for å installere. Du trenger også en installasjon av JavaFX. For å installere BBdebet 2 flytter du deg til en passende mappe (feks Downloads) og skriver følgende i terminalen:
+For å installere BBdebet 2 flytter du deg til en passende mappe (feks Downloads) og skriver følgende i terminalen:
 ``` bash
 $ git clone https://github.com/mathialo/bb-debet2.git
 $ cd bb-debet2
@@ -27,10 +27,16 @@ Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil også bli i
 ## Versjoner
 Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
 
+### 2.1
+ - Riktig lisenshåndtering for dependencies
+ - Shipper nå med OpenJDK og OpenJFX for å gjøre installering enklere
+ - Oppdattert installeringsskript
+
 ### 2.0
  - Total omskriving av hele kodebasen. Store forbedringer for stabilitet, kjøretid og vedlikedholdbarhet.  
  - Nytt og forbedret lagersystem. Ulike varer av samme type kan nå ha ulik pris. Mulighet for å beregne avanse per vare.
  - Totalt nytt brukergrensesnitt for administrator
+ - Semiautomatisk innskuddshåndtering
  - Flere nye funksjoner slik som mulighet for EULA og plugins
 
 
@@ -43,7 +49,7 @@ Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
  - Glassbruker
  - Reply-To i mail
  - Bedre handlelistegenerering
- - Flere feil rettet opp i innstalleringsskript
+ - Flere feil rettet opp i installeringsskript
 
 
 ### 1.7
