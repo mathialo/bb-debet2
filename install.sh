@@ -14,14 +14,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Avbryt på feil
+set -e
 
 # Les info fra filer
 version="$(cat version)"
 buildnum="$(cat buildnum)"
-
-# Installasjonsstier
-jdk_path="/usr/local/share/bbdebet2/jdk/jdk-12.0.1/bin"
-javafx_path="/usr/local/share/bbdebet2/jdk/javafx-sdk-12/lib/"
 
 
 infoprint() {
@@ -49,9 +47,9 @@ licence_review() {
 		
 		case $yn in
 			[Yy]* ) return;;
-			[Nn]* ) echo "Lisensene må godtas for å kunne installere. Avbryter.";exit;;
+			[Nn]* ) echo "Lisensene må godtas for å kunne installere. Avbryter.";exit 0;;
 			[Ll]* ) echo;;
-			* ) echo "Ugyldig input. Antar avvisning av lisenser. Avbryter"; exit;;
+			* ) echo "Ugyldig input. Antar avvisning av lisenser. Avbryter"; exit 0;;
 		esac
 
 		echo "Viser lisenser. Trykk [Enter] for å åpne, trykk [q] for å lukke."
@@ -74,10 +72,34 @@ licence_review() {
 }
 
 
+ask_install_path() {
+	echo "Hvor skal BBDebet2 installeres? Trykk [Enter] uten å skrive noe for"
+	echo "standard-plassering (/usr/local/share)."
+
+	read -p "[plassering]:  " userentered_path
+
+	if [[ "$userentered_path" == "" ]]; then
+		install_path="/usr/local/share/bbdebet2"
+	else
+		install_path=$userentered_path/bbdebet2
+	fi
+
+	jdk_path="$install_path/jdk/jdk-12.0.1/bin"
+	javafx_path="$install_path/jdk/javafx-sdk-12/lib/"
+}
+
+
+read_install_path() {
+	install_path="$(cat ~/.bbdebet2/.installdir)"
+	jdk_path="$install_path/jdk/jdk-12.0.1/bin"
+	javafx_path="$install_path/jdk/javafx-sdk-12/lib/"
+}
+
+
 make_install_dirs() {
-	sudo mkdir -p /usr/local/share/bbdebet2
-	sudo mkdir -p /usr/local/share/bbdebet2/jdk
-	sudo mkdir -p /usr/local/share/bbdebet2/plugins
+	sudo mkdir -p $install_path
+	sudo mkdir -p $install_path/jdk
+	sudo mkdir -p $install_path/plugins
 }
 
 
@@ -85,9 +107,9 @@ jdk_install() {
 	echo "[i] Installerer dependencies"
 	echo " - OpenJDK (for lokalt bruk, eksisterende java-installasjoner blir"
 	echo "   ikke påvirket)"
-	sudo tar -xzf jdk/openjdk-12.0.1_linux-x64_bin.tar.gz -C /usr/local/share/bbdebet2/jdk/
+	sudo tar -xzf jdk/openjdk-12.0.1_linux-x64_bin.tar.gz -C $install_path/jdk/
 	echo " - OpenJFX"
-	sudo tar -xzf jdk/openjfx-12_linux-x64_bin-sdk.tar.gz -C /usr/local/share/bbdebet2/jdk/
+	sudo tar -xzf jdk/openjfx-12_linux-x64_bin-sdk.tar.gz -C $install_path/jdk/
 }
 
 
@@ -120,6 +142,26 @@ preprocess_sources() {
 	echo "s/JAVAFX_PATH/$javafx_path_escaped_slashes/g" > sedcommand
 	sed -f sedcommand -i etc/run.sh
 	rm sedcommand
+
+	# Escape / i $javafx_path
+	echo "$install_path" > INSTALL_PATH_ESCAPED_SLASHES
+	sed 's/\//\\\//g' -i INSTALL_PATH_ESCAPED_SLASHES
+	install_path_escaped_slashes="$(cat INSTALL_PATH_ESCAPED_SLASHES)"
+	rm INSTALL_PATH_ESCAPED_SLASHES
+
+	echo "s/INSTALL_PATH/$install_path_escaped_slashes/g" > sedcommand
+	sed -f sedcommand -i etc/run.sh
+	rm sedcommand
+
+	# Fiks desktop-fil til startmenyen
+	echo "$install_path" > INSTALL_PATH_ESCAPED_SLASHES
+	sed 's/\//\\\//g' -i INSTALL_PATH_ESCAPED_SLASHES
+	install_path_escaped_slashes="$(cat INSTALL_PATH_ESCAPED_SLASHES)"
+	rm INSTALL_PATH_ESCAPED_SLASHES
+
+	echo "s/INSTALL_PATH/$install_path_escaped_slashes/g" > sedcommand
+	sed -f sedcommand -i etc/bbdebet2.desktop
+	rm sedcommand	
 }
 
 
@@ -135,8 +177,21 @@ postprocess_sources() {
 	rm sedcommand
 
 	# run.sh
+	echo "s/$jdk_path_escaped_slashes/JAVA_PATH/g" > sedcommand
+	sed -f sedcommand -i etc/run.sh
+	rm sedcommand
+
 	echo "s/$javafx_path_escaped_slashes/JAVAFX_PATH/g" > sedcommand
 	sed -f sedcommand -i etc/run.sh
+	rm sedcommand
+
+	echo "s/$install_path_escaped_slashes/INSTALL_PATH/g" > sedcommand
+	sed -f sedcommand -i etc/run.sh
+	rm sedcommand
+
+	# bbdebet2.desktop
+	echo "s/$install_path_escaped_slashes/INSTALL_PATH/g" > sedcommand
+	sed -f sedcommand -i etc/bbdebet2.desktop
 	rm sedcommand
 }
 
@@ -168,27 +223,29 @@ compile_all() {
 copy_files() {
 	echo "[i] Kopierer filer"
 
-	# Sørg for at /usr/local/share/bbdebet2 finnes
-	sudo mkdir -p /usr/local/share/bbdebet2
-    sudo mkdir -p /usr/local/share/bbdebet2/plugins
+	# Sørg for at $install_path finnes
+	sudo mkdir -p $install_path
+    sudo mkdir -p $install_path/plugins
 
 	# Kopier filer
-	sudo cp bbdebet2.jar /usr/local/share/bbdebet2/
-	sudo cp -r lib/ /usr/local/share/bbdebet2/
-	sudo cp -r etc/img /usr/local/share/bbdebet2/
-	sudo cp etc/run.sh /usr/local/share/bbdebet2/
-	sudo chmod +x /usr/local/share/bbdebet2/run.sh
-	sudo cp etc/bashscripts/* /usr/local/share/bbdebet2/
-	sudo chmod +x /usr/local/share/bbdebet2/senddebet2data.sh
-	sudo chmod +x /usr/local/share/bbdebet2/getdebet2data.sh
-	sudo cp etc/manual_bbdebet2.html /usr/local/share/bbdebet2/
+	sudo cp bbdebet2.jar $install_path/
+	sudo cp -r lib/ $install_path/
+	sudo cp -r etc/img $install_path/
+	sudo cp etc/run.sh $install_path/
+	sudo chmod +x $install_path/run.sh
+	sudo cp etc/bashscripts/* $install_path/
+	sudo chmod +x $install_path/senddebet2data.sh
+	sudo chmod +x $install_path/getdebet2data.sh
+	sudo cp etc/manual_bbdebet2.html $install_path/
 
-	# Lag linker for tilgjengelighet i terminal og startmeny. Ignorer feil, da
-	# det kommer av at filene allerede finnes (hvis man innstallerer ny versjon)
+	# Lag linker for tilgjengelighet i terminal og startmeny. 
 	sudo cp etc/bbdebet2.desktop /usr/share/applications
-	sudo ln -s /usr/local/share/bbdebet2/run.sh /usr/local/bin/bbdebet2 2> /dev/null
-	sudo ln -s /usr/local/share/bbdebet2/senddebet2data.sh /usr/local/bin/senddebet2data 2> /dev/null
-	sudo ln -s /usr/local/share/bbdebet2/getdebet2data.sh /usr/local/bin/getdebet2data 2> /dev/null
+	sudo ln -sf $install_path/run.sh /usr/local/bin/bbdebet2
+	sudo ln -sf $install_path/senddebet2data.sh /usr/local/bin/senddebet2data
+	sudo ln -sf $install_path/getdebet2data.sh /usr/local/bin/getdebet2data
+
+	# Lagre sti til installeringsmappe
+	echo "$install_path" > ~/.bbdebet2/.installdir
 }
 
 
@@ -204,22 +261,31 @@ cleanup() {
 }
 
 
+root_check() {
+	echo "[i] Sjekker privilegier. "
+	sudo echo "    -> Root-tilgang OK!"
+}
+
+
 install_bbdebet2() {
 	# Info og lisensstyr
 	infoprint
 	licence_review
 
 	echo ""
-	echo "Begynner installasjon"
+	echo "Begynner installasjon."
 
 	# Sjekk at vi kan være root om vi vil
-	echo "[i] Sjekker privilegier"
-	sudo echo "Root-tilgang OK!"
+	root_check
 
-	# Sørg for at /usr/local/share/bbdebet2 finnes
+	# Sørg for at $install_path finnes
+	ask_install_path
 	make_install_dirs
 
-	# Spør om JDK
+	# Sørg for at lagre-mappene i ~ finnes.
+	make_save_dirs
+
+	# Installer JDK
 	jdk_install
 
 	# Gjør småendringer i kildefiler
@@ -231,8 +297,36 @@ install_bbdebet2() {
 	# Kopier filer rundt dit de skal
 	copy_files
 
-	# Sørg for at lagre-mappene i ~ finnes.
-	make_save_dirs
+	# cleanup
+	postprocess_sources
+	cleanup
+}
+
+
+update_bbdebet2() {
+	# Info
+	infoprint
+
+	echo "Begynner oppdattering."
+
+	# Sjekk at vi kan være root om vi vil
+	root_check
+
+	# Last ned siste versjon
+	echo "[i] Last ned siste versjon"
+	git pull origin master > /dev/null
+
+	# Sørg for at $install_path finnes
+	read_install_path
+
+	# Gjør småendringer i kildefiler
+	preprocess_sources
+
+	# Kompiller
+	compile_all
+
+	# Kopier filer rundt dit de skal
+	copy_files
 
 	# cleanup
 	postprocess_sources
@@ -240,9 +334,72 @@ install_bbdebet2() {
 }
 
 
+remove_bbdebet2() {
+	infoprint
+
+	# Spør om bekreftelse
+	echo "Programmet vil nå slette BBDebet2 fra systemet. Er du sikker?"
+	read -p "[y/n]:   " yn
+	case $yn in
+		[Yy]* ) echo;;
+		[Nn]* ) echo "Avbryter.";exit 0;;
+		* ) echo "Ugyldig input. Avbryter"; exit 0;;
+	esac
+
+	read_install_path
+	root_check
+
+	echo "[i] Sletter filer"
+	sudo rm -r $install_path
+	sudo rm -r /usr/local/bin/bbdebet2
+	sudo rm -r /usr/local/bin/senddebet2data
+	sudo rm -r /usr/local/bin/getdebet2data
+	sudo rm -r /usr/share/applications/bbdebet2.desktop
+	sudo rm -rf ~/.bbdebet2.gui.Main
+
+	echo ""
+	echo "Ønsker du å slette lagrede filer (salgshistorikk, brukerdata, etc..) også?"
+	read -p "[y/n]:   " yn
+	case $yn in
+		[Yy]* ) echo;;
+		[Nn]* ) exit 0;;
+		* ) echo "Ugyldig input. Sletter ikke."; exit 0;;
+	esac
+
+	echo "[i] Sletter brukerdata"
+	sudo rm -r ~/.bbdebet2
+}
+
+
 # Kontroller at vi _ikke_ er root
 if [[ "$EUID" == 0 ]]; then
 	echo "Ikke kjør som root! Jeg fikser det selv."
-else
+
+elif [[ "$1" == "avinstaller" ]]; then
+	remove_bbdebet2
+
+	echo ""
+	echo "BBDebet2 er avinstallert. Generelt!"
+
+elif [[ "$1" == "installer" ]]; then
 	install_bbdebet2
+
+	echo ""
+	echo "BBDebet2 er installert. Generelt!"
+
+elif [[ "$1" == "oppdatter" ]]; then
+	update_bbdebet2
+
+	echo ""
+	echo "BBDebet2 er oppdattert. Generelt!"
+
+else
+	echo "Ingen kommando gitt. Installasjonsprogrammet kjøres slik:"
+	echo ""
+	echo "   $ ./install.sh <kommando>"
+	echo ""
+	echo "Der <kommando> kan være:"
+	echo "    - installer"
+	echo "    - avinstaller"
+	echo "    - oppdatter"
 fi
