@@ -53,6 +53,7 @@ public class PasswordDialog extends Dialog<String> {
         HBox.setHgrow(passwordField, Priority.ALWAYS);
 
         getDialogPane().setContent(hBox);
+        getDialogPane().setPrefSize(250, 100);
 
         Platform.runLater(() -> passwordField.requestFocus());
 

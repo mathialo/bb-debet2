@@ -35,6 +35,7 @@ public class WaitingDialog extends Alert {
         getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
 
         getDialogPane().setPrefWidth(350);
+        getDialogPane().setPrefHeight(200);
         getDialogPane().setContent(pane);
     }
 

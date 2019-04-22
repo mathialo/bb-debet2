@@ -167,8 +167,8 @@ public class Main extends Application {
         if (errorsOccuredDuringStartup) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Feilmelding:\n" + errorMessage + "\n\nVil du likevel tvinge en oppstart?");
             alert.setHeaderText("Feil i startup");
-            alert.getDialogPane().setPrefHeight(300);
-            alert.getDialogPane().setPrefWidth(400);
+            alert.getDialogPane().setMinHeight(300);
+            alert.getDialogPane().setMinWidth(400);
 
             ButtonType buttonTypeYes = new ButtonType("Ja");
             ButtonType buttonTypeCancel = new ButtonType("Nei", ButtonBar.ButtonData.CANCEL_CLOSE);

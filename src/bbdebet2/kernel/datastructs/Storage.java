@@ -25,15 +25,7 @@ import javafx.collections.ObservableList;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Storage implements Exportable, Listable<ViewProduct> {
 
@@ -260,7 +252,10 @@ public class Storage implements Exportable, Listable<ViewProduct> {
         } else if (newNum < oldNum) {
             // New number is smaller, remove the cheapest entries
 
-            for (PriorityQueue<Product> q : storage) {
+            Iterator<PriorityQueue<Product>> storageIterator = storage.iterator();
+            while (storageIterator.hasNext()) {
+                PriorityQueue<Product> q = storageIterator.next();
+
                 // Is this the product we're looking for?
                 if (q.peek().getName().equals(productName)) {
 
@@ -268,8 +263,9 @@ public class Storage implements Exportable, Listable<ViewProduct> {
                     for (int i = 0; i < oldNum - newNum; i++) {
                         q.poll();
                     }
+                    System.out.println(q.size());
 
-                    if (q.size() == 0) storage.remove(q);
+                    if (q.size() == 0) storageIterator.remove();
                 }
             }
         }
