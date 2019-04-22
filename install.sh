@@ -23,7 +23,7 @@ buildnum="$(cat buildnum)"
 
 
 infoprint() {
-	echo "Installasjonsskript for BBDebet2."
+	echo "Installasjonsskript for BBDebet2, versjon $version build nummer $buildnum."
 	echo ""
 }
 
@@ -73,8 +73,10 @@ licence_review() {
 
 
 ask_install_path() {
+	echo ""
 	echo "Hvor skal BBDebet2 installeres? Trykk [Enter] uten å skrive noe for"
-	echo "standard-plassering (/usr/local/share)."
+	echo "standard-plassering (/usr/local/share). Det må være $(du -h --max-depth=0 | cut -f 1) ledig på"
+	echo "partsisjonen du installerer på."
 
 	read -p "[plassering]:  " userentered_path
 
@@ -131,7 +133,6 @@ preprocess_sources() {
 
 	echo "s/JAVA_PATH/$jdk_path_escaped_slashes/g" > sedcommand
 	sed -f sedcommand -i etc/run.sh
-	rm sedcommand
 
 	# Escape / i $javafx_path
 	echo "$javafx_path" > JAVAFX_PATH_ESCAPED_SLASHES
@@ -141,7 +142,6 @@ preprocess_sources() {
 
 	echo "s/JAVAFX_PATH/$javafx_path_escaped_slashes/g" > sedcommand
 	sed -f sedcommand -i etc/run.sh
-	rm sedcommand
 
 	# Escape / i $javafx_path
 	echo "$install_path" > INSTALL_PATH_ESCAPED_SLASHES
@@ -151,16 +151,11 @@ preprocess_sources() {
 
 	echo "s/INSTALL_PATH/$install_path_escaped_slashes/g" > sedcommand
 	sed -f sedcommand -i etc/run.sh
-	rm sedcommand
 
 	# Fiks desktop-fil til startmenyen
-	echo "$install_path" > INSTALL_PATH_ESCAPED_SLASHES
-	sed 's/\//\\\//g' -i INSTALL_PATH_ESCAPED_SLASHES
-	install_path_escaped_slashes="$(cat INSTALL_PATH_ESCAPED_SLASHES)"
-	rm INSTALL_PATH_ESCAPED_SLASHES
-
 	echo "s/INSTALL_PATH/$install_path_escaped_slashes/g" > sedcommand
 	sed -f sedcommand -i etc/bbdebet2.desktop
+
 	rm sedcommand	
 }
 
@@ -207,7 +202,7 @@ compile_all() {
 	mkdir -p out
 
 	# Kompiller
-	$jdk_path/javac -d out -Xlint:unchecked --module-path /usr/lib/jvm/javafx-sdk-11.0.2/lib --add-modules ALL-MODULE-PATH -cp src:lib/javax.mail.jar:lib/poi-4.0.1.jar $javafiles
+	$jdk_path/javac -d out -Xlint:unchecked --module-path $javafx_path --add-modules ALL-MODULE-PATH -cp src:lib/javax.mail.jar:lib/poi-4.0.1.jar $javafiles
 	mkdir -p out/bbdebet2/gui/views
 	cp -r src/bbdebet2/gui/views out/bbdebet2/gui/
 
@@ -223,22 +218,22 @@ compile_all() {
 copy_files() {
 	echo "[i] Kopierer filer"
 
-	# Sørg for at $install_path finnes
-	sudo mkdir -p $install_path
-    sudo mkdir -p $install_path/plugins
-
 	# Kopier filer
+	echo " - BBDebet2"
 	sudo cp bbdebet2.jar $install_path/
-	sudo cp -r lib/ $install_path/
-	sudo cp -r etc/img $install_path/
 	sudo cp etc/run.sh $install_path/
 	sudo chmod +x $install_path/run.sh
 	sudo cp etc/bashscripts/* $install_path/
 	sudo chmod +x $install_path/senddebet2data.sh
 	sudo chmod +x $install_path/getdebet2data.sh
 	sudo cp etc/manual_bbdebet2.html $install_path/
+	sudo cp -r etc/img $install_path/
+
+	for f in lib/*.jar; do echo " - $(echo $f | cut -d "/" -f 2 | sed 's/.jar//g')"; done
+	sudo cp -r lib/ $install_path/
 
 	# Lag linker for tilgjengelighet i terminal og startmeny. 
+	echo " - Lager lenker i /usr/bin og /usr/share/applications"
 	sudo cp etc/bbdebet2.desktop /usr/share/applications
 	sudo ln -sf $install_path/run.sh /usr/local/bin/bbdebet2
 	sudo ln -sf $install_path/senddebet2data.sh /usr/local/bin/senddebet2data
@@ -272,6 +267,9 @@ install_bbdebet2() {
 	infoprint
 	licence_review
 
+	# Spør om plassering
+	ask_install_path
+
 	echo ""
 	echo "Begynner installasjon."
 
@@ -279,7 +277,6 @@ install_bbdebet2() {
 	root_check
 
 	# Sørg for at $install_path finnes
-	ask_install_path
 	make_install_dirs
 
 	# Sørg for at lagre-mappene i ~ finnes.

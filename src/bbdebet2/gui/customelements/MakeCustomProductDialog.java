@@ -48,6 +48,7 @@ public class MakeCustomProductDialog extends Dialog<Product> {
         vBox.setPadding(new Insets(20));
 
         getDialogPane().setContent(vBox);
+        getDialogPane().setMinSize(200, 150);
 
         Platform.runLater(() -> titleInput.requestFocus());
 

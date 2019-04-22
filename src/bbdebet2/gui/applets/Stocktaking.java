@@ -72,6 +72,8 @@ public class Stocktaking extends Applet {
             Label productNameView = (Label) getNodeFromStorageViewHolder(0, i);
             TextField productNumInput = (TextField) getNodeFromStorageViewHolder(1, i);
 
+            Product p = kernel.getStorage().find(productNameView.getText());
+
             int diff = kernel.getStorage().updateStorageNum(
                 productNameView.getText(),
                 Integer.parseInt(productNumInput.getText())
@@ -83,10 +85,7 @@ public class Stocktaking extends Applet {
                 );
 
                 try {
-                    CsvLogger.addProductLoss(
-                        kernel.getStorage().find(productNameView.getText()),
-                        -diff
-                    );
+                    CsvLogger.addProductLoss(p, -diff);
                 } catch (IOException e) {
                     kernel.getLogger().log(e);
                 }
