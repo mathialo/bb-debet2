@@ -72,10 +72,19 @@ licence_review() {
 }
 
 
+repo_clean() {
+	rm -f jdk/*.tar.gz
+}
+
+
 ask_install_path() {
+	# Beregn plasskrav
+	space_req=$(du -b --exclude "./.*" --max-depth=0 | cut -f 1)  # Fra repo
+	space_req=$((space_req + 243971123))                          # Pluss JDK
+
 	echo ""
 	echo "Hvor skal BBDebet2 installeres? Trykk [Enter] uten å skrive noe for"
-	echo "standard-plassering (/usr/local/share). Det må være $(du -h --max-depth=0 | cut -f 1) ledig på"
+	echo "standard-plassering (/usr/local/share). Det må være $(numfmt --to=iec --suffix=B $space_req) ledig på"
 	echo "partsisjonen du installerer på."
 
 	read -p "[plassering]:  " userentered_path
@@ -106,6 +115,10 @@ make_install_dirs() {
 
 
 jdk_install() {
+	echo "[i] Laster ned dependencies"
+	wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjdk-12.0.1_linux-x64_bin.tar.gz
+	wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjfx-12_linux-x64_bin-sdk.tar.gz
+
 	echo "[i] Installerer dependencies"
 	echo " - OpenJDK (for lokalt bruk, eksisterende java-installasjoner blir"
 	echo "   ikke påvirket)"
@@ -266,6 +279,7 @@ install_bbdebet2() {
 	# Info og lisensstyr
 	infoprint
 	licence_review
+	repo_clean
 
 	# Spør om plassering
 	ask_install_path
