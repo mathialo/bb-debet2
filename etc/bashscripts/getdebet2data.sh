@@ -14,4 +14,8 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-rsync --update --info=progress2 --partial -t -r bb@login.uio.no:~/.bbdebet2 ~
+if [[ "$1" == "-f" ]] || [[ "$1" == "--force" ]]; then
+	rsync --info=progress2 --ignore-times --times --recursive bb@login.uio.no:~/.bbdebet2 ~
+else
+	rsync --info=progress2 --update --partial --times --recursive bb@login.uio.no:~/.bbdebet2 ~
+fi
