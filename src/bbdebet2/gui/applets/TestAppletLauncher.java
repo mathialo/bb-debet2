@@ -32,7 +32,7 @@ public class TestAppletLauncher extends Application {
     @Override
     public void start(Stage primaryStage) {
         kernel = new Kernel();
-        HandleXLSFile.createAndDisplayDialog();
+        CategoryManagement.createAndDisplayDialog();
     }
 
 

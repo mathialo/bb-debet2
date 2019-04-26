@@ -19,6 +19,7 @@ package bbdebet2.kernel;
 
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.backup.AutoSaver;
+import bbdebet2.kernel.datastructs.CategoryDict;
 import bbdebet2.kernel.datastructs.CommandLineInterface;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.ErrorInFileException;
@@ -53,6 +54,7 @@ public class Kernel implements CommandLineInterface {
     public static final String SALESHISTORY_FILENAME = "saleshistory.csv";
     public static final String USERLIST_FILENAME = "users.usl";
     public static final String STORAGE_FILENAME = "storage.csv";
+    public static final String CATEGORIES_FILENAME = "categories.csv";
     public static final String TRANSACTIONHIST_FILENAME = "transactionhistory.csv";
     public static final String SETTINGS_FILENAME = "settings.properties";
     public static final String LOG_FILENAME = "log";
@@ -60,6 +62,7 @@ public class Kernel implements CommandLineInterface {
     public static final String SALESHISTORY_FILEPATH = SAVE_DIR + SALESHISTORY_FILENAME;
     public static final String USERLIST_FILEPATH = SAVE_DIR + USERLIST_FILENAME;
     public static final String STORAGE_FILEPATH = SAVE_DIR + STORAGE_FILENAME;
+    public static final String CATEGORIES_FILEPATH = SAVE_DIR + CATEGORIES_FILENAME;
     public static final String TRANSACTIONHIST_FILEPATH = SAVE_DIR + TRANSACTIONHIST_FILENAME;
     public static final String SETTINGS_FILEPATH = SAVE_DIR + SETTINGS_FILENAME;
     public static final String LOG_FILEPATH = SAVE_DIR + LOG_FILENAME;
@@ -71,6 +74,7 @@ public class Kernel implements CommandLineInterface {
     private Exportable[] saveOnExit;
     private UserList userList;
     private Storage storage;
+    private CategoryDict categories;
     private SalesHistory salesHistory;
     private SettingsHolder settingsHolder;
     private TransactionHandler transactionHandler;
@@ -343,6 +347,16 @@ public class Kernel implements CommandLineInterface {
             storage = new Storage();
         }
 
+        logger.log("Loading CategoryDict");
+        try {
+            categories = new CategoryDict(new File(CATEGORIES_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty category dict");
+
+            categories = new CategoryDict();
+        }
+
         logger.log("Loading SalesHistory");
         try {
             salesHistory = new SalesHistory(new File(SALESHISTORY_FILEPATH));
@@ -363,7 +377,7 @@ public class Kernel implements CommandLineInterface {
             settingsHolder = new SettingsHolder();
         }
 
-        this.saveOnExit = new Exportable[]{userList, storage, salesHistory, settingsHolder};
+        this.saveOnExit = new Exportable[]{userList, storage, categories, salesHistory, settingsHolder};
     }
 
 
@@ -414,6 +428,16 @@ public class Kernel implements CommandLineInterface {
      */
     public Storage getStorage() {
         return storage;
+    }
+
+
+    /**
+     * Returns active categories for this kernel
+     *
+     * @return Current categories
+     */
+    public CategoryDict getCategories() {
+        return categories;
     }
 
 

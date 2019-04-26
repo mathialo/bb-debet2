@@ -18,6 +18,7 @@
 package bbdebet2.gui.customelements;
 
 import bbdebet2.gui.Main;
+import bbdebet2.kernel.datastructs.CategoryDict;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Product;
 import javafx.scene.control.Button;
@@ -48,6 +49,11 @@ public class StorageButton extends Button {
         setWrapText(true);
         setPrefHeight(100);
         setPrefWidth(140);
+
+        CategoryDict.Category category = Main.getKernel().getCategories().getProductCategory(product);
+
+        if (category != null)
+            setStyle("-fx-base: " + category.getColorHtml() + ";");
     }
 
 
@@ -58,6 +64,11 @@ public class StorageButton extends Button {
         setPrefHeight(100);
         setPrefWidth(140);
         setDisable(true);
+
+        CategoryDict.Category category = Main.getKernel().getCategories().getProductCategory(productName);
+
+        if (category != null)
+            setStyle("-fx-base: " + category.getColorHtml() + ";");
     }
 
 
