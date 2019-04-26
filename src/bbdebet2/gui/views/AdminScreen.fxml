@@ -85,6 +85,7 @@
                                     <items>
                                         <Button mnemonicParsing="false" onAction="#newAddProductsWindow" text="Nytt vareinnskudd" />
                                         <Button mnemonicParsing="false" onAction="#newEditProductsWindow" text="Endre flere" />
+                                        <Button mnemonicParsing="false" onAction="#newCategoryManagementWindow" text="Kategorier" />
                                         <Button mnemonicParsing="false" onAction="#newStocktakingWindow" text="Vareopptelling" />
                                         <Button mnemonicParsing="false" onAction="#viewLosses" text="Se svinn" />
                                     </items>
