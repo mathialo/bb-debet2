@@ -329,7 +329,7 @@ update_bbdebet2() {
 
 	# Last ned siste versjon
 	echo "[i] Last ned siste versjon"
-	git pull origin master > /dev/null
+	git pull origin master
 
 	# Sørg for at $install_path finnes
 	read_install_path
