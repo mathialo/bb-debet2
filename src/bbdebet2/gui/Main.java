@@ -218,6 +218,14 @@ public class Main extends Application {
             currentUserController.postInitialize();
             currentAdminController.postInitialize();
 
+            // Log all uncaught exceptions
+            Thread.currentThread().setUncaughtExceptionHandler( (thread, throwable) -> {
+                if (throwable instanceof Exception)
+                    kernel.getLogger().log(((Exception) throwable));
+                else
+                    kernel.getLogger().log(throwable);
+            });
+
             // Close splash screen and show application
             SplashScreen splash = SplashScreen.getSplashScreen();
             if(splash != null) {
