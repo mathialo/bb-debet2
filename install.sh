@@ -35,6 +35,7 @@ licence_review() {
 	echo "  - OpenJDK, lisensiert under GPLv2 + CP"
 	echo "  - OpenJFX, lisensiert under GPLv2 + CP"
 	echo "  - JavaMail, lisensiert under CDDL og GPLv2 + CP"
+	echo "  - JavaBeans Activation Framework, lisensiert under Sun ENTITLEMENT for SOFTWARE"
 	echo "  - Apache POI, lisensiert under Apache v2"
 
 	while [[ 1 ]]; do
@@ -65,6 +66,9 @@ licence_review() {
 		echo -n "  - JavaMail "
 		read 
 		less lib/javax.mail.license
+		echo -n "  - JavaBeans Activation Framework "
+		read 
+		less lib/activation.license
 		echo -n "  - Apache POI "
 		read 
 		less lib/poi-4.0.1.license
@@ -215,7 +219,7 @@ compile_all() {
 	mkdir -p out
 
 	# Kompiller
-	$jdk_path/javac -d out -Xlint:unchecked --module-path $javafx_path --add-modules ALL-MODULE-PATH -cp src:lib/javax.mail.jar:lib/poi-4.0.1.jar $javafiles
+	$jdk_path/javac -d out -Xlint:unchecked --module-path $javafx_path --add-modules ALL-MODULE-PATH -cp src:lib/javax.mail.jar:lib/poi-4.0.1.jar:lib/activation.jar $javafiles
 	mkdir -p out/bbdebet2/gui/views
 	cp -r src/bbdebet2/gui/views out/bbdebet2/gui/
 

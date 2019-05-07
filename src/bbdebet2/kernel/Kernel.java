@@ -34,8 +34,10 @@ import bbdebet2.kernel.datastructs.UserList;
 import bbdebet2.kernel.logging.CsvLogger;
 import bbdebet2.kernel.logging.Logger;
 import bbdebet2.kernel.mailing.EmailSender;
+import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import bbdebet2.kernel.transactions.TransactionHandler;
 
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
