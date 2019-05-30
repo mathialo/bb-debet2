@@ -466,6 +466,14 @@ public class UserController implements Initializable {
                 }
             }
         });
+        // Enter confirms purhcase
+        Main.getUserScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.ENTER) {
+                    handleConfirmPurchase(null);
+                }
+            }
+        });
     }
 
 
