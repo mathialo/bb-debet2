@@ -17,6 +17,7 @@
 
 package bbdebet2.gui.applets;
 
+import bbdebet2.kernel.datastructs.SettingsHolder;
 import bbdebet2.kernel.mailing.TextTemplate;
 import bbdebet2.kernel.mailing.TextTemplateLoader;
 import javafx.collections.FXCollections;
@@ -34,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+
 public class Settings extends Applet {
 
     @FXML
@@ -42,6 +44,8 @@ public class Settings extends Applet {
     private TextField maxInactiveTimeInput;
     @FXML
     private PasswordField adminPassInput;
+    @FXML
+    private ChoiceBox<SettingsHolder.SortingOrder> sortingOrderInput;
     @FXML
     private CheckBox requireEulaInput;
 
@@ -103,6 +107,8 @@ public class Settings extends Applet {
 
         templateChooser.setItems(FXCollections.observableArrayList(TextTemplate.values()));
         templateChooser.setOnAction(this::updateSelectedTemplate);
+
+        sortingOrderInput.setItems(FXCollections.observableArrayList(SettingsHolder.SortingOrder.values()));
     }
 
 
@@ -110,6 +116,7 @@ public class Settings extends Applet {
         numOfFavouritesInput.setText(kernel.getSettingsHolder().getNumOfFavourites() + "");
         maxInactiveTimeInput.setText(kernel.getSettingsHolder().getMaxInactiveTime() + "");
         adminPassInput.setText(kernel.getSettingsHolder().getAdminPass());
+        sortingOrderInput.getSelectionModel().select(kernel.getSettingsHolder().getSortingOrder());
         requireEulaInput.setSelected(kernel.getSettingsHolder().isRequireEula());
 
         autoSaveIntervalInput.setText(kernel.getSettingsHolder().getAutoSaveInterval() + "");
@@ -143,6 +150,7 @@ public class Settings extends Applet {
         kernel.getSettingsHolder().setMaxInactiveTime(
             Integer.parseInt(maxInactiveTimeInput.getText()));
         kernel.getSettingsHolder().setAdminPass(adminPassInput.getText());
+        kernel.getSettingsHolder().setSortingOrder(sortingOrderInput.getSelectionModel().getSelectedItem());
         kernel.getSettingsHolder().setRequireEula(requireEulaInput.isSelected());
 
         kernel.getSettingsHolder().setAutoSaveInterval(Integer.parseInt(autoSaveIntervalInput.getText()));

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+
 public class SettingsHolder implements Exportable {
 
     private String emailAddr = "null";
@@ -34,39 +35,33 @@ public class SettingsHolder implements Exportable {
     private String emailPass = "";
     private String emailReplyTo = "null";
     private String accountNumber = "null";
-
+    private SortingOrder sortingOrder = SortingOrder.ALPHABETIC;
     private int numOfFavourites = 3;
     private int maxInactiveTime = 30;
     private String adminPass = "";
-
     private int autoSaveInterval = 2;
     private int backupInterval = 12;
     private boolean autoSend = false;
     private boolean autoGet = false;
-
     private boolean autoNagUser = false;
     private boolean sendShoppingList = false;
     private boolean sendReports = false;
-
     private boolean glasUserActive = true;
     private int glasUserRoundTo = 5;
     private String glasUserName = "glass";
-
     private String currencySign = "kr";
-
     private boolean requireEula = false;
-
 
     public SettingsHolder() {
     }
 
 
-    public SettingsHolder(File settingsFile) throws IOException, ErrorInFileException {
+    public SettingsHolder(File settingsFile) throws IOException, ErrorInFileException, IllegalArgumentException {
         readFile(settingsFile);
     }
 
 
-    private void readFile(File settingsFile) throws IOException, ErrorInFileException {
+    private void readFile(File settingsFile) throws IOException, ErrorInFileException, IllegalArgumentException {
         Scanner scanner = new Scanner(settingsFile);
 
         String[] line;
@@ -161,6 +156,9 @@ public class SettingsHolder implements Exportable {
                         requireEula = Boolean.parseBoolean(line[1]);
                         break;
 
+                    case "sortingOrder":
+                        sortingOrder = SortingOrder.fromString(line[1]);
+                        break;
 
                     default:
                 }
@@ -172,6 +170,8 @@ public class SettingsHolder implements Exportable {
         } catch (NumberFormatException e) {
             throw new ErrorInFileException(
                 "Error in file, parsing error on line " + lineNum + ": " + e.getMessage());
+        } catch (Exception e) {
+            throw new ErrorInFileException("Error in file, " + e.getMessage());
         }
 
         // read passwords from dedicated file, as they may contain special characters in encrypted form
@@ -453,6 +453,16 @@ public class SettingsHolder implements Exportable {
     }
 
 
+    public SortingOrder getSortingOrder() {
+        return sortingOrder;
+    }
+
+
+    public void setSortingOrder(SortingOrder sortingOrder) {
+        this.sortingOrder = sortingOrder;
+    }
+
+
     @Override
     public void saveFile(File file) throws IOException {
         PrintWriter pw = new PrintWriter(file);
@@ -478,6 +488,7 @@ public class SettingsHolder implements Exportable {
         pw.println("glasUserName=" + glasUserName);
         pw.println("currencySign=" + currencySign);
         pw.println("requireEula=" + requireEula);
+        pw.println("sortingOrder=" + sortingOrder.name());
 
         pw.close();
 
@@ -496,5 +507,35 @@ public class SettingsHolder implements Exportable {
     @Override
     public void saveFile() throws IOException {
         saveFile(new File(Kernel.SETTINGS_FILEPATH));
+    }
+
+
+    public enum SortingOrder {
+        ALPHABETIC("alfabetisk"), CATEGORICAL("etter kategori");
+
+        private String description;
+
+        private SortingOrder(String description) {
+            this.description = description;
+        }
+
+
+        public static SortingOrder fromString(String string) throws IllegalArgumentException {
+            switch (string) {
+                case "ALPHABETIC":
+                    return ALPHABETIC;
+
+                case "CATEGORICAL":
+                    return CATEGORICAL;
+            }
+
+            throw new IllegalArgumentException("No such sorting order: " + string);
+        }
+
+
+        @Override
+        public String toString() {
+            return description;
+        }
     }
 }
