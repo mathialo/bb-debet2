@@ -40,13 +40,13 @@ public class CategoryDict implements Exportable {
 
     public CategoryDict() {
         productToCategory = new TreeMap<>();
-        existingCategories = new HashMap<>();
+        existingCategories = new TreeMap<>();
     }
 
 
     public CategoryDict(File file) throws IOException, ErrorInFileException {
         productToCategory = new TreeMap<>();
-        existingCategories = new HashMap<>();
+        existingCategories = new TreeMap<>();
         readCsv(file);
     }
 

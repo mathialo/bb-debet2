@@ -25,8 +25,10 @@ import bbdebet2.gui.customelements.StorageButton;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.CategoryDict;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Product;
+import bbdebet2.kernel.datastructs.SettingsHolder;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.animation.KeyFrame;
@@ -135,11 +137,27 @@ public class UserController implements Initializable {
         Set<Product> productSelection = kernel.getStorage().getProductSet();
 
         storageContainer.getChildren().clear();
-        for (Product p : productSelection) {
-            StorageButton button = new StorageButton(p);
-            button.setOnAction(event -> addProductToCart(p));
-            if (isGlasUser) button.setGlasUser(true);
-            storageContainer.getChildren().add(button);
+
+        if (kernel.getSettingsHolder().getSortingOrder() == SettingsHolder.SortingOrder.ALPHABETIC) {
+            for (Product p : productSelection) {
+                StorageButton button = new StorageButton(p);
+                button.setOnAction(event -> addProductToCart(p));
+                if (isGlasUser) button.setGlasUser(true);
+                storageContainer.getChildren().add(button);
+            }
+
+        } else if (kernel.getSettingsHolder().getSortingOrder() == SettingsHolder.SortingOrder.CATEGORICAL) {
+            for (CategoryDict.Category c : kernel.getCategories().getCategories()) {
+                System.out.println(c);
+                for (Product p : productSelection) {
+                    if (kernel.getCategories().getProductCategory(p) == c) {
+                        StorageButton button = new StorageButton(p);
+                        button.setOnAction(event -> addProductToCart(p));
+                        if (isGlasUser) button.setGlasUser(true);
+                        storageContainer.getChildren().add(button);
+                    }
+                }
+            }
         }
 
         // Add "custom" option
