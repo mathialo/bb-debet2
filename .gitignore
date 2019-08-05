@@ -7,6 +7,13 @@ bb_debet2.iml
 *.sublime-project
 *.sublime-workspace
 
+# Super annoying OSX junk
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+ehthumbs.db
+Thumbs.db
+
 # JavaFX path, ask user to provide in install.sh
 JAVAFX_PATH
 
@@ -25,7 +32,7 @@ doc/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files 
+# Package Files
 *.war
 *.ear
 *.zip

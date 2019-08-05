@@ -28,6 +28,34 @@ infoprint() {
 }
 
 
+oscheck() {
+	echo "[i] Detekterer operativsystem"
+	if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    	os="linux"
+	elif [[ "$OSTYPE" == "darwin"* ]]; then
+		os="mac"
+	else
+		echo "Kjenner ikke igjen OS. Avbryter."
+		exit 1
+	fi
+
+	echo "[i] Sjekker at nødvendig programvare er installert"
+	echo ""
+	error=0
+	if ! command -v "wget" > /dev/null; then
+	    echo "Kan ikke finne en installasjon av wget"
+	    error=1
+	fi
+
+	if [[ "$error" == "1" ]]; then
+	    echo "Du må installere overnevnt programvare for å fortsette installasjonen"
+	    exit 1
+	fi
+	echo "Starter installasjon for $os"
+	echo ""
+}
+
+
 licence_review() {
 	echo "BBDebet2 er lisensiert under GPLv3. I tillegg bygger BBDebet2 på følgende"
 	echo "pakker med tilhørende lisenser:"
@@ -41,11 +69,11 @@ licence_review() {
 	while [[ 1 ]]; do
 		echo ""
 		echo "Godtar du lisensene?"
-		echo "[y]  Godta"
-		echo "[n]  Avbryt"
-		echo "[l]  Se gjennom"
+		echo " y:  Godta"
+		echo " n:  Avbryt"
+		echo " l:  Se gjennom"
 		read -p "[y/n/l]:   " yn
-		
+
 		case $yn in
 			[Yy]* ) return;;
 			[Nn]* ) echo "Lisensene må godtas for å kunne installere. Avbryter.";exit 0;;
@@ -58,19 +86,19 @@ licence_review() {
 		read
 		less LICENSE
 		echo -n "  - OpenJDK "
-		read 
+		read
 		less jdk/openjdk-12.license
 		echo -n "  - OpenJFX "
-		read 
+		read
 		less jdk/openjfx-12.license
 		echo -n "  - JavaMail "
-		read 
+		read
 		less lib/javax.mail.license
 		echo -n "  - JavaBeans Activation Framework "
-		read 
+		read
 		less lib/activation.license
 		echo -n "  - Apache POI "
-		read 
+		read
 		less lib/poi-4.0.1.license
 	done
 }
@@ -82,25 +110,26 @@ repo_clean() {
 
 
 ask_install_path() {
-	# Beregn plasskrav
-	space_req=$(du -b --exclude "./.*" --max-depth=0 | cut -f 1)  # Fra repo
-	space_req=$((space_req + 243971123))                          # Pluss JDK
+	if [[ "$os" == "linux" ]]; then
+		# Beregn plasskrav
+		space_req=$(du -b --exclude "./.*" --max-depth=0 | cut -f 1)  # Fra repo
+		space_req=$((space_req + 243971123))                          # Pluss JDK
 
-	echo ""
-	echo "Hvor skal BBDebet2 installeres? Trykk [Enter] uten å skrive noe for"
-	echo "standard-plassering (/usr/local/share). Det må være $(numfmt --to=iec --suffix=B $space_req) ledig på"
-	echo "partsisjonen du installerer på."
+		echo ""
+		echo "Hvor skal BBDebet2 installeres? Trykk [Enter] uten å skrive noe for"
+		echo "standard-plassering (/usr/local/share). Det må være $(numfmt --to=iec --suffix=B $space_req) ledig på"
+		echo "partsisjonen du installerer på."
 
-	read -p "[plassering]:  " userentered_path
+		read -p "[plassering]:  " userentered_path
 
-	if [[ "$userentered_path" == "" ]]; then
-		install_path="/usr/local/share/bbdebet2"
-	else
-		install_path=$userentered_path/bbdebet2
+		if [[ "$userentered_path" == "" ]]; then
+			install_path="/usr/local/share/bbdebet2"
+		else
+			install_path=$userentered_path/bbdebet2
+		fi
+	elif [[ "$os" == "mac" ]]; then
+		install_path="/Applications/BBDebet2.app/Contents/MacOS"
 	fi
-
-	jdk_path="$install_path/jdk/jdk-12.0.1/bin"
-	javafx_path="$install_path/jdk/javafx-sdk-12/lib/"
 }
 
 
@@ -112,23 +141,55 @@ read_install_path() {
 
 
 make_install_dirs() {
+	jdk_version="$(tar -tzf jdk/openjdk.tar.gz | cut -d "/" -f 1 | uniq | tail -n 1)"
+	jfx_version="$(tar -tzf jdk/openjfx.tar.gz | cut -d "/" -f 1 | uniq | tail -n 1)"
+
+	jdk_path="$install_path/jdk/$jdk_version/bin"
+	javafx_path="$install_path/jdk/$jfx_version/lib/"
+
 	sudo mkdir -p $install_path
 	sudo mkdir -p $install_path/jdk
 	sudo mkdir -p $install_path/plugins
+
+	if [[ "$os" == "mac" ]]; then
+		sudo mkdir -p "/Applications/BBDebet2.app/Contents/Resources"
+	fi
+}
+
+
+jdk_download() {
+	echo "[i] Laster ned dependencies"
+	if [[ "$os" == "linux" ]]; then
+		wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjdk-12.0.1_linux-x64_bin.tar.gz
+		wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjfx-12_linux-x64_bin-sdk.tar.gz
+		mv jdk/openjdk-12.0.1_linux-x64_bin.tar.gz jdk/openjdk.tar.gz
+		mv jdk/openjfx-12_linux-x64_bin-sdk.tar.gz jdk/openjfx.tar.gz
+	elif [[ "$os" == "mac" ]]; then
+		wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjdk-12.0.1_osx-x64_bin.tar.gz
+		wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjfx-12.0.1_osx-x64_bin-sdk.tar.gz
+		mv jdk/openjdk-12.0.1_osx-x64_bin.tar.gz jdk/openjdk.tar.gz
+		mv jdk/openjfx-12.0.1_osx-x64_bin-sdk.tar.gz jdk/openjfx.tar.gz
+	fi
 }
 
 
 jdk_install() {
-	echo "[i] Laster ned dependencies"
-	wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjdk-12.0.1_linux-x64_bin.tar.gz
-	wget -q --show-progress -P jdk/ http://folk.uio.no/bb/bbdebet2stuff/jdk/openjfx-12_linux-x64_bin-sdk.tar.gz
-
 	echo "[i] Installerer dependencies"
 	echo " - OpenJDK (for lokalt bruk, eksisterende java-installasjoner blir"
 	echo "   ikke påvirket)"
-	sudo tar -xzf jdk/openjdk-12.0.1_linux-x64_bin.tar.gz -C $install_path/jdk/
+	sudo tar -xzf jdk/openjdk.tar.gz -C $install_path/jdk/
 	echo " - OpenJFX"
-	sudo tar -xzf jdk/openjfx-12_linux-x64_bin-sdk.tar.gz -C $install_path/jdk/
+	sudo tar -xzf jdk/openjfx.tar.gz -C $install_path/jdk/
+}
+
+
+substitute() {
+	# sed er implementert forskjellig i BSD og GNU
+	if [[ "$os" == "mac" ]]; then
+		sed -i "" -f sedcommand $1
+	elif [[ "$os" == "linux" ]]; then
+		sed -i -f sedcommand $1
+	fi
 }
 
 
@@ -137,43 +198,46 @@ preprocess_sources() {
 
 	# Oppdater versjonsnummer og build-nummer i kildefil
 	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version:$buildnum\3/g"  > sedcommand
-	sed -f sedcommand -i src/bbdebet2/gui/Main.java
+	substitute src/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1BBdebet $version\\\\nBuild nr $buildnum\3/g" > sedcommand
-	sed -f sedcommand -i src/bbdebet2/gui/Main.java
+	substitute src/bbdebet2/gui/Main.java
 
 	# Dytt JDK og JavaFX inn i run.sh
 	# Escape / i $jdk_path
 	echo "$jdk_path/java" > JDK_PATH_ESCAPED_SLASHES
-	sed 's/\//\\\//g' -i JDK_PATH_ESCAPED_SLASHES
+	echo 's/\//\\\//g' > sedcommand
+	substitute JDK_PATH_ESCAPED_SLASHES
+
 	jdk_path_escaped_slashes="$(cat JDK_PATH_ESCAPED_SLASHES)"
 	rm JDK_PATH_ESCAPED_SLASHES
 
 	echo "s/JAVA_PATH/$jdk_path_escaped_slashes/g" > sedcommand
-	sed -f sedcommand -i etc/run.sh
+	substitute etc/run.sh
 
 	# Escape / i $javafx_path
 	echo "$javafx_path" > JAVAFX_PATH_ESCAPED_SLASHES
-	sed 's/\//\\\//g' -i JAVAFX_PATH_ESCAPED_SLASHES
+	sed -i "" 's/\//\\\//g' JAVAFX_PATH_ESCAPED_SLASHES
 	javafx_path_escaped_slashes="$(cat JAVAFX_PATH_ESCAPED_SLASHES)"
 	rm JAVAFX_PATH_ESCAPED_SLASHES
 
 	echo "s/JAVAFX_PATH/$javafx_path_escaped_slashes/g" > sedcommand
-	sed -f sedcommand -i etc/run.sh
+	substitute etc/run.sh
 
 	# Escape / i $javafx_path
 	echo "$install_path" > INSTALL_PATH_ESCAPED_SLASHES
-	sed 's/\//\\\//g' -i INSTALL_PATH_ESCAPED_SLASHES
+	echo 's/\//\\\//g' > sedcommand
+	substitute INSTALL_PATH_ESCAPED_SLASHES
 	install_path_escaped_slashes="$(cat INSTALL_PATH_ESCAPED_SLASHES)"
 	rm INSTALL_PATH_ESCAPED_SLASHES
 
 	echo "s/INSTALL_PATH/$install_path_escaped_slashes/g" > sedcommand
-	sed -f sedcommand -i etc/run.sh
+	substitute etc/run.sh
 
 	# Fiks desktop-fil til startmenyen
 	echo "s/INSTALL_PATH/$install_path_escaped_slashes/g" > sedcommand
-	sed -f sedcommand -i etc/bbdebet2.desktop
+	substitute etc/bbdebet2.desktop
 
-	rm sedcommand	
+	rm sedcommand
 }
 
 
@@ -181,29 +245,25 @@ postprocess_sources() {
 	# Endre tilbake for å unngå kjipe commits
 	echo "[i] Rydder opp"
 
-	# Main.java 
+	# Main.java
 	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g"  > sedcommand
-	sed -f sedcommand -i src/bbdebet2/gui/Main.java
+	substitute src/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g" > sedcommand
-	sed -f sedcommand -i src/bbdebet2/gui/Main.java
-	rm sedcommand
+	substitute src/bbdebet2/gui/Main.java
 
 	# run.sh
 	echo "s/$jdk_path_escaped_slashes/JAVA_PATH/g" > sedcommand
-	sed -f sedcommand -i etc/run.sh
-	rm sedcommand
+	substitute etc/run.sh
 
 	echo "s/$javafx_path_escaped_slashes/JAVAFX_PATH/g" > sedcommand
-	sed -f sedcommand -i etc/run.sh
-	rm sedcommand
+	substitute etc/run.sh
 
 	echo "s/$install_path_escaped_slashes/INSTALL_PATH/g" > sedcommand
-	sed -f sedcommand -i etc/run.sh
-	rm sedcommand
+	substitute etc/run.sh
 
 	# bbdebet2.desktop
 	echo "s/$install_path_escaped_slashes/INSTALL_PATH/g" > sedcommand
-	sed -f sedcommand -i etc/bbdebet2.desktop
+	substitute etc/bbdebet2.desktop
 	rm sedcommand
 }
 
@@ -247,14 +307,25 @@ copy_files() {
 	sudo cp -r etc/img $install_path/
 
 	for f in lib/*.jar; do echo " - $(echo $f | cut -d "/" -f 2 | sed 's/.jar//g')"; done
-	sudo cp -r lib/ $install_path/
+	sudo cp -r lib $install_path/
 
-	# Lag linker for tilgjengelighet i terminal og startmeny. 
-	echo " - Lager lenker i /usr/bin og /usr/share/applications"
-	sudo cp etc/bbdebet2.desktop /usr/share/applications
-	sudo ln -sf $install_path/run.sh /usr/local/bin/bbdebet2
-	sudo ln -sf $install_path/senddebet2data.sh /usr/local/bin/senddebet2data
-	sudo ln -sf $install_path/getdebet2data.sh /usr/local/bin/getdebet2data
+	# Lag linker for tilgjengelighet i terminal og startmeny.
+	if [[ "$os" == "linux" ]]; then
+		echo " - Lager lenker i /usr/local/bin og /usr/share/applications"
+		sudo cp etc/bbdebet2.desktop /usr/share/applications
+		sudo ln -sf $install_path/run.sh /usr/local/bin/bbdebet2
+		sudo ln -sf $install_path/senddebet2data.sh /usr/local/bin/senddebet2data
+		sudo ln -sf $install_path/getdebet2data.sh /usr/local/bin/getdebet2data
+	else
+		echo " - Lager lenker i /usr/local/bin"
+		sudo ln -sf $install_path/run.sh /usr/local/bin/bbdebet2
+		sudo ln -sf $install_path/senddebet2data.sh /usr/local/bin/senddebet2data
+		sudo ln -sf $install_path/getdebet2data.sh /usr/local/bin/getdebet2data
+
+		echo " - Gjør ferdig pakking av mac-applikasjon"
+		sudo cp etc/img/bblogo_512.icns /Applications/BBDebet2.app/Contents/Resources/bblogo.icns
+		sudo cp etc/Info.plist /Applications/BBDebet2.app/Contents/
+	fi
 
 	# Lagre sti til installeringsmappe
 	echo "$install_path" > ~/.bbdebet2/.installdir
@@ -282,23 +353,29 @@ root_check() {
 install_bbdebet2() {
 	# Info og lisensstyr
 	infoprint
+	oscheck
 	licence_review
-	repo_clean
+	#repo_clean
 
 	# Spør om plassering
 	ask_install_path
 
 	echo ""
 	echo "Begynner installasjon."
+	echo ""
 
 	# Sjekk at vi kan være root om vi vil
 	root_check
 
-	# Sørg for at $install_path finnes
-	make_install_dirs
 
 	# Sørg for at lagre-mappene i ~ finnes.
 	make_save_dirs
+
+	# Last ned JDK (leser info fra disse i make_install_dirs)
+	#jdk_download
+
+	# Sørg for at $install_path og tilhørende submapper finnes
+	make_install_dirs
 
 	# Installer JDK
 	jdk_install
@@ -321,8 +398,10 @@ install_bbdebet2() {
 update_bbdebet2() {
 	# Info
 	infoprint
+	oscheck
 
 	echo "Begynner oppdattering."
+	echo ""
 
 	# Sjekk at vi kan være root om vi vil
 	root_check
@@ -351,6 +430,7 @@ update_bbdebet2() {
 
 remove_bbdebet2() {
 	infoprint
+	oscheck
 
 	# Spør om bekreftelse
 	echo "Programmet vil nå slette BBDebet2 fra systemet. Er du sikker?"
@@ -369,7 +449,11 @@ remove_bbdebet2() {
 	sudo rm -r /usr/local/bin/bbdebet2
 	sudo rm -r /usr/local/bin/senddebet2data
 	sudo rm -r /usr/local/bin/getdebet2data
-	sudo rm -r /usr/share/applications/bbdebet2.desktop
+	if [[ "$os" == "linux" ]]; then
+		sudo rm -r /usr/share/applications/bbdebet2.desktop
+	elif [[ "$os" == "mac" ]]; then
+		sudo rm -r /Applications/BBDebet2.app
+	fi
 	sudo rm -rf ~/.bbdebet2.gui.Main
 
 	echo ""
