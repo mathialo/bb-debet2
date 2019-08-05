@@ -21,11 +21,14 @@ import bbdebet2.gui.Main;
 import bbdebet2.gui.customelements.SuggestionMenu;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewProductForAddition;
+import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.accounting.Expence;
 import bbdebet2.kernel.datastructs.Listable;
 import bbdebet2.kernel.datastructs.Product;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,9 +38,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+
 
 public class AddProducts extends Applet {
 
@@ -69,6 +74,8 @@ public class AddProducts extends Applet {
     private TableColumn<ViewProductForAddition, Double> saleTotalView;
     @FXML
     private TableColumn<ViewProductForAddition, Double> totalMarkupView;
+    @FXML
+    private CheckBox doAccountingInput;
 
 
     public static void createAndDisplayDialog() {
@@ -122,16 +129,29 @@ public class AddProducts extends Applet {
     public void processAllAndExit(ActionEvent event) {
         // Add elements to storage
         int num = 0;
+        double totalExpenceAmount = 0;
+
         for (ViewProductForAddition vp : cartTableView.getItems()) {
             for (Product p : vp.generateProducts()) {
                 kernel.getStorage().add(p);
                 num++;
+
+                totalExpenceAmount += p.getBuyPrice();
             }
         }
 
         kernel.getLogger().log(num + " products added to storage");
         Main.getCurrentAdminController().repaintStorage();
         exit(event);
+
+        if (doAccountingInput.isSelected()) {
+            MakeExpence.createAndDisplayDialog(new Expence(
+                    kernel.getAccounts().getStorageAccount(),
+                    totalExpenceAmount,
+                    "Varekjøp " + Kernel.dateFormat.format(new Date(System.currentTimeMillis()))
+                )
+            );
+        }
     }
 
 

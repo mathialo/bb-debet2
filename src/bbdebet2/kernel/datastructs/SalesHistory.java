@@ -36,6 +36,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+
 public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Exportable {
 
     private LinkedList<Sale> history;
@@ -86,7 +87,7 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
 
 
     private void readCsv(File csvFile) throws IOException, ErrorInFileException {
-        // we'll skip first line, hence the couner can begin on line 2.
+        // we'll skip first line, hence the counter can begin on line 2.
         int lineNum = 2;
 
         try {
