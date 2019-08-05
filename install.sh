@@ -356,7 +356,7 @@ install_bbdebet2() {
 	infoprint
 	oscheck
 	licence_review
-	#repo_clean
+	repo_clean
 
 	# Spør om plassering
 	ask_install_path
@@ -368,12 +368,11 @@ install_bbdebet2() {
 	# Sjekk at vi kan være root om vi vil
 	root_check
 
-
 	# Sørg for at lagre-mappene i ~ finnes.
 	make_save_dirs
 
 	# Last ned JDK (leser info fra disse i make_install_dirs)
-	#jdk_download
+	jdk_download
 
 	# Sørg for at $install_path og tilhørende submapper finnes
 	make_install_dirs
@@ -406,10 +405,6 @@ update_bbdebet2() {
 
 	# Sjekk at vi kan være root om vi vil
 	root_check
-
-	# Last ned siste versjon
-	echo "[i] Last ned siste versjon"
-	git pull origin master
 
 	# Sørg for at $install_path finnes
 	read_install_path
