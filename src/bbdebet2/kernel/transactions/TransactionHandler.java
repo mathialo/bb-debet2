@@ -18,6 +18,7 @@
 package bbdebet2.kernel.transactions;
 
 import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.Sale;
 import bbdebet2.kernel.datastructs.User;
@@ -84,7 +85,7 @@ public class TransactionHandler {
 
     public void newMoneyInsert(User user, double amount) {
         user.addBalance(amount);
-        kernel.getLogger().log("Added " + amount + kernel.getSettingsHolder().getCurrencySign() + " to user " + user);
+        kernel.getLogger().log("Added " + CurrencyFormatter.format(amount) + " to user " + user);
 
         try {
             CsvLogger.addMoneyInserts(user, amount);

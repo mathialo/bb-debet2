@@ -17,14 +17,14 @@
 
 package bbdebet2.kernel.datastructs;
 
-import java.text.SimpleDateFormat;
+import bbdebet2.kernel.Kernel;
+
 import java.util.Date;
+
 
 public class Sale {
 
     private static int counter;
-
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
 
     private int id;
     private long timestamp;
@@ -90,8 +90,9 @@ public class Sale {
         return productName;
     }
 
+
     public Product getProduct() {
-        return new Product(productName, pricePayed, pricePayed-earnings);
+        return new Product(productName, pricePayed, pricePayed - earnings);
     }
 
 
@@ -106,7 +107,7 @@ public class Sale {
 
 
     public String getFormattedTimestamp() {
-        return dateFormat.format(new Date(timestamp * 1000L));
+        return Kernel.dateFormat.format(new Date(timestamp * 1000L));
     }
 
 

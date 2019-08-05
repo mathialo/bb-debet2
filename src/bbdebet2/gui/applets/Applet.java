@@ -20,6 +20,7 @@ package bbdebet2.gui.applets;
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.Kernel;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -58,6 +59,7 @@ public abstract class Applet implements Initializable {
     }
 
 
+    @FXML
     protected void exit(ActionEvent event) {
         ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
     }

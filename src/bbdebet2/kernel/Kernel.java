@@ -18,6 +18,9 @@
 package bbdebet2.kernel;
 
 import bbdebet2.gui.Main;
+import bbdebet2.kernel.accounting.Account;
+import bbdebet2.kernel.accounting.AccountSet;
+import bbdebet2.kernel.accounting.Ledger;
 import bbdebet2.kernel.backup.AutoSaver;
 import bbdebet2.kernel.datastructs.CategoryDict;
 import bbdebet2.kernel.datastructs.CommandLineInterface;
@@ -34,13 +37,12 @@ import bbdebet2.kernel.datastructs.UserList;
 import bbdebet2.kernel.logging.CsvLogger;
 import bbdebet2.kernel.logging.Logger;
 import bbdebet2.kernel.mailing.EmailSender;
-import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import bbdebet2.kernel.transactions.TransactionHandler;
 
-import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -60,6 +62,8 @@ public class Kernel implements CommandLineInterface {
     public static final String TRANSACTIONHIST_FILENAME = "transactionhistory.csv";
     public static final String SETTINGS_FILENAME = "settings.properties";
     public static final String LOG_FILENAME = "log";
+    public static final String LEDGER_FILENAME = "ledger.csv";
+    public static final String ACCOUNTS_FILENAME = "accounts.csv";
 
     public static final String SALESHISTORY_FILEPATH = SAVE_DIR + SALESHISTORY_FILENAME;
     public static final String USERLIST_FILEPATH = SAVE_DIR + USERLIST_FILENAME;
@@ -69,17 +73,27 @@ public class Kernel implements CommandLineInterface {
     public static final String SETTINGS_FILEPATH = SAVE_DIR + SETTINGS_FILENAME;
     public static final String LOG_FILEPATH = SAVE_DIR + LOG_FILENAME;
     public static final String PROCESSEDINSERTS_FILEPATH = SAVE_DIR + PROCESSEDINSERTS_FILENAME;
+    public static final String LEDGER_FILEPATH = SAVE_DIR + LEDGER_FILENAME;
+    public static final String ACCOUNTS_FILEPATH = SAVE_DIR + ACCOUNTS_FILENAME;
+
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
 
     private Logger logger;
     private File runningFile;
 
     private Exportable[] saveOnExit;
+
     private UserList userList;
+
     private Storage storage;
     private CategoryDict categories;
+
     private SalesHistory salesHistory;
-    private SettingsHolder settingsHolder;
     private TransactionHandler transactionHandler;
+    private Ledger ledger;
+    private AccountSet accounts;
+
+    private SettingsHolder settingsHolder;
     private EmailSender emailSender;
 
 
@@ -101,17 +115,17 @@ public class Kernel implements CommandLineInterface {
         try {
             createLogger();
         } catch (Exception e) {
-            if (! force) throw e;
+            if (!force) throw e;
         }
         try {
             createRunningFile();
         } catch (Exception e) {
-            if (! force) throw e;
+            if (!force) throw e;
         }
         try {
             readFiles();
         } catch (Exception e) {
-            if (! force) throw e;
+            if (!force) throw e;
         }
         CsvLogger.initialize();
         setupBackuping();
@@ -241,7 +255,7 @@ public class Kernel implements CommandLineInterface {
                 case "addProduct":
                     kernel.getStorage().add(
                         new Product(command[1], Double.parseDouble(command[2]),
-                                    Double.parseDouble(command[3])
+                            Double.parseDouble(command[3])
                         ));
                     break;
 
@@ -379,7 +393,37 @@ public class Kernel implements CommandLineInterface {
             settingsHolder = new SettingsHolder();
         }
 
-        this.saveOnExit = new Exportable[]{userList, storage, categories, salesHistory, settingsHolder};
+        logger.log("Loading account list");
+        try {
+            accounts = new AccountSet(new File(ACCOUNTS_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to standard account list");
+
+            accounts = new AccountSet();
+            accounts.add(new Account("Varebeholdning", 1400, false));
+            accounts.add(new Account("Kontanter", 1900, true));
+            accounts.add(new Account("Bankkonto", 1910, true));
+            accounts.add(new Account("Debetbok", 2000, true));
+            accounts.add(new Account("Avanse", 3000, false));
+            accounts.add(new Account("Sponsing", 7000, true));
+            accounts.add(new Account("Gaver", 7010, true));
+            accounts.add(new Account("Rekvisita", 7020, false));
+            accounts.add(new Account("Svinn", 8000, false));
+            accounts.add(new Account("Øreavrunding", 8010, false));
+        }
+
+        logger.log("Loading ledger");
+        try {
+            ledger = new Ledger(new File(LEDGER_FILEPATH), accounts);
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty ledger");
+
+            ledger = new Ledger();
+        }
+
+        this.saveOnExit = new Exportable[]{userList, storage, categories, salesHistory, settingsHolder, accounts, ledger};
     }
 
 
@@ -464,6 +508,26 @@ public class Kernel implements CommandLineInterface {
 
 
     /**
+     * Returns the active ledger for this kernel
+     *
+     * @return List of expences
+     */
+    public Ledger getLedger() {
+        return ledger;
+    }
+
+
+    /**
+     * Returns all the accounts on this kernel
+     *
+     * @return Set of accounts
+     */
+    public AccountSet getAccounts() {
+        return accounts;
+    }
+
+
+    /**
      * Saves all savable data (sales history, settings, storage, etc)
      */
     public void saveAll() {
@@ -482,7 +546,7 @@ public class Kernel implements CommandLineInterface {
 
     /**
      * Properly shuts down kernel if running.
-     *
+     * <p>
      * Saves all exportable files to SAVE_DIR, deletes "running" file, and closes logger.
      */
     public void shutDown() {
