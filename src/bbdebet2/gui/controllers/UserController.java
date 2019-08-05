@@ -148,7 +148,6 @@ public class UserController implements Initializable {
 
         } else if (kernel.getSettingsHolder().getSortingOrder() == SettingsHolder.SortingOrder.CATEGORICAL) {
             for (CategoryDict.Category c : kernel.getCategories().getCategories()) {
-                System.out.println(c);
                 for (Product p : productSelection) {
                     if (kernel.getCategories().getProductCategory(p) == c) {
                         StorageButton button = new StorageButton(p);
