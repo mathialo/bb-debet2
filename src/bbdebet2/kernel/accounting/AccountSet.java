@@ -65,7 +65,7 @@ public class AccountSet implements Iterable<Account>, Exportable {
                 // read line, split on comma
                 String[] line = sc.nextLine().split("\\s*,\\s*");
 
-                accounts.put(Integer.parseInt(line[0]), new Account(line[1], Integer.parseInt(line[0]), Boolean.parseBoolean(line[2])));
+                accounts.put(Integer.parseInt(line[0]), new Account(line[1], Integer.parseInt(line[0]), Boolean.parseBoolean(line[2]), Boolean.parseBoolean(line[3])));
 
                 // update line num
                 lineNum++;
@@ -111,6 +111,11 @@ public class AccountSet implements Iterable<Account>, Exportable {
     }
 
 
+    public Collection<Account> getInsertOptions() {
+        return accounts.values().stream().filter(Account::isInsertOption).collect(Collectors.toCollection(TreeSet::new));
+    }
+
+
     @Override
     public Iterator<Account> iterator() {
         return accounts.values().iterator();
@@ -121,10 +126,10 @@ public class AccountSet implements Iterable<Account>, Exportable {
     public void saveFile(File file) throws IOException {
         PrintWriter printWriter = new PrintWriter(file);
 
-        printWriter.println("Number,Name,IsPaymentOption");
+        printWriter.println("Number,Name,IsPaymentOption,IsInsertOption");
 
         for (Account account : this) {
-            printWriter.println(account.getNumber() + "," + account.getName() + "," + account.isPaymentOption());
+            printWriter.println(account.getNumber() + "," + account.getName() + "," + account.isPaymentOption() + "," + account.isInsertOption());
         }
 
         printWriter.close();
