@@ -18,19 +18,8 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
-import bbdebet2.gui.applets.AddBalance;
-import bbdebet2.gui.applets.AddProducts;
-import bbdebet2.gui.applets.BackupRestore;
-import bbdebet2.gui.applets.CategoryManagement;
-import bbdebet2.gui.applets.Console;
-import bbdebet2.gui.applets.CsvViewer;
-import bbdebet2.gui.applets.EditProducts;
-import bbdebet2.gui.applets.EditUser;
-import bbdebet2.gui.applets.NewSemester;
-import bbdebet2.gui.applets.NewUser;
-import bbdebet2.gui.applets.SendEmail;
-import bbdebet2.gui.applets.Settings;
-import bbdebet2.gui.applets.Stocktaking;
+import bbdebet2.gui.applets.*;
+import bbdebet2.gui.modelwrappers.ViewExpence;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.gui.modelwrappers.ViewUser;
@@ -95,6 +84,18 @@ public class AdminController implements Initializable {
     private TableColumn<ViewUser, String> userListEmailCol;
     @FXML
     private TableColumn<ViewUser, String> userListBalanceCol;
+    @FXML
+    private TableView<ViewExpence> accountingView;
+    @FXML
+    private TableColumn<ViewExpence, String> accountingTimeCol;
+    @FXML
+    private TableColumn<ViewExpence, String> accountingFromCol;
+    @FXML
+    private TableColumn<ViewExpence, String> accountingToCol;
+    @FXML
+    private TableColumn<ViewExpence, String> accountingAmountCol;
+    @FXML
+    private TableColumn<ViewExpence, String> accountingCommentCol;
     @FXML
     private Menu pluginMenu;
 
@@ -165,10 +166,35 @@ public class AdminController implements Initializable {
     }
 
 
+    private void setupAccountingView() {
+        accountingTimeCol.setCellValueFactory(
+            new PropertyValueFactory<ViewExpence, String>("expenceDate")
+        );
+        accountingFromCol.setCellValueFactory(
+            new PropertyValueFactory<ViewExpence, String>("from")
+        );
+        accountingToCol.setCellValueFactory(
+            new PropertyValueFactory<ViewExpence, String>("to")
+        );
+        accountingAmountCol.setCellValueFactory(
+            new PropertyValueFactory<ViewExpence, String>("amount")
+        );
+        accountingCommentCol.setCellValueFactory(
+            new PropertyValueFactory<ViewExpence, String>("comment")
+        );
+    }
+
+
+    public void repaintAccounting() {
+        accountingView.setItems(kernel.getLedger().toObservableList());
+    }
+
+
     public void repaintAll() {
         repaintSaleHistory();
         repaintStorage();
         repaintUserList();
+        repaintAccounting();
     }
 
 
@@ -311,6 +337,12 @@ public class AdminController implements Initializable {
 
 
     @FXML
+    public void newMakeExpenceWindow(ActionEvent event) {
+        MakeExpence.createAndDisplayDialog(null);
+    }
+
+
+    @FXML
     public void showVersionNumber(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, Main.FULL_VERSION);
         alert.setHeaderText(null);
@@ -382,6 +414,8 @@ public class AdminController implements Initializable {
         repaintStorage();
         setupUserListView();
         repaintUserList();
+        setupAccountingView();
+        repaintAccounting();
         createPluginMenu();
     }
 

@@ -17,8 +17,7 @@
 
 package bbdebet2.gui.applets;
 
-import bbdebet2.gui.modelwrappers.ViewExpence;
-import bbdebet2.kernel.Kernel;
+import bbdebet2.gui.modelwrappers.ViewExpenceForAddition;
 import bbdebet2.kernel.accounting.Account;
 import bbdebet2.kernel.accounting.Expence;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
@@ -52,13 +51,13 @@ public class MakeExpence extends Applet {
     private TextField commentTextField;
 
     @FXML
-    private TableView<ViewExpence> expenceTableView;
+    private TableView<ViewExpenceForAddition> expenceTableView;
     @FXML
-    private TableColumn<ViewExpence, String> accountTableColumn;
+    private TableColumn<ViewExpenceForAddition, String> accountTableColumn;
     @FXML
-    private TableColumn<ViewExpence, String> amountTableColumn;
+    private TableColumn<ViewExpenceForAddition, String> amountTableColumn;
     @FXML
-    private TableColumn<ViewExpence, String> commentTableColumn;
+    private TableColumn<ViewExpenceForAddition, String> commentTableColumn;
 
     @FXML
     private ChoiceBox<Account> fromAccountChoiceBox;
@@ -75,7 +74,7 @@ public class MakeExpence extends Applet {
 
 
     protected void add(Expence expence) {
-        if (expence != null) expenceTableView.getItems().add(new ViewExpence(expence));
+        if (expence != null) expenceTableView.getItems().add(new ViewExpenceForAddition(expence));
     }
 
 
@@ -111,8 +110,8 @@ public class MakeExpence extends Applet {
 
         double totalAmount = 0;
 
-        for (ViewExpence viewExpence : expenceTableView.getItems()) {
-            Expence expence = viewExpence.getExpenceObject().resolve(fromAccount);
+        for (ViewExpenceForAddition viewExpenceForAddition : expenceTableView.getItems()) {
+            Expence expence = viewExpenceForAddition.getExpenceObject().resolve(fromAccount);
             kernel.getLedger().add(expence);
             kernel.getLogger().log("Tracking expence: " + expence);
 
