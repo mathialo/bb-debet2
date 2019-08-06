@@ -22,21 +22,15 @@ import bbdebet2.gui.customelements.WaitingDialog;
 import bbdebet2.kernel.accounting.Account;
 import bbdebet2.kernel.accounting.Expence;
 import bbdebet2.kernel.datastructs.User;
-import bbdebet2.kernel.logging.CsvLogger;
+import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import bbdebet2.kernel.mailing.TextTemplate;
 import bbdebet2.kernel.mailing.TextTemplateLoader;
-import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
