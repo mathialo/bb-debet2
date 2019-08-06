@@ -17,58 +17,35 @@
 
 package bbdebet2.gui.modelwrappers;
 
-import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.accounting.Expence;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-import java.util.Date;
 
-public class ViewExpence {
-    private final SimpleStringProperty from;
-    private final SimpleStringProperty to;
+public class ViewExpenceForAddition {
+
+    private final SimpleStringProperty account;
     private final SimpleStringProperty amount;
     private final SimpleStringProperty comment;
-    private final SimpleStringProperty expenceDate;
 
     private final Expence expence;
 
-    public ViewExpence(Expence expence) {
+    public ViewExpenceForAddition(Expence expence) {
         this.expence = expence;
-        this.from = new SimpleStringProperty(expence.getFrom().toString());
-        this.to = new SimpleStringProperty(expence.getTo().toString());
+        this.account = new SimpleStringProperty(expence.getTo().toString());
         this.amount = new SimpleStringProperty(CurrencyFormatter.format(expence.getAmount()));
         this.comment = new SimpleStringProperty(expence.getComment());
-        this.expenceDate = new SimpleStringProperty(Kernel.dateFormat.format(new Date(expence.getTimestamp() * 1000L)));
-    }
-
-    public String getTo() {
-        return to.get();
-    }
-
-    public SimpleStringProperty toProperty() {
-        return to;
-    }
-
-    public String getExpenceDate() {
-        return expenceDate.get();
-    }
-
-    public SimpleStringProperty expenceDateProperty() {
-        return expenceDate;
-    }
-
-    public Expence getExpence() {
-        return expence;
-    }
-
-    public String getFrom() {
-        return from.get();
     }
 
 
-    public SimpleStringProperty fromProperty() {
-        return from;
+    public String getAccount() {
+        return account.get();
+    }
+
+
+    public SimpleStringProperty accountProperty() {
+        return account;
     }
 
 

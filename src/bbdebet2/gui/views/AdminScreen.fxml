@@ -28,7 +28,7 @@
   ~ with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<BorderPane prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.controllers.AdminController">
+<BorderPane prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.controllers.AdminController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -131,6 +131,30 @@
                         </BorderPane>
                     </content>
                 </Tab>
+            <Tab closable="false" text="Regnskap">
+              <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <top>
+                        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <items>
+                            <Button mnemonicParsing="false" onAction="#newMakeExpenceWindow" text="Ny føring" />
+                          </items>
+                        </ToolBar>
+                     </top>
+                     <center>
+                        <TableView fx:id="accountingView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <columns>
+                              <TableColumn fx:id="accountingTimeCol" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" sortable="false" text="Tid" />
+                            <TableColumn fx:id="accountingFromCol" editable="false" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" sortable="false" text="Debit" />
+                            <TableColumn fx:id="accountingToCol" editable="false" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" sortable="false" text="Kreditt" />
+                              <TableColumn fx:id="accountingAmountCol" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" sortable="false" text="Beløp" />
+                              <TableColumn fx:id="accountingCommentCol" editable="false" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" resizable="false" sortable="false" text="Kommentar" />
+                          </columns>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+              </content>
+            </Tab>
             </tabs>
         </TabPane>
     </center>

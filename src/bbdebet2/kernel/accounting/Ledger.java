@@ -17,19 +17,22 @@
 
 package bbdebet2.kernel.accounting;
 
+import bbdebet2.gui.modelwrappers.ViewExpence;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.ErrorInFileException;
 import bbdebet2.kernel.datastructs.Exportable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 
-public class Ledger extends LinkedList<Expence> implements Exportable {
+public class Ledger extends ArrayList<Expence> implements Exportable {
 
     public Ledger() {
         super();
@@ -109,6 +112,15 @@ public class Ledger extends LinkedList<Expence> implements Exportable {
     @Override
     public void saveFile() throws IOException {
         saveFile(new File(Kernel.LEDGER_FILEPATH));
+    }
+
+
+    public ObservableList<ViewExpence> toObservableList() {
+        ArrayList<ViewExpence> newList = new ArrayList<>(size());
+
+        for (Expence e : this) newList.add(new ViewExpence(e));
+
+        return FXCollections.observableList(newList);
     }
 }
 
