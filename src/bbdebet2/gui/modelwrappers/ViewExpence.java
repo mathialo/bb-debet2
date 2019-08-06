@@ -42,25 +42,26 @@ public class ViewExpence {
         this.expenceDate = new SimpleStringProperty(Kernel.dateFormat.format(new Date(expence.getTimestamp() * 1000L)));
     }
 
+
     public String getTo() {
         return to.get();
     }
+
 
     public SimpleStringProperty toProperty() {
         return to;
     }
 
+
     public String getExpenceDate() {
         return expenceDate.get();
     }
+
 
     public SimpleStringProperty expenceDateProperty() {
         return expenceDate;
     }
 
-    public Expence getExpence() {
-        return expence;
-    }
 
     public String getFrom() {
         return from.get();

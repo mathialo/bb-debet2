@@ -32,12 +32,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -341,6 +336,11 @@ public class AdminController implements Initializable {
         MakeExpence.createAndDisplayDialog(null);
     }
 
+    @FXML
+    public void deleteSelectedExpence(ActionEvent event) {
+        kernel.getLedger().remove(accountingView.getSelectionModel().getSelectedItem().getExpenceObject());
+        repaintAccounting();
+    }
 
     @FXML
     public void showVersionNumber(ActionEvent event) {
