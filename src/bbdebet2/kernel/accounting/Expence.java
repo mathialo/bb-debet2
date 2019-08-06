@@ -35,7 +35,7 @@ public class Expence implements Comparable<Expence> {
     public Expence(Account to, double amount, String comment, long timestamp) {
         this.to = to;
         this.amount = amount;
-        this.comment = comment != null ? comment : "";
+        this.comment = comment != null ? comment.replaceAll(",", "") : "";
         this.timestamp = timestamp;
     }
 
