@@ -17,6 +17,7 @@
 
 package bbdebet2.gui.applets;
 
+import bbdebet2.gui.Main;
 import bbdebet2.gui.modelwrappers.ViewExpenceForAddition;
 import bbdebet2.kernel.accounting.Account;
 import bbdebet2.kernel.accounting.Expence;
@@ -138,6 +139,9 @@ public class MakeExpence extends Applet {
             };
             new Thread(sendEmailTask).start();
         }
+
+        Main.getCurrentAdminController().repaintUserList();
+        Main.getCurrentAdminController().repaintAccounting();
 
         exit(event);
     }
