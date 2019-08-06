@@ -356,7 +356,7 @@ install_bbdebet2() {
 	infoprint
 	oscheck
 	licence_review
-	repo_clean
+	# repo_clean
 
 	# Spør om plassering
 	ask_install_path
@@ -372,13 +372,13 @@ install_bbdebet2() {
 	make_save_dirs
 
 	# Last ned JDK (leser info fra disse i make_install_dirs)
-	jdk_download
+	# jdk_download
 
 	# Sørg for at $install_path og tilhørende submapper finnes
 	make_install_dirs
 
 	# Installer JDK
-	jdk_install
+	# jdk_install
 
 	# Gjør småendringer i kildefiler
 	preprocess_sources

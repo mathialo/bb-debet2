@@ -23,14 +23,23 @@ public class Account implements Comparable<Account> {
     private int number;
 
     private boolean paymentOption;
+    private boolean insertOption;
 
 
-    public Account(String name, int number, boolean paymentOption) {
+    public Account(String name, int number, boolean paymentOption, boolean insertOption) {
         this.name = name;
         this.number = number;
         this.paymentOption = paymentOption;
+        this.insertOption = insertOption;
     }
 
+    public Account(String name, int number) {
+        this(name, number, false, false);
+    }
+
+    public boolean isInsertOption() {
+        return insertOption;
+    }
 
     public boolean isPaymentOption() {
         return paymentOption;

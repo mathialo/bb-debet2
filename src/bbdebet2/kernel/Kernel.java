@@ -401,16 +401,16 @@ public class Kernel implements CommandLineInterface {
             logger.log("Falling back to standard account list");
 
             accounts = new AccountSet();
-            accounts.add(new Account("Varebeholdning", 1400, false));
-            accounts.add(new Account("Kontanter", 1900, true));
-            accounts.add(new Account("Bankkonto", 1910, true));
-            accounts.add(new Account("Debetbok", 2000, true));
-            accounts.add(new Account("Avanse", 3000, false));
-            accounts.add(new Account("Sponsing", 7000, true));
-            accounts.add(new Account("Gaver", 7010, true));
-            accounts.add(new Account("Rekvisita", 7020, false));
-            accounts.add(new Account("Svinn", 8000, false));
-            accounts.add(new Account("Øreavrunding", 8010, false));
+            accounts.add(new Account("Varebeholdning", 1400));
+            accounts.add(new Account("Kontanter", 1900, true, true));
+            accounts.add(new Account("Bankkonto", 1910, true, true));
+            accounts.add(new Account("Debetbok", 2000, true, false));
+            accounts.add(new Account("Avanse", 3000));
+            accounts.add(new Account("Sponsing", 7000, true, false));
+            accounts.add(new Account("Gaver", 7010, true, false));
+            accounts.add(new Account("Rekvisita", 7020));
+            accounts.add(new Account("Svinn", 8000));
+            accounts.add(new Account("Øreavrunding", 8010));
         }
 
         logger.log("Loading ledger");

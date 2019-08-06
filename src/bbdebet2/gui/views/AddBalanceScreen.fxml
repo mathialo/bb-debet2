@@ -33,6 +33,7 @@
   ~ with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
+<?import javafx.scene.control.ChoiceBox?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bbdebet2.gui.applets.AddBalance">
    <center>
       <BorderPane prefWidth="350.0">
@@ -54,17 +55,20 @@
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label text="Brukernavn" />
                         <TextField fx:id="userNameInput" GridPane.columnIndex="1" />
                         <Label text="Pengebeløp" GridPane.rowIndex="1" />
                         <TextField fx:id="moneyInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Send bekreftelsesepost" GridPane.rowIndex="2" />
-                        <CheckBox fx:id="sendEmailInput" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextArea fx:id="emailTextInput" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                        <Label text="Betalingsmetode" GridPane.rowIndex="2" />
+                        <ChoiceBox fx:id="insertMethodInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Send bekreftelsesepost" GridPane.rowIndex="3" />
+                        <CheckBox fx:id="sendEmailInput" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextArea fx:id="emailTextInput" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                </children>

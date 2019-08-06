@@ -19,6 +19,8 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.gui.customelements.WaitingDialog;
+import bbdebet2.kernel.accounting.Account;
+import bbdebet2.kernel.accounting.Expence;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.logging.CsvLogger;
 import bbdebet2.kernel.mailing.TextTemplate;
@@ -29,6 +31,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -47,6 +50,8 @@ public class AddBalance extends Applet {
     private CheckBox sendEmailInput;
     @FXML
     private TextArea emailTextInput;
+    @FXML
+    private ChoiceBox<Account> insertMethodInput;
 
     public static void createAndDisplayDialog() {
         Applet.createAndDisplayDialog("Legg til penger", "AddBalanceScreen");
@@ -73,6 +78,16 @@ public class AddBalance extends Applet {
             alert.showAndWait();
             return;
         }
+
+        if (insertMethodInput.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Velg en betalingsmåte");
+            alert.showAndWait();
+            return;
+        }
+
+        Account to = insertMethodInput.getSelectionModel().getSelectedItem();
+        Account from = kernel.getAccounts().fromAccountNumber(2000);
+        kernel.getLedger().add(new Expence(to, amount, "Innskudd " + u).resolve(from));
 
         kernel.getTransactionHandler().newMoneyInsert(u, amount);
 
@@ -110,5 +125,6 @@ public class AddBalance extends Applet {
         super.initialize(location, resources);
 
         emailTextInput.setText(TextTemplateLoader.getTemplate(TextTemplate.USERADDEDMONEY));
+        insertMethodInput.getItems().addAll(kernel.getAccounts().getInsertOptions());
     }
 }
