@@ -1,1 +1,7 @@
-<code_scheme name="Project" version="173" />
+<code_scheme name="BBDebet2" version="173">
+  <codeStyleSettings language="JAVA">
+    <indentOptions>
+      <option name="CONTINUATION_INDENT_SIZE" value="4" />
+    </indentOptions>
+  </codeStyleSettings>
+</code_scheme>
