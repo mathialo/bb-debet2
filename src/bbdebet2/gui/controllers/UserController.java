@@ -55,9 +55,11 @@ import javafx.util.Duration;
 import javax.mail.MessagingException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -147,9 +149,25 @@ public class UserController implements Initializable {
             }
 
         } else if (kernel.getSettingsHolder().getSortingOrder() == SettingsHolder.SortingOrder.CATEGORICAL) {
+            Set<Product> added = new HashSet<>();
+
             for (CategoryDict.Category c : kernel.getCategories().getCategories()) {
                 for (Product p : productSelection) {
                     if (kernel.getCategories().getProductCategory(p) == c) {
+                        StorageButton button = new StorageButton(p);
+                        button.setOnAction(event -> addProductToCart(p));
+                        if (isGlasUser) button.setGlasUser(true);
+                        storageContainer.getChildren().add(button);
+
+                        added.add(p);
+                    }
+                }
+            }
+
+            // Add products with no category
+            if (added.size() != productSelection.size()) {
+                for (Product p : productSelection) {
+                    if (!added.contains(p)) {
                         StorageButton button = new StorageButton(p);
                         button.setOnAction(event -> addProductToCart(p));
                         if (isGlasUser) button.setGlasUser(true);
