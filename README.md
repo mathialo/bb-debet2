@@ -1,9 +1,9 @@
 # BBdebet
-BBdebet er en app for å behandle transaksjoner i debetboka. Det er en digital utgave av en gammeldags kriteliste, men uten mulighet for at folk regner feil. Utviklet med tanke på Biørneblæs' selvbetjente snacks- og kaffehjørne. 
+BBdebet er en app for å behandle transaksjoner i debetboka. Det er en digital utgave av en gammeldags kriteliste, men uten mulighet for at folk regner feil. Utviklet med tanke på Biørneblæs' selvbetjente snacks- og kaffehjørne.
 
 
 ### Versjon 2
-BBdebet2 er en helt ny versjon av BBdebet, bygd på nytt fra bunnen av. 
+BBdebet2 er en helt ny versjon av BBdebet, bygd på nytt fra bunnen av.
 
 
 ## Installasjonsguide
@@ -18,22 +18,28 @@ Da vil siste versjon bli lastet ned og installert. Har du allerede en lokal vers
 $ git pull origin master
 $ bash install.sh
 ```
-Installasjonsskriptet vil legge programmet inn i `/usr/local/share/bbdebet2/`, og legge symbolske linker i `/usr/local/bin/` slik at programmet er tilgjengelig fra terminalen. Det vil også legge til ikon i startmenyen. 
+Installasjonsskriptet vil legge programmet inn i `/usr/local/share/bbdebet2/`, og legge symbolske linker i `/usr/local/bin/` slik at programmet er tilgjengelig fra terminalen. Det vil også legge til ikon i startmenyen.
 
-Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil bli initialisert av installasjonsskriptet. 
- 
+Programmet vil bruke `~/.bbdebet2/` til datalagring. Denne mappa vil bli initialisert av installasjonsskriptet.
+
 
 
 ## Versjoner
 Under ligger en liste med alle utgivelsesnotater siden versjon 1.0.
 
+### 2.2 (under utvikling)
+ - Støtte for Mac OS
+ - Regnskapsføring: Track utlegg, innskudd, avanse ++ fra BBDebet, og generer regnskap på slutten av semesteret automatisk.
+
+
 ### 2.1
  - Riktig lisenshåndtering for dependencies
- - Shipper nå med OpenJDK og OpenJFX for å gjøre installering enklere. Bruker trenger ikke lenger ha en installasjon av java på systemet. Vi er heller ikke avhengige av OracleJDK som gjør lisensendringen i versjon 11 uproblematisk for bruken av BBDebet2. 
+ - Shipper nå med OpenJDK og OpenJFX for å gjøre installering enklere. Bruker trenger ikke lenger ha en installasjon av java på systemet. Vi er heller ikke avhengige av OracleJDK som gjør lisensendringen i versjon 11 uproblematisk for bruken av BBDebet2.
  - Oppdattert installeringsskript
 
+
 ### 2.0
- - Total omskriving av hele kodebasen. Store forbedringer for stabilitet, kjøretid og vedlikedholdbarhet.  
+ - Total omskriving av hele kodebasen. Store forbedringer for stabilitet, kjøretid og vedlikedholdbarhet.
  - Nytt og forbedret lagersystem. Ulike varer av samme type kan nå ha ulik pris. Mulighet for å beregne avanse per vare.
  - Totalt nytt brukergrensesnitt for administrator
  - Semiautomatisk innskuddshåndtering

@@ -135,8 +135,8 @@ ask_install_path() {
 
 read_install_path() {
 	install_path="$(cat ~/.bbdebet2/.installdir)"
-	jdk_path="$install_path/jdk/jdk-12.0.1/bin"
-	javafx_path="$install_path/jdk/javafx-sdk-12/lib/"
+	jdk_path="$(cat ~/.bbdebet2/.jdkdir)"
+	javafx_path="$(cat ~/.bbdebet2/.jfxdir)"
 }
 
 
@@ -330,6 +330,8 @@ copy_files() {
 
 	# Lagre sti til installeringsmappe
 	echo "$install_path" > ~/.bbdebet2/.installdir
+	echo "$jdk_path" > ~/.bbdebet2/.jdkdir
+	echo "$javafx_path" > ~/.bbdebet2/.jfxdir
 }
 
 
@@ -356,7 +358,7 @@ install_bbdebet2() {
 	infoprint
 	oscheck
 	licence_review
-	# repo_clean
+	repo_clean
 
 	# Spør om plassering
 	ask_install_path
@@ -372,13 +374,13 @@ install_bbdebet2() {
 	make_save_dirs
 
 	# Last ned JDK (leser info fra disse i make_install_dirs)
-	# jdk_download
+	jdk_download
 
 	# Sørg for at $install_path og tilhørende submapper finnes
 	make_install_dirs
 
 	# Installer JDK
-	# jdk_install
+	jdk_install
 
 	# Gjør småendringer i kildefiler
 	preprocess_sources
