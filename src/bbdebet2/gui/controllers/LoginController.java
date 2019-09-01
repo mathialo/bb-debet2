@@ -46,7 +46,7 @@ public class LoginController implements Initializable {
     @FXML
     public void attemptLogin(ActionEvent event) {
         // Extract username
-        String userName = loginNameField.getText();
+        String userName = loginNameField.getText().trim();
 
         // Check for glass user
         if (kernel.getSettingsHolder().isGlasUserActive() && userName.equalsIgnoreCase(kernel.getSettingsHolder().getGlasUserName())) {
