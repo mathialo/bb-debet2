@@ -33,16 +33,29 @@ public class Account implements Comparable<Account> {
         this.insertOption = insertOption;
     }
 
+
     public Account(String name, int number) {
         this(name, number, false, false);
     }
+
 
     public boolean isInsertOption() {
         return insertOption;
     }
 
+
+    public void setInsertOption(boolean insertOption) {
+        this.insertOption = insertOption;
+    }
+
+
     public boolean isPaymentOption() {
         return paymentOption;
+    }
+
+
+    public void setPaymentOption(boolean paymentOption) {
+        this.paymentOption = paymentOption;
     }
 
 
@@ -51,8 +64,18 @@ public class Account implements Comparable<Account> {
     }
 
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     public int getNumber() {
         return number;
+    }
+
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
 

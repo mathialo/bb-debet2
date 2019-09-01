@@ -139,6 +139,7 @@
                           <items>
                             <Button mnemonicParsing="false" onAction="#newMakeExpenceWindow" text="Ny føring" />
                               <Button mnemonicParsing="false" onAction="#deleteSelectedExpence" text="Slett føring" />
+                              <Button mnemonicParsing="false" onAction="#newAccountManagementWindow" text="Kontoer" />
                           </items>
                         </ToolBar>
                      </top>

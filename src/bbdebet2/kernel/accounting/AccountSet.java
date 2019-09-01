@@ -115,6 +115,14 @@ public class AccountSet implements Iterable<Account>, Exportable {
         return accounts.values().stream().filter(Account::isInsertOption).collect(Collectors.toCollection(TreeSet::new));
     }
 
+    public void deleteAccount(Account account) {
+        accounts.remove(account.getNumber());
+    }
+
+    public void deleteAccount(int accountNumber) {
+        accounts.remove(accountNumber);
+    }
+
 
     @Override
     public Iterator<Account> iterator() {

@@ -18,7 +18,21 @@
 package bbdebet2.gui.controllers;
 
 import bbdebet2.gui.Main;
-import bbdebet2.gui.applets.*;
+import bbdebet2.gui.applets.AccountManagement;
+import bbdebet2.gui.applets.AddBalance;
+import bbdebet2.gui.applets.AddProducts;
+import bbdebet2.gui.applets.BackupRestore;
+import bbdebet2.gui.applets.CategoryManagement;
+import bbdebet2.gui.applets.Console;
+import bbdebet2.gui.applets.CsvViewer;
+import bbdebet2.gui.applets.EditProducts;
+import bbdebet2.gui.applets.EditUser;
+import bbdebet2.gui.applets.MakeExpence;
+import bbdebet2.gui.applets.NewSemester;
+import bbdebet2.gui.applets.NewUser;
+import bbdebet2.gui.applets.SendEmail;
+import bbdebet2.gui.applets.Settings;
+import bbdebet2.gui.applets.Stocktaking;
 import bbdebet2.gui.modelwrappers.ViewExpence;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
@@ -32,7 +46,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -46,6 +65,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 public class AdminController implements Initializable {
 
@@ -293,6 +313,7 @@ public class AdminController implements Initializable {
         BackupRestore.createAndDisplayDialog();
     }
 
+
     @FXML
     public void newCategoryManagementWindow(ActionEvent event) {
         CategoryManagement.createAndDisplayDialog();
@@ -336,11 +357,19 @@ public class AdminController implements Initializable {
         MakeExpence.createAndDisplayDialog(null);
     }
 
+
     @FXML
     public void deleteSelectedExpence(ActionEvent event) {
         kernel.getLedger().remove(accountingView.getSelectionModel().getSelectedItem().getExpenceObject());
         repaintAccounting();
     }
+
+
+    @FXML
+    public void newAccountManagementWindow(ActionEvent event) {
+        AccountManagement.createAndDisplayDialog();
+    }
+
 
     @FXML
     public void showVersionNumber(ActionEvent event) {
