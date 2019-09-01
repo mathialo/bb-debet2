@@ -5,6 +5,7 @@ echo "Oppdatter buildnum"
 prev_buildnum="$(cat buildnum)"
 new_buildnum=$((prev_buildnum + 1))
 echo "$new_buildnum" > buildnum
+git add buildnum
 
 # Les versjon fra fil
 version="$(cat version)"
