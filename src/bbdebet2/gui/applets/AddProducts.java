@@ -28,6 +28,7 @@ import bbdebet2.kernel.datastructs.Product;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
@@ -132,6 +133,13 @@ public class AddProducts extends Applet {
 
 
     public void processAllAndExit(ActionEvent event) {
+        if (cartTableView.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Ingen produkter å legge til");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+            return;
+        }
+
         // Add elements to storage
         int num = 0;
         double totalExpenceAmount = 0;
