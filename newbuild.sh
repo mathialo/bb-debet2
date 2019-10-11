@@ -1,5 +1,10 @@
 #! /bin/bash
 
+if [[ -z $(git status | grep "Changes to be committed") ]]; then
+    echo "Tom git stage, legger til '-A'"
+    git add -A
+fi
+
 # Oppdatter versjon og buildnum
 echo "Oppdatter buildnum"
 prev_buildnum="$(cat buildnum)"
@@ -9,11 +14,6 @@ git add buildnum
 
 # Les versjon fra fil
 version="$(cat version)"
-
-if [[ -z $(git status | grep "Changes to be committed") ]]; then
-    echo "Tom git stage, legger til '-A'"
-    git add -A
-fi
 
 # Tagger siste commit med versjon- og build-nummber
 echo "Lager commit"
