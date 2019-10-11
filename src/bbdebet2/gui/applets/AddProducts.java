@@ -85,6 +85,11 @@ public class AddProducts extends Applet {
 
     @FXML
     public void submitNewProduct(ActionEvent event) {
+        if (packQuantityInput.getText().replaceAll("\\s+", "").equals(""))
+            packQuantityInput.setText("1");
+        if (quantityInput.getText().replaceAll("\\s+", "").equals(""))
+            quantityInput.setText("1");
+
         try {
             String name = productNameInput.getText().trim();
 

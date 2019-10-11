@@ -57,22 +57,31 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
             // skip first row (table headers)
             sc.nextLine();
 
+            int largestId = 0;
+
             // read rest as csv
             while (sc.hasNextLine()) {
                 // read line, split on comma
                 String[] line = sc.nextLine().split("\\s*,\\s*");
 
+                int id = Integer.parseInt(line[0]);
+
                 add(new Expence(
-                        accounts.fromAccountNumber(Integer.parseInt(line[1])),
-                        Double.parseDouble(line[3]),
-                        line[4],
-                        Long.parseLong(line[0])
-                    ).resolve(accounts.fromAccountNumber(Integer.parseInt(line[2])))
+                        accounts.fromAccountNumber(Integer.parseInt(line[2])),
+                        Double.parseDouble(line[4]),
+                        line[5],
+                        Long.parseLong(line[1]),
+                        id
+                    ).resolve(accounts.fromAccountNumber(Integer.parseInt(line[3])))
                 );
+
+                largestId = Math.max(id, largestId);
 
                 // update line num
                 lineNum++;
             }
+
+            Expence.counter = largestId;
 
             // close in stream
             sc.close();
@@ -93,10 +102,11 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
     public void saveFile(File file) throws IOException {
         PrintWriter printWriter = new PrintWriter(file);
 
-        printWriter.println("Timestamp,To,From,Amount,Comment");
+        printWriter.println("ID,Timestamp,To,From,Amount,Comment");
 
         for (Expence expence : this) {
-            printWriter.println(String.format("%d,%d,%d,%f,%s",
+            printWriter.println(String.format("%d,%d,%d,%d,%f,%s",
+                expence.getId(),
                 expence.getTimestamp(),
                 expence.getTo().getNumber(),
                 expence.getFrom().getNumber(),

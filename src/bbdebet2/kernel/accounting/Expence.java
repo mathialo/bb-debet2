@@ -22,31 +22,32 @@ import bbdebet2.kernel.datastructs.CurrencyFormatter;
 
 public class Expence implements Comparable<Expence> {
 
-    private long timestamp;
+    static int counter;
 
+    private long timestamp;
     private Account to;
     private Account from;
-
     private double amount;
-
     private String comment;
+    private int id;
 
 
-    public Expence(Account to, double amount, String comment, long timestamp) {
+    Expence(Account to, double amount, String comment, long timestamp, int id) {
         this.to = to;
         this.amount = amount;
         this.comment = comment != null ? comment.replaceAll(",", "") : "";
         this.timestamp = timestamp;
+        this.id = id;
     }
 
 
-    public Expence(Account from, double amount, String comment) {
-        this(from, amount, comment, System.currentTimeMillis() / 1000);
+    public Expence(Account to, double amount, String comment) {
+        this(to, amount, comment, System.currentTimeMillis() / 1000, counter++);
     }
 
 
-    public Expence(Account from, double amount) {
-        this(from, amount, "");
+    public Expence(Account to, double amount, Expence sibling) {
+        this(to, amount, sibling.getComment(), sibling.getTimestamp(), sibling.getId());
     }
 
 
@@ -78,6 +79,11 @@ public class Expence implements Comparable<Expence> {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+
+    public int getId() {
+        return id;
     }
 
 
