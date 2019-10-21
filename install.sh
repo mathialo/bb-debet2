@@ -304,6 +304,7 @@ copy_files() {
 	sudo cp etc/bashscripts/* $install_path/
 	sudo chmod +x $install_path/senddebet2data.sh
 	sudo chmod +x $install_path/getdebet2data.sh
+	sudo chmod +x $install_path/run_remote_bbdebet2.sh
 	sudo cp etc/manual_bbdebet2.html $install_path/
 	sudo cp -r etc/img $install_path/
 
@@ -426,6 +427,14 @@ update_bbdebet2() {
 }
 
 
+install_remote() {
+	root_check
+
+	sudo cp etc/bashscripts/run_remote_bbdebet2.sh /usr/local/bin/bbdebet2
+	sudo chmod +x /usr/local/bin/bbdebet2
+}
+
+
 remove_bbdebet2() {
 	infoprint
 	oscheck
@@ -490,8 +499,13 @@ elif [[ "$1" == "oppdatter" ]]; then
 	echo ""
 	echo "BBDebet2 er oppdattert. Generelt!"
 
+elif [[ "$1" == "remote" ]]; then
+	install_remote
+	echo ""
+	echo "Remote BBDebet2-klient er installert. Generelt!"
+
 else
-	echo "Ingen kommando gitt. Installasjonsprogrammet kjøres slik:"
+	echo "Ingen/ugyldig kommando gitt. Installasjonsprogrammet kjøres slik:"
 	echo ""
 	echo "   $ ./install.sh <kommando>"
 	echo ""
@@ -499,4 +513,5 @@ else
 	echo "    - installer"
 	echo "    - avinstaller"
 	echo "    - oppdatter"
+	echo "    - remote"
 fi

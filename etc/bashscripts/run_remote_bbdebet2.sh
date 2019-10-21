@@ -14,10 +14,19 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if [[ "$1" == "--nogui" ]]; then
-    JAVA_PATH -Dfile.encoding=UTF-8 --module-path JAVAFX_PATH --add-modules ALL-MODULE-PATH -jar INSTALL_PATH/bbdebet2.jar $*
-elif [[ "$1" == "remote" ]]; then
-	bash "INSTALL_PATH/run_remote_bbdebet2.sh" "$1" "$2"
-else
-    JAVA_PATH -Dfile.encoding=UTF-8 --module-path JAVAFX_PATH --add-modules ALL-MODULE-PATH -splash:INSTALL_PATH/img/splash.png -jar INSTALL_PATH/bbdebet2.jar $*
+
+# Check that arguments are valid
+if [[ "$1" != "remote" ]]; then
+	echo "You only have the remote client of BBDebet2 installed. Run as"
+	echo
+	echo "    $ bbdebet2 remote <ssh-host>"
+	echo
+	exit 1
 fi
+if [[ "$2" == "" ]]; then
+	echo "Missing argument: ssh host"
+	exit 1
+fi
+
+# Run remotely
+ssh -T -XC -c aes128-ctr $2 bbdebet2
