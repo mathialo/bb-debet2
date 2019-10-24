@@ -122,8 +122,8 @@ public class HandleXLSFile extends Applet {
         try {
             inputFile = new Scanner(new File(Kernel.PROCESSEDINSERTS_FILEPATH));
         } catch (FileNotFoundException e) {
-            kernel.getLogger().log(e);
-            kernel.getLogger().log("Could not read processed bank transactions");
+            Kernel.getLogger().log(e);
+            Kernel.getLogger().log("Could not read processed bank transactions");
             return;
         }
 
@@ -239,7 +239,7 @@ public class HandleXLSFile extends Applet {
                         TextTemplateLoader.getTemplate(TextTemplate.USERADDEDMONEY)
                     );
                 } catch (MessagingException | InvalidEncryptionException e) {
-                    kernel.getLogger().log(e);
+                    Kernel.getLogger().log(e);
                 }
             }
 
@@ -269,7 +269,7 @@ public class HandleXLSFile extends Applet {
 
             pw.close();
         } catch (FileNotFoundException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
             Alert alert = new Alert(
                 Alert.AlertType.ERROR, "Kunne ikke lagre ny statusfil. Kontakt administrator.");
             alert.setHeaderText("Feil i fillagring");
@@ -298,7 +298,7 @@ public class HandleXLSFile extends Applet {
         try {
             loadXlsFile();
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
         loadProcessed();
         constructInsetsForProcessing();

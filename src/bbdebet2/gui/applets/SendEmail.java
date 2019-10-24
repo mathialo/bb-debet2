@@ -18,6 +18,7 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.customelements.WaitingDialog;
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.application.Platform;
@@ -206,7 +207,7 @@ public class SendEmail extends Applet {
                         kernel.getEmailSender().sendMail(
                                 user, emailSubjectInput.getText(), emailTextInput.getText());
                     } catch (MessagingException | InvalidEncryptionException e) {
-                        kernel.getLogger().log(e);
+                        Kernel.getLogger().log(e);
                         failedNames.add(username);
                     }
                 }

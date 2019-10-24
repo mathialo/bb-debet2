@@ -78,7 +78,7 @@ public class Kernel implements CommandLineInterface {
 
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
 
-    private Logger logger;
+    private static Logger logger;
     private File runningFile;
 
     private Exportable[] saveOnExit;
@@ -276,7 +276,7 @@ public class Kernel implements CommandLineInterface {
         } catch (NumberFormatException e) {
             outputStream.println("Invalid argument type(s) for '" + command[0] + "'");
         } catch (Exception e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
 
         return cont;
@@ -492,7 +492,7 @@ public class Kernel implements CommandLineInterface {
      *
      * @return Current logger
      */
-    public Logger getLogger() {
+    public static Logger getLogger() {
         return logger;
     }
 

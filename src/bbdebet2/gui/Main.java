@@ -221,9 +221,9 @@ public class Main extends Application {
             // Log all uncaught exceptions
             Thread.currentThread().setUncaughtExceptionHandler( (thread, throwable) -> {
                 if (throwable instanceof Exception)
-                    kernel.getLogger().log(((Exception) throwable));
+                    Kernel.getLogger().log(((Exception) throwable));
                 else
-                    kernel.getLogger().log(throwable);
+                    Kernel.getLogger().log(throwable);
             });
 
             // Close splash screen and show application
@@ -234,7 +234,7 @@ public class Main extends Application {
 
             primaryStage.show();
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
             Platform.exit();
         }
     }

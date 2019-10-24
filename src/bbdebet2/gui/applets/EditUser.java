@@ -20,6 +20,7 @@ package bbdebet2.gui.applets;
 import bbdebet2.gui.Main;
 import bbdebet2.gui.customelements.SuggestionMenu;
 import bbdebet2.gui.modelwrappers.ViewUser;
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,7 +62,7 @@ public class EditUser extends Applet {
                 alert.showAndWait();
                 return;
             } else {
-                kernel.getLogger().log("Changing name of user: " + u.getUserName() + " -> " + newUserNameInput.getText());
+                Kernel.getLogger().log("Changing name of user: " + u.getUserName() + " -> " + newUserNameInput.getText());
                 u.setUserName(newUserNameInput.getText());
             }
         }

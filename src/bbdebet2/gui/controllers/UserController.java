@@ -59,7 +59,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -307,7 +306,7 @@ public class UserController implements Initializable {
         if (logOutAlert.getResult() == waitButton) {
             updateLogoutTimer();
         } else {
-            kernel.getLogger().log(Main.getActiveUser() + " forcibly logged out");
+            Kernel.getLogger().log(Main.getActiveUser() + " forcibly logged out");
             logout();
             Main.toLoginScreen();
         }
@@ -390,11 +389,11 @@ public class UserController implements Initializable {
                 protected Void call() throws Exception {
                     try {
                         kernel.getEmailSender().sendOutOfMoneyNotification(Main.getActiveUser());
-                        kernel.getLogger().log(
+                        Kernel.getLogger().log(
                             Main.getActiveUser() + " just run out of money, notification sent"
                         );
                     } catch (MessagingException | InvalidEncryptionException e) {
-                        kernel.getLogger().log(e);
+                        Kernel.getLogger().log(e);
                     }
                     return null;
                 }

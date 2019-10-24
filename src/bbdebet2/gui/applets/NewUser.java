@@ -18,6 +18,7 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.TextTemplate;
 import bbdebet2.kernel.mailing.TextTemplateLoader;
@@ -64,7 +65,7 @@ public class NewUser extends Applet {
         );
 
         kernel.getUserList().add(newUser);
-        kernel.getLogger().log("New user added: " + newUser);
+        Kernel.getLogger().log("New user added: " + newUser);
 
         try {
             kernel.getEmailSender().sendMail(
@@ -73,7 +74,7 @@ public class NewUser extends Applet {
                 welcomeEmailTextInput.getText()
             );
         } catch (InvalidEncryptionException | MessagingException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.setHeaderText("Kunne ikke sende epost");
             alert.showAndWait();

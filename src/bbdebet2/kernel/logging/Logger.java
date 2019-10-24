@@ -98,18 +98,18 @@ public class Logger {
 
 
     private String getTimeStamp() {
-        return new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date()) + ":\t";
+        return new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
     }
 
 
     public void log(String message) {
         try {
-            logWriter.write(getTimeStamp() + message + ".\n");
+            logWriter.write(getTimeStamp() + " [LOG]:  " + message + ".\n");
         } catch (IOException ignored) {
         }
 
         for (PrintStream output : outputStreams) {
-            output.println("LOG:\t" + message);
+            output.println(getTimeStamp() + " [LOG]:  " + message);
         }
 
         controlFileSize();
@@ -131,7 +131,7 @@ public class Logger {
         }
 
         for (PrintStream output : outputStreams) {
-            output.println("LOG:\tError: " + exception.getMessage());
+            output.println(getTimeStamp() + " [EXCEPTION]:\t" + exception.getMessage());
         }
 
         controlFileSize();

@@ -50,7 +50,7 @@ public class LoginController implements Initializable {
 
         // Check for glass user
         if (kernel.getSettingsHolder().isGlasUserActive() && userName.equalsIgnoreCase(kernel.getSettingsHolder().getGlasUserName())) {
-            kernel.getLogger().log("New login from glas user");
+            Kernel.getLogger().log("New login from glas user");
             Main.getCurrentUserController().loginGlass();
             Main.toUserScreen();
             return;
@@ -60,14 +60,14 @@ public class LoginController implements Initializable {
         User user = kernel.getUserList().find(userName);
 
         if (user == null) {
-            kernel.getLogger().log("New failed login attemppt from '" + userName + "'");
+            Kernel.getLogger().log("New failed login attemppt from '" + userName + "'");
             errorOutput.setText("Finner ikke bruker '" + userName + "'");
         } else {
             if (Main.getCurrentUserController().login(user)) {
-                kernel.getLogger().log("New login from " + user);
+                Kernel.getLogger().log("New login from " + user);
                 Main.toUserScreen();
             } else {
-                kernel.getLogger().log("Failed login attempt from " + user + ". User did not accept EULA.");
+                Kernel.getLogger().log("Failed login attempt from " + user + ". User did not accept EULA.");
             }
         }
     }

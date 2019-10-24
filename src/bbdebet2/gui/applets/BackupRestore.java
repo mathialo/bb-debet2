@@ -56,7 +56,7 @@ public class BackupRestore extends Applet {
 
         File dir = new File(Kernel.SAVE_DIR + "autosave" +  getSelectedBackupTimestamp());
         deleteDir(dir);
-        kernel.getLogger().log("Deleting backup " + getSelectedBackupTimestamp());
+        Kernel.getLogger().log("Deleting backup " + getSelectedBackupTimestamp());
 
         backupTimestamps.remove(getSelectedIndex());
         backupListView.getItems().remove(getSelectedIndex());
@@ -80,7 +80,7 @@ public class BackupRestore extends Applet {
             return;
         }
 
-        kernel.getLogger().log("Restoring to backup " + getSelectedBackupTimestamp());
+        Kernel.getLogger().log("Restoring to backup " + getSelectedBackupTimestamp());
 
         // Reload all backuped files in dir into kernel
         try {
@@ -89,7 +89,7 @@ public class BackupRestore extends Applet {
             kernel.getStorage().resetToFile(new File(backupDir + getSelectedBackupTimestamp() + "/" + Kernel.STORAGE_FILENAME));
 
         } catch (Exception e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
 
         Main.getCurrentAdminController().repaintAll();

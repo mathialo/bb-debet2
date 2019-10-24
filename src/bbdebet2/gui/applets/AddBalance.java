@@ -19,6 +19,7 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.gui.customelements.WaitingDialog;
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.accounting.Account;
 import bbdebet2.kernel.accounting.Expence;
 import bbdebet2.kernel.datastructs.User;
@@ -94,7 +95,7 @@ public class AddBalance extends Applet {
                     try {
                         kernel.getEmailSender().sendMail(u, "Påfyll av penger", emailTextInput.getText());
                     } catch (MessagingException | InvalidEncryptionException e) {
-                        kernel.getLogger().log(e);
+                        Kernel.getLogger().log(e);
                     }
                     return null;
                 }

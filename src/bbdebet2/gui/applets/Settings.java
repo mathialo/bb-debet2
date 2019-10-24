@@ -17,6 +17,7 @@
 
 package bbdebet2.gui.applets;
 
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.SettingsHolder;
 import bbdebet2.kernel.mailing.TextTemplate;
 import bbdebet2.kernel.mailing.TextTemplateLoader;
@@ -191,7 +192,7 @@ public class Settings extends Applet {
         try {
             saveSelectedTemplate();
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
 
             Alert alert = new Alert(Alert.AlertType.ERROR, "Kunne ikke lagre mal");
             alert.setHeaderText(null);
@@ -210,19 +211,19 @@ public class Settings extends Applet {
             saveSelectedTemplate();
             exit(event);
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
 
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.setHeaderText("Feil i lagring");
             alert.showAndWait();
         } catch (NumberFormatException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
 
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.setHeaderText("Feil i type-konvertering");
             alert.showAndWait();
         } catch (Exception e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
 
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.setHeaderText("Uventet feil");

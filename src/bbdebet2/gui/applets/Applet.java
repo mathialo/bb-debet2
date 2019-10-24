@@ -53,7 +53,7 @@ public abstract class Applet implements Initializable {
 
             return fxmlLoader;
         } catch (IOException e) {
-            Main.getKernel().getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
         return null;
     }

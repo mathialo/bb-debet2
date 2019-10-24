@@ -86,10 +86,10 @@ public class NewSemester extends Applet {
                 }
             }
 
-            kernel.getLogger().log("Beginning new semester");
+            Kernel.getLogger().log("Beginning new semester");
 
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
 
             Alert alert = new Alert(Alert.AlertType.ERROR, "Uventet feil");
             alert.setHeaderText("Uventet feil under lagring");

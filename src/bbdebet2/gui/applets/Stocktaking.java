@@ -18,6 +18,7 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.logging.CsvLogger;
 import javafx.event.ActionEvent;
@@ -80,14 +81,14 @@ public class Stocktaking extends Applet {
             );
 
             if (diff != 0) {
-                kernel.getLogger().log(
+                Kernel.getLogger().log(
                     "Stocktaking: " + productNameView.getText() + " changed by " + diff
                 );
 
                 try {
                     CsvLogger.addProductLoss(p, -diff);
                 } catch (IOException e) {
-                    kernel.getLogger().log(e);
+                    Kernel.getLogger().log(e);
                 }
             }
         }

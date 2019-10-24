@@ -92,7 +92,7 @@ public class AutoSaver {
             // make sure directory exists
             File newDir = new File(Kernel.SAVE_DIR + newSubdir);
             newDir.mkdir();
-            kernel.getLogger().log("Backuping... " + timestamp);
+            Kernel.getLogger().log("Backuping... " + timestamp);
 
         } else {
             newSubdir = subdir;
@@ -102,34 +102,34 @@ public class AutoSaver {
         try {
             kernel.getSalesHistory().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.SALESHISTORY_FILENAME);
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
 
         try {
             kernel.getUserList().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.USERLIST_FILENAME, true);
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
 
         try {
             kernel.getStorage().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.STORAGE_FILENAME);
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
 
         if (autoSend) {
             // make sure we dont end up with ghost procs
             if (sendProc != null && sendProc.isAlive()) {
-                kernel.getLogger().log("Killing previous sending process");
+                Kernel.getLogger().log("Killing previous sending process");
                 sendProc.destroyForcibly();
             }
 
-            kernel.getLogger().log("Sending data to remote server");
+            Kernel.getLogger().log("Sending data to remote server");
             try {
                 ProcessBuilder pb = new ProcessBuilder("senddebet2data");
                 sendProc = pb.start();
             } catch (IOException e) {
-                kernel.getLogger().log(e);
+                Kernel.getLogger().log(e);
             }
         }
 

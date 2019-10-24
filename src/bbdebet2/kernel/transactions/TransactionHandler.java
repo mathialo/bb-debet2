@@ -41,7 +41,7 @@ public class TransactionHandler {
         user.subtractBalance(product.getSellPrice());
 
         // log transaction
-        kernel.getLogger().log("New purchase from " + user + ": " + product);
+        Kernel.getLogger().log("New purchase from " + user + ": " + product);
         kernel.getSalesHistory().add(new Sale(user, product));
     }
 
@@ -79,18 +79,18 @@ public class TransactionHandler {
         kernel.getSalesHistory().remove(sale.getId());
 
         // Log transaction
-        kernel.getLogger().log("Refunded sale '" + sale + "' for " + sale.getUserName());
+        Kernel.getLogger().log("Refunded sale '" + sale + "' for " + sale.getUserName());
     }
 
 
     public void newMoneyInsert(User user, double amount) {
         user.addBalance(amount);
-        kernel.getLogger().log("Added " + CurrencyFormatter.format(amount) + " to user " + user);
+        Kernel.getLogger().log("Added " + CurrencyFormatter.format(amount) + " to user " + user);
 
         try {
             CsvLogger.addMoneyInserts(user, amount);
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
 
     }
@@ -103,12 +103,12 @@ public class TransactionHandler {
 
         // log transaction
         try {
-            kernel.getLogger().log(
+            Kernel.getLogger().log(
                 "Transfering " + amount + kernel.getSettingsHolder().getCurrencySign() + " from " + from + " to " + to
             );
             CsvLogger.addUserTransaction(from, to, amount);
         } catch (IOException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
     }
 }

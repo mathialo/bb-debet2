@@ -104,7 +104,7 @@ public class EmailSender {
             message.setText(formatText(text, user));
 
             Transport.send(message);
-            kernel.getLogger().log("Email sent to " + user);
+            Kernel.getLogger().log("Email sent to " + user);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

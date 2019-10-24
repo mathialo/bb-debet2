@@ -117,7 +117,7 @@ public class AddProducts extends Applet {
 
             cartTableView.getItems().add(p);
         } catch (NumberFormatException e) {
-            kernel.getLogger().log(e);
+            Kernel.getLogger().log(e);
         }
     }
 
@@ -153,7 +153,7 @@ public class AddProducts extends Applet {
             }
         }
 
-        kernel.getLogger().log(num + " products added to storage");
+        Kernel.getLogger().log(num + " products added to storage");
         Main.getCurrentAdminController().repaintStorage();
         exit(event);
 

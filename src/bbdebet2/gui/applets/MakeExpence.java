@@ -19,6 +19,7 @@ package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
 import bbdebet2.gui.modelwrappers.ViewExpenceForAddition;
+import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.accounting.Account;
 import bbdebet2.kernel.accounting.Expence;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
@@ -114,12 +115,12 @@ public class MakeExpence extends Applet {
         for (ViewExpenceForAddition viewExpenceForAddition : expenceTableView.getItems()) {
             Expence expence = viewExpenceForAddition.getExpenceObject().resolve(fromAccount);
             kernel.getLedger().add(expence);
-            kernel.getLogger().log("Tracking expence: " + expence);
+            Kernel.getLogger().log("Tracking expence: " + expence);
 
             totalAmount += expence.getAmount();
         }
 
-        kernel.getLogger().log("Total expence: " + CurrencyFormatter.format(totalAmount) + ", paying from " + fromAccount);
+        Kernel.getLogger().log("Total expence: " + CurrencyFormatter.format(totalAmount) + ", paying from " + fromAccount);
 
 
         if (user != null) {
@@ -132,7 +133,7 @@ public class MakeExpence extends Applet {
                     try {
                         kernel.getEmailSender().sendMail(finalUser, "Påfyll av penger", TextTemplateLoader.getTemplate(TextTemplate.USERADDEDMONEY));
                     } catch (MessagingException | InvalidEncryptionException e) {
-                        kernel.getLogger().log(e);
+                        Kernel.getLogger().log(e);
                     }
                     return null;
                 }

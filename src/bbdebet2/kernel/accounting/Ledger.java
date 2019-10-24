@@ -105,6 +105,11 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
         printWriter.println("ID,Timestamp,To,From,Amount,Comment");
 
         for (Expence expence : this) {
+            if (expence == null) {
+                Kernel.getLogger().log("Cannot save null as expence");
+                continue;
+            }
+
             printWriter.println(String.format("%d,%d,%d,%d,%f,%s",
                 expence.getId(),
                 expence.getTimestamp(),
