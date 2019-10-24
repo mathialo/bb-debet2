@@ -197,7 +197,7 @@ preprocess_sources() {
 	echo "[i] Konfigurerer build"
 
 	# Oppdater versjonsnummer og build-nummer i kildefil
-	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version:$buildnum\3/g"  > sedcommand
+	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version.$buildnum\3/g"  > sedcommand
 	substitute src/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1BBdebet $version\\\\nBuild nr $buildnum\3/g" > sedcommand
 	substitute src/bbdebet2/gui/Main.java
