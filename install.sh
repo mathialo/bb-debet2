@@ -196,11 +196,13 @@ substitute() {
 preprocess_sources() {
 	echo "[i] Konfigurerer build"
 
-	# Oppdater versjonsnummer og build-nummer i kildefil
+	# Oppdater versjonsnummer og build-nummer i kildefiler
 	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version.$buildnum\3/g"  > sedcommand
 	substitute src/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1BBdebet $version\\\\nBuild nr $buildnum\3/g" > sedcommand
 	substitute src/bbdebet2/gui/Main.java
+	echo "s/BBDEBET_VERSION/$version.$buildnum/g"  > sedcommand
+	substitute bbctl/bbctl/__init__.py
 
 	# Dytt JDK og JavaFX inn i run.sh
 	# Escape / i $jdk_path
@@ -251,6 +253,8 @@ postprocess_sources() {
 	substitute src/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g" > sedcommand
 	substitute src/bbdebet2/gui/Main.java
+	echo "s/$version.$buildnum/BBDEBET_VERSION/g"  > sedcommand
+	substitute bbctl/bbctl/__init__.py
 
 	# run.sh
 	echo "s/$jdk_path_escaped_slashes/JAVA_PATH/g" > sedcommand
@@ -336,6 +340,14 @@ copy_files() {
 }
 
 
+install_bbctl() {
+	cd bbctl
+	echo " - bbctl"
+	pip install --upgrade --user . > /dev/null
+	cd ..
+}
+
+
 make_save_dirs() {
 	mkdir -p ~/.bbdebet2
 	mkdir -p ~/.bbdebet2/autosave
@@ -391,6 +403,7 @@ install_bbdebet2() {
 
 	# Kopier filer rundt dit de skal
 	copy_files
+	install_bbctl
 
 	# cleanup
 	postprocess_sources
@@ -420,6 +433,7 @@ update_bbdebet2() {
 
 	# Kopier filer rundt dit de skal
 	copy_files
+	install_bbctl
 
 	# cleanup
 	postprocess_sources
@@ -462,6 +476,8 @@ remove_bbdebet2() {
 		sudo rm -r /Applications/BBDebet2.app
 	fi
 	sudo rm -rf ~/.bbdebet2.gui.Main
+
+	pip uninstall bbdebet2-bbctl
 
 	echo ""
 	echo "Ønsker du å slette lagrede filer (salgshistorikk, brukerdata, etc..) også?"
