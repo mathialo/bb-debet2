@@ -17,6 +17,7 @@
 
 package bbdebet2.kernel;
 
+import bbdebet2.exceptions.KernelAlreadyRunningException;
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.accounting.Account;
 import bbdebet2.kernel.accounting.AccountSet;
@@ -318,14 +319,14 @@ public class Kernel implements CommandLineInterface {
      * Creates a file "running" in SAVE_DIR. <p> This will be deleted on kernel shutdown, hence we
      * know if a kernel is running on the system or not.
      *
-     * @throws IllegalStateException If "running" file already exists.
+     * @throws bbdebet2.exceptions.KernelAlreadyRunningException If "running" file already exists.
      */
-    private void createRunningFile() throws IllegalStateException {
+    private void createRunningFile() throws KernelAlreadyRunningException {
         runningFile = new File(SAVE_DIR + "running");
         if (runningFile.exists()) {
             logger.log("Error: Kernel already running on system");
             logger.close();
-            throw new IllegalStateException(
+            throw new KernelAlreadyRunningException(
                 "Could not instantiate kernel. An instance of bbdebet2 is already running on the system."
             );
         }

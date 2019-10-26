@@ -17,6 +17,7 @@
 
 package bbdebet2.gui;
 
+import bbdebet2.exceptions.KernelAlreadyRunningException;
 import bbdebet2.gui.controllers.AdminController;
 import bbdebet2.gui.controllers.LoginController;
 import bbdebet2.gui.controllers.UserController;
@@ -35,6 +36,9 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 public class Main extends Application {
@@ -155,6 +159,10 @@ public class Main extends Application {
         super.init();
         try {
             kernel = new Kernel();
+        } catch (KernelAlreadyRunningException e) {
+            errorsOccuredDuringStartup = true;
+            errorMessage = "Der er allerede en instans av BBDebet kjørende på systemet. Det kan også skyldes av at programmet ikke avluttet riktig sist.";
+
         } catch (IllegalStateException e) {
             errorsOccuredDuringStartup = true;
             errorMessage = e.getMessage();
@@ -178,6 +186,22 @@ public class Main extends Application {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == buttonTypeYes) {
+                List<ProcessHandle> otherInstances = new LinkedList<>();
+                ProcessHandle.allProcesses().forEach(p -> {
+                    p.info().commandLine().ifPresent(s -> {
+                        if (s.contains("java") && s.contains("bbdebet2")) otherInstances.add(p);
+                    });
+                });
+
+                otherInstances.removeIf(processHandle -> processHandle.pid() == ProcessHandle.current().pid());
+
+                for (ProcessHandle p : otherInstances) p.destroy();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 kernel = new Kernel(true);
             } else {
                 System.exit(1);
