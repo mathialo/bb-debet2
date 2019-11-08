@@ -77,10 +77,10 @@ public class EditProducts extends Applet {
         } else {
             query.setPrice(selectedPrice.getProduct().getSellPrice());
         }
-        
+
         if (!newProductPriceInput.getText().equals("UENDRET")) {
             query.setChangePrice();
-            newPrice = Double.parseDouble(newProductPriceInput.getText());
+            newPrice = Double.parseDouble(newProductPriceInput.getText().replaceAll(",", "."));
         }
 
         kernel.getStorage().editProducts(query, newName, newPrice);

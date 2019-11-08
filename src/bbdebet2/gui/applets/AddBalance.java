@@ -67,7 +67,7 @@ public class AddBalance extends Applet {
         double amount = 0;
 
         try {
-            amount = Double.parseDouble(moneyInput.getText());
+            amount = Double.parseDouble(moneyInput.getText().replaceAll(",", "."));
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Skriv gyldig tall i beløpfeltet");
             alert.showAndWait();

@@ -157,7 +157,7 @@ public class MakeExpence extends Applet {
 
         double amount;
         try {
-            amount = Double.parseDouble(amountTextField.getText());
+            amount = Double.parseDouble(amountTextField.getText().replaceAll(",", "."));
         } catch (NumberFormatException e) {
             return;
         }

@@ -100,9 +100,9 @@ public class AddProducts extends Applet {
                 name = searchForInStorage.getName();
             }
 
-            double buyPrice = Double.parseDouble(buyPriceInput.getText());
+            double buyPrice = Double.parseDouble(buyPriceInput.getText().replaceAll(",", "."));
             int packQuantity = packQuantityInput.getText().equals("") ? 1 : Integer.parseInt(packQuantityInput.getText());
-            double salePrice = Double.parseDouble(salePriceInput.getText());
+            double salePrice = Double.parseDouble(salePriceInput.getText().replaceAll(",", "."));
             int numPacks = Integer.parseInt(quantityInput.getText());
 
             ViewProductForAddition p = new ViewProductForAddition(
