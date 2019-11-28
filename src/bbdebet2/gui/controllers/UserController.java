@@ -249,6 +249,9 @@ public class UserController implements Initializable {
         // Set active user
         Main.setActiveUser(user);
 
+        System.out.println(user);
+        System.out.println(Main.getActiveUser());
+
         // Clear searching and request focus
         searchProductInput.setText("");
         Platform.runLater(() -> searchProductInput.requestFocus());
@@ -476,6 +479,8 @@ public class UserController implements Initializable {
 
 
     private void logout() {
+        if (Main.getActiveUser() == null) return;
+
         // Force through purchase of all goods in cart
         handleConfirmPurchase(null);
 
@@ -533,11 +538,6 @@ public class UserController implements Initializable {
                 if (ke.getCode() == KeyCode.ESCAPE) {
                     handleLogout(null);
                 }
-            }
-        });
-        // Enter confirms purhcase
-        Main.getUserScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent ke) {
                 if (ke.getCode() == KeyCode.ENTER) {
                     handleConfirmPurchase(null);
                 }
