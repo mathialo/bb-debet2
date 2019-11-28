@@ -19,8 +19,6 @@ package bbdebet2.gui.customelements;
 
 import bbdebet2.gui.Main;
 import bbdebet2.kernel.datastructs.CategoryDict;
-import bbdebet2.kernel.datastructs.Product;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -29,7 +27,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 
 public class NewCategoryDialog extends Dialog<CategoryDict.Category> {
@@ -59,8 +56,8 @@ public class NewCategoryDialog extends Dialog<CategoryDict.Category> {
 
         setResultConverter(dialogButton -> {
             if (dialogButton == addCategoryButton) {
-                if (Main.getKernel().getCategories().contains(titleInput.getText())) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Kategorien '" + titleInput.getText() + "' eksisterer allerede");
+                if (Main.getKernel().getCategories().contains(titleInput.getText().replaceAll(",", "."))) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Kategorien '" + titleInput.getText().replaceAll(",", ".") + "' eksisterer allerede");
                     alert.setHeaderText("Gi kategorien et unikt navn");
                     alert.showAndWait();
                     return null;

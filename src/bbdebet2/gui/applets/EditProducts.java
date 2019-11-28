@@ -66,7 +66,7 @@ public class EditProducts extends Applet {
 
         if (!newProductNameInput.getText().equals("UENDRET")) {
             query.setChangeName();
-            newName = newProductNameInput.getText();
+            newName = newProductNameInput.getText().replaceAll(",", ".");
         }
 
         ProductPriceView selectedPrice = productPriceInput.getSelectionModel().getSelectedItem();

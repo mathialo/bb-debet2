@@ -31,6 +31,7 @@ import javafx.scene.input.KeyEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 public class EditUser extends Applet {
 
     @FXML
@@ -48,7 +49,7 @@ public class EditUser extends Applet {
 
     @FXML
     public void saveAndExit(ActionEvent event) {
-        User u = kernel.getUserList().find(userNameInput.getText());
+        User u = kernel.getUserList().find(userNameInput.getText().replaceAll(",", "."));
 
         if (u == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Fant ikke bruker");
@@ -56,14 +57,14 @@ public class EditUser extends Applet {
             return;
         }
 
-        if (!newUserNameInput.getText().equals(u.getUserName())) {
+        if (!newUserNameInput.getText().equals(u.getUserName().replaceAll(",", "."))) {
             if (kernel.getUserList().contains(newUserNameInput.getText())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Brukernavn allerede tatt");
                 alert.showAndWait();
                 return;
             } else {
-                Kernel.getLogger().log("Changing name of user: " + u.getUserName() + " -> " + newUserNameInput.getText());
-                u.setUserName(newUserNameInput.getText());
+                Kernel.getLogger().log("Changing name of user: " + u.getUserName() + " -> " + newUserNameInput.getText().replaceAll(",", "."));
+                u.setUserName(newUserNameInput.getText().replaceAll(",", "."));
             }
         }
 
@@ -73,7 +74,7 @@ public class EditUser extends Applet {
 
 
     private void updateCurrentContent(KeyEvent event) {
-        User u = kernel.getUserList().find(userNameInput.getText());
+        User u = kernel.getUserList().find(userNameInput.getText().replaceAll(",", "."));
 
         if (u == null) return;
 

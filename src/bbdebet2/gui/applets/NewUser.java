@@ -51,7 +51,7 @@ public class NewUser extends Applet {
     @FXML
     public void addUserAndExit(ActionEvent event) {
         // Check validity
-        if (kernel.getUserList().contains(userNameInput.getText())) {
+        if (kernel.getUserList().contains(userNameInput.getText().replaceAll(",","."))) {
             Alert alert = new Alert(
                 Alert.AlertType.ERROR, "Det finnes allerede en bruker med det navnet!");
             alert.setHeaderText(null);
@@ -60,8 +60,8 @@ public class NewUser extends Applet {
         }
 
         User newUser = new User(
-            userNameInput.getText().replaceAll("\\s+", "").toLowerCase(),
-            userEmailInput.getText().replaceAll("\\s+", "").toLowerCase()
+            userNameInput.getText().replaceAll("\\s+", "").toLowerCase().replaceAll(",","."),
+            userEmailInput.getText().replaceAll("\\s+", "").toLowerCase().replaceAll(",",".")
         );
 
         kernel.getUserList().add(newUser);

@@ -92,7 +92,7 @@ public class AddProducts extends Applet {
             quantityInput.setText("1");
 
         try {
-            String name = productNameInput.getText().trim();
+            String name = productNameInput.getText().trim().replaceAll(",", ".");
 
             // If product exists in storage with a similar name, replace name
             Product searchForInStorage = kernel.getStorage().findIgnoreCase(name);
