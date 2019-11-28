@@ -33,6 +33,7 @@ import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -46,6 +47,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -61,6 +63,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 
 public class UserController implements Initializable {
 
@@ -82,6 +85,9 @@ public class UserController implements Initializable {
     private ListView<ViewProduct> shoppingCartView;
     @FXML
     private Label shoppingCartTitleLabel;
+
+    @FXML
+    private TextField searchProductInput;
 
     private Kernel kernel;
 
@@ -187,6 +193,31 @@ public class UserController implements Initializable {
     }
 
 
+    @FXML
+    private void newSearch() {
+        if (searchProductInput.getText().isEmpty()) {
+            updateFavouritesView();
+            updateStorageView();
+
+        } else {
+            storageContainer.getChildren().clear();
+            favouritesContainer.getChildren().clear();
+
+            Set<Product> productSelection = kernel.getStorage().getProductSet();
+
+            for (Product p : productSelection) {
+                if (!p.getName().toLowerCase().contains(searchProductInput.getText().toLowerCase())) continue;
+
+                StorageButton button = new StorageButton(p);
+                button.setOnAction(e -> addProductToCart(p));
+                storageContainer.getChildren().add(button);
+
+                if (isGlasUser) button.setGlasUser(true);
+            }
+        }
+    }
+
+
     private void setUpSalesHistoryView() {
         userSalesHistorySaleDateCol.setCellValueFactory(
             new PropertyValueFactory<ViewSale, String>("saleDate")
@@ -217,6 +248,10 @@ public class UserController implements Initializable {
     public boolean login(User user) {
         // Set active user
         Main.setActiveUser(user);
+
+        // Clear searching and request focus
+        searchProductInput.setText("");
+        Platform.runLater(() -> searchProductInput.requestFocus());
 
         // Update and populate GUI
         loginNameView.setText(formatTitleString(user));
