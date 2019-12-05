@@ -31,13 +31,13 @@ import bbdebet2.kernel.datastructs.Product;
 import bbdebet2.kernel.datastructs.SettingsHolder;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
+import bbdebet2.kernel.search.ProductSearchEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -141,6 +141,8 @@ public class UserController implements Initializable {
 
 
     private void updateStorageView() {
+        searchProductInput.setText("");
+
         Set<Product> productSelection = kernel.getStorage().getProductSet();
 
         storageContainer.getChildren().clear();
@@ -203,11 +205,9 @@ public class UserController implements Initializable {
             storageContainer.getChildren().clear();
             favouritesContainer.getChildren().clear();
 
-            Set<Product> productSelection = kernel.getStorage().getProductSet();
+            List<Product> productSelection = ProductSearchEngine.search(kernel, searchProductInput.getText());
 
             for (Product p : productSelection) {
-                if (!p.getName().toLowerCase().contains(searchProductInput.getText().toLowerCase())) continue;
-
                 StorageButton button = new StorageButton(p);
                 button.setOnAction(e -> addProductToCart(p));
                 storageContainer.getChildren().add(button);
@@ -246,11 +246,7 @@ public class UserController implements Initializable {
 
 
     public boolean login(User user) {
-        // Set active user
         Main.setActiveUser(user);
-
-        System.out.println(user);
-        System.out.println(Main.getActiveUser());
 
         // Clear searching and request focus
         searchProductInput.setText("");
@@ -532,14 +528,15 @@ public class UserController implements Initializable {
 
 
     public void postInitialize() {
-        // Escape logs out
-        Main.getUserScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent ke) {
-                if (ke.getCode() == KeyCode.ESCAPE) {
-                    handleLogout(null);
-                }
-                if (ke.getCode() == KeyCode.ENTER) {
+        // Capture key presses
+        Main.getUserScene().addEventFilter(KeyEvent.KEY_RELEASED, ke -> {
+            if (ke.getCode() == KeyCode.ESCAPE) {
+                handleLogout(null);
+            } else if (ke.getCode() == KeyCode.ENTER) {
+                if (searchProductInput.getText().isEmpty()) {
                     handleConfirmPurchase(null);
+                } else if (!storageContainer.getChildren().isEmpty()) {
+                    addProductToCart(((StorageButton) storageContainer.getChildren().get(0)).getProduct());
                 }
             }
         });

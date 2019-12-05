@@ -348,7 +348,7 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
      *
      * @return sales made since (now - seconds)
      */
-    public SalesHistory filterLast(long seconds) {
+    public SalesHistory filterLastSeconds(long seconds) {
         ListIterator<Sale> lit = history.listIterator(history.size() - 1);
 
         if (!lit.hasPrevious()) return new SalesHistory();
@@ -358,6 +358,34 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
 
         while (lit.hasPrevious() && temp.getTimestamp() > goBackTo) {
             temp = lit.previous();
+        }
+
+        LinkedList<Sale> saleList = new LinkedList<Sale>();
+
+        while (lit.hasNext()) {
+            saleList.add(lit.next());
+        }
+
+        return new SalesHistory(saleList);
+    }
+
+
+    /**
+     * returns a list of the last sales made with a maximum size
+     *
+     * @param itemNum number of items to go back
+     *
+     * @return last n sales
+     */
+    public SalesHistory filterLastItems(int itemNum) {
+        ListIterator<Sale> lit = history.listIterator(history.size() - 1);
+
+        if (!lit.hasPrevious()) return new SalesHistory();
+
+        int number = 0;
+        while (lit.hasPrevious() && number < itemNum) {
+            lit.previous();
+            number += 1;
         }
 
         LinkedList<Sale> saleList = new LinkedList<Sale>();

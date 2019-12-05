@@ -136,7 +136,7 @@ public class SendEmail extends Applet {
                         break;
 
                     case ACTIVE:
-                        if (kernel.getSalesHistory().filterLast(60 * 60 * 24 * 30 * 2).filterOnUser(u).isEmpty()) {
+                        if (kernel.getSalesHistory().filterLastSeconds(60 * 60 * 24 * 30 * 2).filterOnUser(u).isEmpty()) {
                             addThisUser = false;
                             break selectionSearch;
                         }
