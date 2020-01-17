@@ -228,27 +228,33 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
 
 
     /**
-     * returns an ObservableList of all the sales made by given user
+     * returns a SalesHistory of all the sales made by given user
      *
      * @param user User to compare to
      *
      * @return all sales made by given user
      */
-    public ObservableList<ViewSale> filterOnUser(User user) {
-        // add all elements to arraylist
-        ArrayList<ViewSale> listOfTransactions = new ArrayList<>();
+    public SalesHistory filterOnUser(User user) {
+        // add all elements from user to a new list
+        LinkedList<Sale> listOfTransactions = new LinkedList<>();
 
         for (Sale s : history) {
             if (s.madeByUser(user)) {
-                listOfTransactions.add(new ViewSale(s));
+                listOfTransactions.add(s);
             }
         }
 
-        // reverse order, so that newest is on top
-        Collections.reverse(listOfTransactions);
+        return new SalesHistory(listOfTransactions);
+    }
 
-        // convert arraylist to obserablelist
-        return FXCollections.observableArrayList(listOfTransactions);
+
+    /**
+     * Check if saleshistory is empty
+     *
+     * @return True if history is empty
+     */
+    public boolean isEmpty() {
+        return history.isEmpty();
     }
 
 
@@ -433,17 +439,6 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
     }
 
 
-    public double totalMoneySpent() {
-        double sum = 0;
-
-        for (Sale s : history) {
-            sum += s.getPricePayed();
-        }
-
-        return sum;
-    }
-
-
     public int size() {
         return history.size();
     }
@@ -465,5 +460,28 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
     public Sale getLast() {
         return history.getLast();
     }
+
+
+    public double getTotalSellValue() {
+        double sum = 0;
+
+        for (Sale s : history) {
+            sum += s.getPricePayed();
+        }
+
+        return sum;
+    }
+
+
+    public double getTotalEarnings() {
+        double sum = 0;
+
+        for (Sale s : history) {
+            sum += s.getEarnings();
+        }
+
+        return sum;
+    }
+
 }
 

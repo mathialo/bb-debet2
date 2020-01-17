@@ -93,7 +93,7 @@
          <center>
             <BorderPane>
                <center>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" fx:id="storageScrollPane">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <top>

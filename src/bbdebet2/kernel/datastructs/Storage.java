@@ -25,7 +25,17 @@ import javafx.collections.ObservableList;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 public class Storage implements Exportable, Listable<ViewProduct> {
 
@@ -42,7 +52,8 @@ public class Storage implements Exportable, Listable<ViewProduct> {
         readFile(file);
     }
 
-    private void readFile(File file) throws  IOException, ErrorInFileException {
+
+    private void readFile(File file) throws IOException, ErrorInFileException {
         Scanner sc = new Scanner(file);
 
         // Skip header line
@@ -212,6 +223,45 @@ public class Storage implements Exportable, Listable<ViewProduct> {
         }
 
         return productSet;
+    }
+
+
+    public double getTotalSellValue() {
+        double sum = 0;
+
+        for (PriorityQueue<Product> pq : storage) {
+            for (Product p : pq) {
+                sum += p.getSellPrice();
+            }
+        }
+
+        return sum;
+    }
+
+
+    public double getTotalBuyValue() {
+        double sum = 0;
+
+        for (PriorityQueue<Product> pq : storage) {
+            for (Product p : pq) {
+                sum += p.getBuyPrice();
+            }
+        }
+
+        return sum;
+    }
+
+
+    public double getTotalMarkup() {
+        double sum = 0;
+
+        for (PriorityQueue<Product> pq : storage) {
+            for (Product p : pq) {
+                sum += p.getMarkup();
+            }
+        }
+
+        return sum;
     }
 
 

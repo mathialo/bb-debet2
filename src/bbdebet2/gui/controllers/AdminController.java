@@ -38,6 +38,7 @@ import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewSale;
 import bbdebet2.gui.modelwrappers.ViewUser;
 import bbdebet2.kernel.Kernel;
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.plugins.Plugin;
 import bbdebet2.kernel.plugins.PluginFactory;
@@ -48,6 +49,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -113,6 +115,22 @@ public class AdminController implements Initializable {
     private TableColumn<ViewExpence, String> accountingCommentCol;
     @FXML
     private Menu pluginMenu;
+    @FXML
+    private Label totalSaleNumLabel;
+    @FXML
+    private Label totalCurrentSalePriceLabel;
+    @FXML
+    private Label totalCurrentMarkupLabel;
+    @FXML
+    private Label totalBuyPriceLabel;
+    @FXML
+    private Label totalFutureSalePriceLabel;
+    @FXML
+    private Label totalFutureMarkupLabel;
+    @FXML
+    private Label totalInsertsLabel;
+    @FXML
+    private Label totalUserDebtLabel;
 
 
     @FXML
@@ -139,6 +157,10 @@ public class AdminController implements Initializable {
 
     public void repaintSaleHistory() {
         saleHistoryView.setItems(kernel.getSalesHistory().toObservableList());
+
+        totalSaleNumLabel.setText("Antall salg: " + kernel.getSalesHistory().size());
+        totalCurrentSalePriceLabel.setText("Total salgspris: " + CurrencyFormatter.format(kernel.getSalesHistory().getTotalSellValue()));
+        totalCurrentMarkupLabel.setText("Total avanse: " + CurrencyFormatter.format(kernel.getSalesHistory().getTotalEarnings()));
     }
 
 
@@ -157,6 +179,10 @@ public class AdminController implements Initializable {
 
     public void repaintStorage() {
         storageView.setItems(kernel.getStorage().toObservableList());
+
+        totalBuyPriceLabel.setText("Total innkjøpspris: " + CurrencyFormatter.format(kernel.getStorage().getTotalBuyValue()));
+        totalFutureSalePriceLabel.setText("Total salgspris: " + CurrencyFormatter.format(kernel.getStorage().getTotalSellValue()));
+        totalFutureMarkupLabel.setText("Total avanse: " + CurrencyFormatter.format(kernel.getStorage().getTotalMarkup()));
     }
 
 
@@ -178,6 +204,9 @@ public class AdminController implements Initializable {
 
     public void repaintUserList() {
         userListView.setItems(kernel.getUserList().toObservableList());
+
+        totalInsertsLabel.setText("Totale innskudd: " + CurrencyFormatter.format(kernel.getUserList().getTotalBalance()));
+        totalUserDebtLabel.setText("Total brukergjeld: " + CurrencyFormatter.format(kernel.getUserList().getTotalDebt()));
     }
 
 

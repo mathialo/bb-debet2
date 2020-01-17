@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+
 public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> {
 
     private LinkedList<User> list;
@@ -43,6 +44,20 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
     public UserList() {
         list = new LinkedList<>();
     }
+
+
+    /**
+     * Reads given file and initializes a user list from the file
+     *
+     * @param userlist file to read from
+     *
+     * @throws IOException          if file could not be found/read properly
+     * @throws ErrorInFileException if there is an error in the file (file is on an incorrect format)
+     */
+    public UserList(File userlist) throws IOException, ErrorInFileException {
+        resetToFile(userlist);
+    }
+
 
     private User parseLine(String[] line) throws Exception {
         User temp = new User(line[1], line[2], Integer.parseInt(line[0].replaceAll("\\s+", "")));
@@ -58,18 +73,6 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
         }
 
         return temp;
-    }
-
-    /**
-     * Reads given file and initializes a user list from the file
-     *
-     * @param userlist file to read from
-     *
-     * @throws IOException          if file could not be found/read properly
-     * @throws ErrorInFileException if there is an error in the file (file is on an incorrect format)
-     */
-    public UserList(File userlist) throws IOException, ErrorInFileException {
-        resetToFile(userlist);
     }
 
 
@@ -304,6 +307,17 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
         }
 
         return totalBalance;
+    }
+
+
+    public double getTotalDebt() {
+        double totalBalance = 0;
+
+        for (User u : list) {
+            if (u.getBalance() < 0) totalBalance += u.getBalance();
+        }
+
+        return -totalBalance;
     }
 
 
