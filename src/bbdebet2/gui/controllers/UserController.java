@@ -45,6 +45,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -85,6 +86,9 @@ public class UserController implements Initializable {
     private ListView<ViewProduct> shoppingCartView;
     @FXML
     private Label shoppingCartTitleLabel;
+
+    @FXML
+    private ScrollPane storageScrollPane;
 
     @FXML
     private TextField searchProductInput;
@@ -205,7 +209,7 @@ public class UserController implements Initializable {
             storageContainer.getChildren().clear();
             favouritesContainer.getChildren().clear();
 
-            List<Product> productSelection = ProductSearchEngine.search(kernel, searchProductInput.getText());
+            List<Product> productSelection = ProductSearchEngine.search(kernel, searchProductInput.getText(), Main.getActiveUser());
 
             for (Product p : productSelection) {
                 StorageButton button = new StorageButton(p);
@@ -240,13 +244,15 @@ public class UserController implements Initializable {
 
 
     private void updateSalesHistoryView() {
-        ObservableList<ViewSale> data = kernel.getSalesHistory().filterOnUser(Main.getActiveUser());
+        ObservableList<ViewSale> data = kernel.getSalesHistory().filterOnUser(Main.getActiveUser()).toObservableList();
         userSalesHistoryView.setItems(data);
     }
 
 
     public boolean login(User user) {
         Main.setActiveUser(user);
+
+        storageScrollPane.setVvalue(0);
 
         // Clear searching and request focus
         searchProductInput.setText("");
