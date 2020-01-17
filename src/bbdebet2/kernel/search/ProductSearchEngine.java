@@ -19,6 +19,7 @@ package bbdebet2.kernel.search;
 
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.datastructs.Product;
+import bbdebet2.kernel.datastructs.User;
 
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +35,21 @@ public class ProductSearchEngine {
 
         List<Product> result = productSet.stream().filter(product -> product.getName().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList());
 
-        Map<String, Integer> salenums = kernel.getSalesHistory().filterLastItems(100).getSummary();
+        Map<String, Integer> salenums = kernel.getSalesHistory().filterLastItems(50).getSummary();
+        result.sort(Comparator.comparingInt(p -> -salenums.getOrDefault(p.getName(), 0)));
+
+        return result;
+    }
+
+
+    public static List<Product> search(Kernel kernel, String query, User user) {
+        if (user == null) return search(kernel, query);
+
+        Set<Product> productSet = kernel.getStorage().getProductSet();
+
+        List<Product> result = productSet.stream().filter(product -> product.getName().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList());
+
+        Map<String, Integer> salenums = kernel.getSalesHistory().filterOnUser(user).filterLastItems(50).getSummary();
         result.sort(Comparator.comparingInt(p -> -salenums.getOrDefault(p.getName(), 0)));
 
         return result;
