@@ -58,7 +58,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-public class MakeExpence extends Applet {
+public class MakeExpense extends Applet {
 
     @FXML
     private ChoiceBox<Account> accountChoiceBox;
@@ -103,8 +103,8 @@ public class MakeExpence extends Applet {
 
 
     public static void createAndDisplayDialog(List<Expense.Transaction> initialTransactions) {
-        FXMLLoader loader = Applet.createAndDisplayDialog("Før utlegg", "MakeExpenceView");
-        ((MakeExpence) loader.getController()).addAll(initialTransactions);
+        FXMLLoader loader = Applet.createAndDisplayDialog("Før utlegg", "MakeExpenseView");
+        ((MakeExpense) loader.getController()).addAll(initialTransactions);
     }
 
 

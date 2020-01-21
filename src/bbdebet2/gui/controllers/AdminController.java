@@ -27,7 +27,7 @@ import bbdebet2.gui.applets.Console;
 import bbdebet2.gui.applets.CsvViewer;
 import bbdebet2.gui.applets.EditProducts;
 import bbdebet2.gui.applets.EditUser;
-import bbdebet2.gui.applets.MakeExpence;
+import bbdebet2.gui.applets.MakeExpense;
 import bbdebet2.gui.applets.NewSemester;
 import bbdebet2.gui.applets.NewUser;
 import bbdebet2.gui.applets.SendEmail;
@@ -383,7 +383,7 @@ public class AdminController implements Initializable {
 
     @FXML
     public void newMakeExpenceWindow(ActionEvent event) {
-        MakeExpence.createAndDisplayDialog(null);
+        MakeExpense.createAndDisplayDialog(null);
     }
 
 
