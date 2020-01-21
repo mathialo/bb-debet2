@@ -102,9 +102,8 @@ public class Ledger implements Exportable, Iterable<Expense> {
             throw new ErrorInFileException(
                 "Feil i inputfil: Linje " + lineNum + " i " + file + " inneholder et element av feil type.");
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw e;
-//            throw new ErrorInFileException(
-//                "Feil i inputfil: Linje " + lineNum + " i " + file + " inneholder for få elementer.");
+            throw new ErrorInFileException(
+                "Feil i inputfil: Linje " + lineNum + " i " + file + " inneholder for få elementer.");
         } catch (NoSuchElementException e) {
             throw new ErrorInFileException(
                 "Feil i inputfil: " + file + " inneholder for få linjer.");

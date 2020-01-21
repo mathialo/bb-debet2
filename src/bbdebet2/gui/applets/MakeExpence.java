@@ -149,6 +149,7 @@ public class MakeExpence extends Applet {
             }
         }
 
+        try {
         List<Expense.Transaction> toTransactions = transactionTableView.getItems().stream().map(ViewTransactionForAddition::getTransactionObject).collect(Collectors.toList());
 
         double expenseSize = toTransactions.stream().mapToDouble(Expense.Transaction::getAmount).sum();
@@ -216,6 +217,12 @@ public class MakeExpence extends Applet {
         Main.getCurrentAdminController().repaintAccounting();
 
         exit(event);
+
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.setHeaderText("Ikke gyldig tall");
+            alert.showAndWait();
+        }
     }
 
 
@@ -303,6 +310,9 @@ public class MakeExpence extends Applet {
         try {
             amount = Double.parseDouble(amountTextField.getText().replaceAll(",", "."));
         } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.setHeaderText("Ikke gyldig tall");
+            alert.showAndWait();
             return;
         }
 
