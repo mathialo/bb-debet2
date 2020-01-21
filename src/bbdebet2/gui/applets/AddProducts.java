@@ -39,6 +39,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +47,7 @@ import java.util.ResourceBundle;
 
 
 public class AddProducts extends Applet {
+    private static final double BOTTLE_LOSE_RATE = 0.15;
 
     @FXML
     private TextField productNameInput;
@@ -111,7 +113,8 @@ public class AddProducts extends Applet {
                 packQuantity * numPacks,
                 buyPrice * numPacks,
                 salePrice,
-                (salePrice * packQuantity - buyPrice) * numPacks
+                (salePrice * packQuantity - buyPrice) * numPacks,
+                addPantInput.isSelected()
             );
 
 
@@ -142,14 +145,16 @@ public class AddProducts extends Applet {
 
         // Add elements to storage
         int num = 0;
-        double totalExpenceAmount = 0;
+        double totalExpenseAmount = 0;
+        double totalPantAmount = 0;
 
         for (ViewProductForAddition vp : cartTableView.getItems()) {
             for (Product p : vp.generateProducts()) {
                 kernel.getStorage().add(p);
                 num++;
 
-                totalExpenceAmount += p.getBuyPrice();
+                totalExpenseAmount += p.getBuyPrice();
+                totalPantAmount += p.getPant();
             }
         }
 
@@ -158,12 +163,23 @@ public class AddProducts extends Applet {
         exit(event);
 
         if (doAccountingInput.isSelected()) {
-            MakeExpence.createAndDisplayDialog(new Expense.Transaction(
+            List<Expense.Transaction> initialTransactions = new LinkedList<>();
+            initialTransactions.add(new Expense.Transaction(
                     kernel.getAccounts().getStorageAccount(),
-                    totalExpenceAmount,
+                    totalExpenseAmount,
                     Expense.TransactionType.ADD
                 )
             );
+
+            if (totalPantAmount > 1e-10) {
+                initialTransactions.add(new Expense.Transaction(
+                    kernel.getAccounts().getPantAccount(),
+                    totalPantAmount,
+                    Expense.TransactionType.ADD
+                ));
+            }
+
+            MakeExpence.createAndDisplayDialog(initialTransactions);
         }
     }
 
@@ -211,7 +227,7 @@ public class AddProducts extends Applet {
     public void updateAutoSalePrice() {
         try {
             double pantadd = 0;
-            if (addPantInput.isSelected()) pantadd = 1;
+            if (addPantInput.isSelected()) pantadd = 2*BOTTLE_LOSE_RATE;
 
             int packsize = 1;
             try {

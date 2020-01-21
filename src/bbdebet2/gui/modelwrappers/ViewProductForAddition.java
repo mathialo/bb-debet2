@@ -35,9 +35,10 @@ public class ViewProductForAddition {
     private final SimpleDoubleProperty markup;
 
     private double sellPrice;
+    private boolean hasPant;
 
 
-    public ViewProductForAddition(String productName, double buyPrice, int quantity, double subTotal, double sellPrice, double markup) {
+    public ViewProductForAddition(String productName, double buyPrice, int quantity, double subTotal, double sellPrice, double markup, boolean hasPant) {
         this.productName = new SimpleStringProperty(productName);
         this.buyPrice = new SimpleDoubleProperty(buyPrice);
         this.quantity = new SimpleIntegerProperty(quantity);
@@ -45,6 +46,7 @@ public class ViewProductForAddition {
         this.saleTotal = new SimpleDoubleProperty(sellPrice * quantity);
         this.markup = new SimpleDoubleProperty(markup);
         this.sellPrice = sellPrice;
+        this.hasPant = hasPant;
     }
 
 
@@ -144,6 +146,8 @@ public class ViewProductForAddition {
         for (int i = 0; i < getQuantity(); i++) {
             list.add(new Product(getProductName(), sellPrice, getBuyPrice()));
         }
+
+        if (hasPant) list.forEach(product -> product.setPant(2));
 
         return list;
     }

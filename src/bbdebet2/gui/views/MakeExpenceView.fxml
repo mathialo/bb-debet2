@@ -84,7 +84,7 @@
         </BorderPane>
     </center>
    <top>
-      <Label fx:id="totalExpenceLabel" text="Totalt utlegg:" BorderPane.alignment="CENTER">
+      <Label fx:id="totalExpenseLabel" text="Totalt utlegg: 0.00 kr" BorderPane.alignment="CENTER">
          <font>
             <Font size="16.0" />
          </font>

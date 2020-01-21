@@ -69,7 +69,13 @@ public class Storage implements Exportable, Listable<ViewProduct> {
 
                 String[] line = rawLine.split("\\s*,\\s*");
 
-                add(new Product(line[0], Double.parseDouble(line[2]), Double.parseDouble(line[1])));
+                Product product = new Product(line[0], Double.parseDouble(line[2]), Double.parseDouble(line[1]));
+
+                if (line.length == 4)
+                    product.setPant(Double.parseDouble(line[3]));
+
+                add(product);
+
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new ErrorInFileException("Error in storage file on line " + linenum);
             }
@@ -88,11 +94,11 @@ public class Storage implements Exportable, Listable<ViewProduct> {
     public void saveFile(File file) throws IOException {
         PrintWriter pw = new PrintWriter(file);
 
-        pw.println("Product,BuyPrice,SellPrice");
+        pw.println("Product,BuyPrice,SellPrice,Pant");
 
         for (PriorityQueue<Product> q : storage) {
             for (Product p : q) {
-                pw.println(p.getName() + "," + p.getBuyPrice() + "," + p.getSellPrice());
+                pw.println(p.getName() + "," + p.getBuyPrice() + "," + p.getSellPrice() + "," + p.getPant());
             }
         }
 

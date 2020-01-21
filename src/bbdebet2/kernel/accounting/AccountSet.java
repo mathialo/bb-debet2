@@ -90,6 +90,10 @@ public class AccountSet implements Iterable<Account>, Exportable {
         return accounts.get(1400);
     }
 
+    public Account getPantAccount() {
+        return accounts.get(1410);
+    }
+
 
     public Account fromAccountNumber(int accountNumber) {
         return accounts.get(accountNumber);

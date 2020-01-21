@@ -22,6 +22,7 @@ import bbdebet2.gui.modelwrappers.ViewTransactionForAddition;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.accounting.Account;
 import bbdebet2.kernel.accounting.Expense;
+import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import bbdebet2.kernel.mailing.TextTemplate;
@@ -34,6 +35,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -45,6 +47,7 @@ import javafx.stage.Stage;
 import javax.mail.MessagingException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -89,6 +92,9 @@ public class MakeExpence extends Applet {
     @FXML
     private List<Button> removeRowButtons;
 
+    @FXML
+    private Label totalExpenseLabel;
+    private double totalExpense;
 
     @FXML
     private GridPane paymentSources;
@@ -96,14 +102,21 @@ public class MakeExpence extends Applet {
     private Account userAccount;
 
 
-    public static void createAndDisplayDialog(Expense.Transaction initialTransaction) {
+    public static void createAndDisplayDialog(List<Expense.Transaction> initialTransactions) {
         FXMLLoader loader = Applet.createAndDisplayDialog("Før utlegg", "MakeExpenceView");
-        ((MakeExpence) loader.getController()).add(initialTransaction);
+        ((MakeExpence) loader.getController()).addAll(initialTransactions);
     }
 
 
     protected void add(Expense.Transaction transaction) {
-        if (transaction != null) transactionTableView.getItems().add(new ViewTransactionForAddition(transaction));
+        if (transaction != null) {
+            transactionTableView.getItems().add(new ViewTransactionForAddition(transaction));
+            totalExpense += transaction.getAmount();
+            totalExpenseLabel.setText("Totalt utlegg: " + CurrencyFormatter.format(totalExpense));
+        }
+    }
+    protected void addAll(Collection<Expense.Transaction> transactions) {
+        if (transactions != null) transactions.forEach(this::add);
     }
 
 
