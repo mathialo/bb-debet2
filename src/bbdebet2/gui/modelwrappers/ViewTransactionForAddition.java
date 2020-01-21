@@ -17,25 +17,23 @@
 
 package bbdebet2.gui.modelwrappers;
 
-import bbdebet2.kernel.accounting.Expence;
+import bbdebet2.kernel.accounting.Expense;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 
-public class ViewExpenceForAddition {
+public class ViewTransactionForAddition {
 
     private final SimpleStringProperty account;
     private final SimpleStringProperty amount;
-    private final SimpleStringProperty comment;
 
-    private final Expence expence;
+    private final Expense.Transaction transaction;
 
-    public ViewExpenceForAddition(Expence expence) {
-        this.expence = expence;
-        this.account = new SimpleStringProperty(expence.getTo().toString());
-        this.amount = new SimpleStringProperty(CurrencyFormatter.format(expence.getAmount()));
-        this.comment = new SimpleStringProperty(expence.getComment());
+
+    public ViewTransactionForAddition(Expense.Transaction transaction) {
+        this.transaction = transaction;
+        this.account = new SimpleStringProperty(transaction.getAccount().toString());
+        this.amount = new SimpleStringProperty(CurrencyFormatter.format(transaction.getAmount()));
     }
 
 
@@ -59,17 +57,7 @@ public class ViewExpenceForAddition {
     }
 
 
-    public String getComment() {
-        return comment.get();
-    }
-
-
-    public SimpleStringProperty commentProperty() {
-        return comment;
-    }
-
-
-    public Expence getExpenceObject() {
-        return expence;
+    public Expense.Transaction getTransactionObject() {
+        return transaction;
     }
 }

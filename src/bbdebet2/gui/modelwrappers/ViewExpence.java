@@ -18,7 +18,7 @@
 package bbdebet2.gui.modelwrappers;
 
 import bbdebet2.kernel.Kernel;
-import bbdebet2.kernel.accounting.Expence;
+import bbdebet2.kernel.accounting.Expense;
 import bbdebet2.kernel.datastructs.CurrencyFormatter;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -31,15 +31,15 @@ public class ViewExpence {
     private final SimpleStringProperty comment;
     private final SimpleStringProperty expenceDate;
 
-    private final Expence expence;
+    private final Expense expense;
 
-    public ViewExpence(Expence expence) {
-        this.expence = expence;
-        this.from = new SimpleStringProperty(expence.getFrom().toString());
-        this.to = new SimpleStringProperty(expence.getTo().toString());
-        this.amount = new SimpleStringProperty(CurrencyFormatter.format(expence.getAmount()));
-        this.comment = new SimpleStringProperty(expence.getComment());
-        this.expenceDate = new SimpleStringProperty(Kernel.dateFormat.format(new Date(expence.getTimestamp() * 1000L)));
+    public ViewExpence(Expense expense) {
+        this.expense = expense;
+        this.from = new SimpleStringProperty(expense.getFrom().toString());
+        this.to = new SimpleStringProperty(expense.getTo().toString());
+        this.amount = new SimpleStringProperty(CurrencyFormatter.format(expense.getAmount()));
+        this.comment = new SimpleStringProperty(expense.getComment());
+        this.expenceDate = new SimpleStringProperty(Kernel.dateFormat.format(new Date(expense.getTimestamp() * 1000L)));
     }
 
 
@@ -93,7 +93,7 @@ public class ViewExpence {
     }
 
 
-    public Expence getExpenceObject() {
-        return expence;
+    public Expense getExpenceObject() {
+        return expense;
     }
 }

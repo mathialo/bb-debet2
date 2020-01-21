@@ -28,19 +28,27 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.stream.Stream;
 
 
-public class Ledger extends ArrayList<Expence> implements Exportable {
+public class Ledger implements Exportable, Iterable<Expense> {
+
+    private Map<Integer, Expense> expenses;
+
 
     public Ledger() {
-        super();
+        expenses = new TreeMap<>();
     }
 
 
     public Ledger(File csvFile, AccountSet accounts) throws IOException, ErrorInFileException {
-        super();
+        this();
 
         readCsv(csvFile, accounts);
     }
@@ -62,18 +70,23 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
             // read rest as csv
             while (sc.hasNextLine()) {
                 // read line, split on comma
-                String[] line = sc.nextLine().split("\\s*,\\s*");
+                String[] line = sc.nextLine().split("\\s*,\\s*", 6);
 
                 int id = Integer.parseInt(line[0]);
 
-                add(new Expence(
-                        accounts.fromAccountNumber(Integer.parseInt(line[2])),
+                Expense expense = expenses.get(id);
+
+                if (expense == null) {
+                    expense = new Expense(line[5], Long.parseLong(line[1]), id);
+                    expenses.put(id, expense);
+                }
+
+                expense.addTransaction(
+                    new Expense.Transaction(
+                        accounts.fromAccountNumber(Integer.parseInt(line[3])),
                         Double.parseDouble(line[4]),
-                        line[5],
-                        Long.parseLong(line[1]),
-                        id
-                    ).resolve(accounts.fromAccountNumber(Integer.parseInt(line[3])))
-                );
+                        Expense.TransactionType.valueOf(line[2])
+                    ));
 
                 largestId = Math.max(id, largestId);
 
@@ -81,7 +94,7 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
                 lineNum++;
             }
 
-            Expence.counter = largestId;
+            Expense.counter = largestId+1;
 
             // close in stream
             sc.close();
@@ -89,8 +102,9 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
             throw new ErrorInFileException(
                 "Feil i inputfil: Linje " + lineNum + " i " + file + " inneholder et element av feil type.");
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ErrorInFileException(
-                "Feil i inputfil: Linje " + lineNum + " i " + file + " inneholder for få elementer.");
+            throw e;
+//            throw new ErrorInFileException(
+//                "Feil i inputfil: Linje " + lineNum + " i " + file + " inneholder for få elementer.");
         } catch (NoSuchElementException e) {
             throw new ErrorInFileException(
                 "Feil i inputfil: " + file + " inneholder for få linjer.");
@@ -102,25 +116,42 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
     public void saveFile(File file) throws IOException {
         PrintWriter printWriter = new PrintWriter(file);
 
-        printWriter.println("ID,Timestamp,To,From,Amount,Comment");
+        printWriter.println("ID,Timestamp,Operation,Account,Amount,Comment");
 
-        for (Expence expence : this) {
-            if (expence == null) {
-                Kernel.getLogger().log("Cannot save null as expence");
+        for (Expense expense : this) {
+            if (expense == null) {
+                Kernel.getLogger().log("Cannot save null as expense");
                 continue;
             }
 
-            printWriter.println(String.format("%d,%d,%d,%d,%f,%s",
-                expence.getId(),
-                expence.getTimestamp(),
-                expence.getTo().getNumber(),
-                expence.getFrom().getNumber(),
-                expence.getAmount(),
-                expence.getComment()
-            ));
+            Stream.concat(expense.getFrom().stream(), expense.getTo().stream()).forEach(transaction -> {
+                printWriter.println(String.format("%d,%d,%s,%d,%f,%s",
+                    expense.getId(),
+                    expense.getTimestamp(),
+                    transaction.getType().toString(),
+                    transaction.getAccount().getNumber(),
+                    transaction.getAmount(),
+                    expense.getComment()
+                ));
+            });
         }
 
         printWriter.close();
+    }
+
+
+    public void add(Expense expense) {
+        expenses.put(expense.getId(), expense);
+    }
+
+
+    public void remove(Expense expense) {
+        expenses.remove(expense.getId());
+    }
+
+
+    public Iterator<Expense> iterator() {
+        return expenses.values().iterator();
     }
 
 
@@ -131,9 +162,9 @@ public class Ledger extends ArrayList<Expence> implements Exportable {
 
 
     public ObservableList<ViewExpence> toObservableList() {
-        ArrayList<ViewExpence> newList = new ArrayList<>(size());
+        ArrayList<ViewExpence> newList = new ArrayList<>(expenses.size());
 
-        for (Expence e : this) newList.add(new ViewExpence(e));
+        for (Expense e : this) newList.add(new ViewExpence(e));
 
         return FXCollections.observableList(newList);
     }

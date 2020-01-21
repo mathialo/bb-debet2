@@ -34,8 +34,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Navn" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Label text="Nummer" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Label text="Nummer" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Label text="Navn" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Label text="Betalingsmåte" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                   <Label text="Innskuddsmåte" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                </children>

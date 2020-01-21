@@ -21,7 +21,7 @@ import bbdebet2.gui.Main;
 import bbdebet2.gui.customelements.WaitingDialog;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.accounting.Account;
-import bbdebet2.kernel.accounting.Expence;
+import bbdebet2.kernel.accounting.Expense;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import bbdebet2.kernel.mailing.TextTemplate;
@@ -82,7 +82,11 @@ public class AddBalance extends Applet {
 
         Account to = insertMethodInput.getSelectionModel().getSelectedItem();
         Account from = kernel.getAccounts().fromAccountNumber(2000);
-        kernel.getLedger().add(new Expence(to, amount, "Innskudd " + u).resolve(from));
+        kernel.getLedger().add(
+            new Expense("Innskudd " + u)
+                .addTransaction(new Expense.Transaction(to, amount, Expense.TransactionType.ADD))
+                .addTransaction(new Expense.Transaction(from, amount, Expense.TransactionType.SUB))
+        );
 
         kernel.getTransactionHandler().newMoneyInsert(u, amount);
 

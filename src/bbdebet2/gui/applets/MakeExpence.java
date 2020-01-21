@@ -18,11 +18,10 @@
 package bbdebet2.gui.applets;
 
 import bbdebet2.gui.Main;
-import bbdebet2.gui.modelwrappers.ViewExpenceForAddition;
+import bbdebet2.gui.modelwrappers.ViewTransactionForAddition;
 import bbdebet2.kernel.Kernel;
 import bbdebet2.kernel.accounting.Account;
-import bbdebet2.kernel.accounting.Expence;
-import bbdebet2.kernel.datastructs.CurrencyFormatter;
+import bbdebet2.kernel.accounting.Expense;
 import bbdebet2.kernel.datastructs.User;
 import bbdebet2.kernel.mailing.InvalidEncryptionException;
 import bbdebet2.kernel.mailing.TextTemplate;
@@ -31,16 +30,29 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class MakeExpence extends Applet {
@@ -49,97 +61,143 @@ public class MakeExpence extends Applet {
     private ChoiceBox<Account> accountChoiceBox;
     @FXML
     private TextField amountTextField;
-    @FXML
-    private TextField commentTextField;
 
     @FXML
-    private TableView<ViewExpenceForAddition> expenceTableView;
+    private TableView<ViewTransactionForAddition> transactionTableView;
     @FXML
-    private TableColumn<ViewExpenceForAddition, String> accountTableColumn;
+    private TableColumn<ViewTransactionForAddition, String> accountTableColumn;
     @FXML
-    private TableColumn<ViewExpenceForAddition, String> amountTableColumn;
-    @FXML
-    private TableColumn<ViewExpenceForAddition, String> commentTableColumn;
+    private TableColumn<ViewTransactionForAddition, String> amountTableColumn;
 
     @FXML
-    private ChoiceBox<Account> fromAccountChoiceBox;
+    private TextArea commentTextArea;
+
     @FXML
-    private TextField usernameTextField;
+    private ChoiceBox<Account> initialFromAccountChoiceBox;
     @FXML
+    private TextField initialUsernameTextField;
+    @FXML
+    private TextField initialAmountTextField;
+
+    private ArrayList<ChoiceBox<Account>> fromAccountChoiceBoxes;
+    private ArrayList<TextField> usernameTextFields;
+    private ArrayList<TextField> amountTextFields;
+
+    @FXML
+    private Button addRowButton;
+
+    @FXML
+    private List<Button> removeRowButtons;
+
+
+    @FXML
+    private GridPane paymentSources;
+
     private Account userAccount;
 
 
-    public static void createAndDisplayDialog(Expence initialExpence) {
+    public static void createAndDisplayDialog(Expense.Transaction initialTransaction) {
         FXMLLoader loader = Applet.createAndDisplayDialog("Før utlegg", "MakeExpenceView");
-        ((MakeExpence) loader.getController()).add(initialExpence);
+        ((MakeExpence) loader.getController()).add(initialTransaction);
     }
 
 
-    protected void add(Expence expence) {
-        if (expence != null) expenceTableView.getItems().add(new ViewExpenceForAddition(expence));
+    protected void add(Expense.Transaction transaction) {
+        if (transaction != null) transactionTableView.getItems().add(new ViewTransactionForAddition(transaction));
+    }
+
+
+    private void payBackUser(User user, double amount) {
+        kernel.getTransactionHandler().newMoneyInsert(user, amount);
+
+        Task sendEmailTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    kernel.getEmailSender().sendMail(user, "Påfyll av penger", TextTemplateLoader.getTemplate(TextTemplate.USERADDEDMONEY));
+                } catch (MessagingException | InvalidEncryptionException e) {
+                    Kernel.getLogger().log(e);
+                }
+                return null;
+            }
+        };
+        new Thread(sendEmailTask).start();
     }
 
 
     @FXML
-    private void saveExpences(ActionEvent event) {
-        if (fromAccountChoiceBox.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Du må velge hvilken konto som dekker utlegget");
-            alert.setHeaderText("Ingen betalingsmåte");
-            alert.showAndWait();
-            return;
-        }
-
-        Account fromAccount = fromAccountChoiceBox.getSelectionModel().getSelectedItem();
-
-        User user = null;
-
-        if (fromAccount == userAccount) {
-            String error = null;
-
-            if (usernameTextField.getText().trim().equals(""))
-                error = "Du må skrive et brukernavn for å velge " + fromAccount + " fom betalingsmåte";
-            if (!kernel.getUserList().contains(usernameTextField.getText()))
-                error = "Finner ikke bruker " + usernameTextField.getText();
-
-            if (error != null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, error);
-                alert.setHeaderText("Feil i brukernavn");
+    private void saveExpense(ActionEvent event) {
+        for (ChoiceBox<Account> accountChoiceBox : fromAccountChoiceBoxes) {
+            if (accountChoiceBox.getSelectionModel().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Du må velge hvilken konto som dekker utlegget");
+                alert.setHeaderText("Ingen betalingsmåte");
                 alert.showAndWait();
                 return;
             }
-            user = kernel.getUserList().find(usernameTextField.getText());
         }
 
-        double totalAmount = 0;
+        List<Expense.Transaction> toTransactions = transactionTableView.getItems().stream().map(ViewTransactionForAddition::getTransactionObject).collect(Collectors.toList());
 
-        for (ViewExpenceForAddition viewExpenceForAddition : expenceTableView.getItems()) {
-            Expence expence = viewExpenceForAddition.getExpenceObject().resolve(fromAccount);
-            kernel.getLedger().add(expence);
-            Kernel.getLogger().log("Tracking expence: " + expence);
+        double expenseSize = toTransactions.stream().mapToDouble(Expense.Transaction::getAmount).sum();
+        double covered = 0;
 
-            totalAmount += expence.getAmount();
-        }
+        List<Expense.Transaction> fromTransactions = new LinkedList<>();
+        Map<User, Double> payOut = new HashMap<>();
 
-        Kernel.getLogger().log("Total expence: " + CurrencyFormatter.format(totalAmount) + ", paying from " + fromAccount);
+        for (int i = 0; i < fromAccountChoiceBoxes.size(); i++) {
+            Account fromAccount = fromAccountChoiceBoxes.get(i).getSelectionModel().getSelectedItem();
+            double amount;
 
+            if (i == fromAccountChoiceBoxes.size() - 1) {
+                amount = expenseSize - covered;
+            } else {
+                amount = Double.parseDouble(amountTextFields.get(i).getText());
+            }
 
-        if (user != null) {
-            kernel.getTransactionHandler().newMoneyInsert(user, totalAmount);
+            fromTransactions.add(new Expense.Transaction(
+                fromAccount,
+                amount,
+                Expense.TransactionType.SUB
+            ));
 
-            User finalUser = user;
-            Task sendEmailTask = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    try {
-                        kernel.getEmailSender().sendMail(finalUser, "Påfyll av penger", TextTemplateLoader.getTemplate(TextTemplate.USERADDEDMONEY));
-                    } catch (MessagingException | InvalidEncryptionException e) {
-                        Kernel.getLogger().log(e);
-                    }
-                    return null;
+            covered += amount;
+
+            if (fromAccount == userAccount) {
+                String error = null;
+                String username = usernameTextFields.get(i).getText().trim();
+
+                if (username.equals("")) {
+                    error = "Du må skrive et brukernavn for å velge " + fromAccount + " fom betalingsmåte";
                 }
-            };
-            new Thread(sendEmailTask).start();
+                if (!kernel.getUserList().contains(username)) {
+                    error = "Finner ikke bruker " + username;
+                }
+
+                if (error != null) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, error);
+                    alert.setHeaderText("Feil i brukernavn");
+                    alert.showAndWait();
+                    return;
+                }
+
+                User user = kernel.getUserList().find(username);
+
+                if (payOut.containsKey(user)) {
+                    double previous = payOut.get(user);
+                    payOut.put(user, previous + amount);
+                } else {
+                    payOut.put(user, amount);
+                }
+            }
         }
+
+        payOut.forEach(this::payBackUser);
+
+        Expense expense = new Expense(commentTextArea.getText());
+        fromTransactions.forEach(expense::addTransaction);
+        toTransactions.forEach(expense::addTransaction);
+        kernel.getLedger().add(expense);
+        Kernel.getLogger().log("Adding expense: " + expense);
 
         Main.getCurrentAdminController().repaintUserList();
         Main.getCurrentAdminController().repaintAccounting();
@@ -148,8 +206,81 @@ public class MakeExpence extends Applet {
     }
 
 
+    private void removeRow(ActionEvent parentEvent, int row) {
+        Set<Node> deleteNodes = new HashSet<>();
+
+        for (Node child : paymentSources.getChildren()) {
+            // get index from child
+            Integer i = GridPane.getRowIndex(child);
+
+            // handle null values for index=0
+            int thisRow = i == null ? 0 : i;
+
+            if (thisRow > row) {
+                // decrement rows for rows after the deleted row
+                GridPane.setRowIndex(child, thisRow - 1);
+            } else if (thisRow == row) {
+                // collect matching rows for deletion
+                deleteNodes.add(child);
+            }
+        }
+
+        // remove nodes from row
+        if (!deleteNodes.isEmpty()) {
+            paymentSources.getChildren().removeAll(deleteNodes);
+
+            fromAccountChoiceBoxes.remove(row);
+            amountTextFields.remove(row);
+            usernameTextFields.remove(row);
+            removeRowButtons.remove(0);
+
+            Stage stage = (Stage) ((Node) parentEvent.getSource()).getScene().getWindow();
+            stage.setHeight(stage.getHeight() - initialFromAccountChoiceBox.getHeight());
+
+            amountTextFields.get(amountTextFields.size() - 1).setDisable(true);
+        }
+    }
+
+
     @FXML
-    private void handleAddExpence(ActionEvent event) {
+    private void addRow(ActionEvent event) {
+        ChoiceBox<Account> accountChoiceBox = new ChoiceBox<>();
+        accountChoiceBox.setPrefWidth(initialFromAccountChoiceBox.getWidth());
+        TextField usernameTextField = new TextField();
+        usernameTextField.setPromptText("Brukernavn");
+        usernameTextField.setDisable(true);
+        TextField amountTextField = new TextField();
+        amountTextField.setPromptText("Beløp");
+        amountTextField.setDisable(true);
+
+        setupFromChoiceBox(accountChoiceBox, usernameTextField);
+        amountTextFields.get(amountTextFields.size() - 1).setDisable(false);
+
+        Button removeRowButton = new Button("-");
+        removeRowButton.setPrefWidth(40);
+        removeRowButtons.add(removeRowButton);
+        removeRowButton.setOnAction(ignore -> {
+            Integer i = GridPane.getRowIndex(accountChoiceBox);
+            int thisRow = i == null ? 0 : i;
+            removeRow(event, thisRow);
+        });
+
+        fromAccountChoiceBoxes.add(accountChoiceBox);
+        usernameTextFields.add(usernameTextField);
+        amountTextFields.add(amountTextField);
+
+
+        paymentSources.getChildren().remove(addRowButton);
+        paymentSources.addRow(fromAccountChoiceBoxes.size() - 1, accountChoiceBox, usernameTextField, amountTextField, removeRowButton);
+
+        paymentSources.add(addRowButton, 3, fromAccountChoiceBoxes.size());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setHeight(stage.getHeight() + initialFromAccountChoiceBox.getHeight());
+    }
+
+
+    @FXML
+    private void handleAddTransaction(ActionEvent event) {
         Account account = accountChoiceBox.getSelectionModel().getSelectedItem();
         if (account == null) {
             return;
@@ -162,23 +293,21 @@ public class MakeExpence extends Applet {
             return;
         }
 
-        add(new Expence(account, amount, commentTextField.getText()));
+        add(new Expense.Transaction(account, amount, Expense.TransactionType.ADD));
     }
 
 
     private void setupTableView() {
         accountTableColumn.setCellValueFactory(new PropertyValueFactory<>("account"));
         amountTableColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        commentTableColumn.setCellValueFactory(new PropertyValueFactory<>("comment"));
     }
 
 
-    private void setupChoiceBoxes() {
-        accountChoiceBox.getItems().addAll(kernel.getAccounts().getAll());
-        fromAccountChoiceBox.getItems().addAll(kernel.getAccounts().getPaymentOptions());
+    private void setupFromChoiceBox(ChoiceBox<Account> choiceBox, TextField linkedTextField) {
+        choiceBox.getItems().addAll(kernel.getAccounts().getPaymentOptions());
 
-        fromAccountChoiceBox.setOnAction(
-            e -> usernameTextField.setDisable(fromAccountChoiceBox.getSelectionModel().getSelectedItem() != userAccount)
+        choiceBox.setOnAction(
+            e -> linkedTextField.setDisable(choiceBox.getSelectionModel().getSelectedItem() != userAccount)
         );
     }
 
@@ -187,7 +316,18 @@ public class MakeExpence extends Applet {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         setupTableView();
-        setupChoiceBoxes();
+        accountChoiceBox.getItems().addAll(kernel.getAccounts().getAll());
+        setupFromChoiceBox(initialFromAccountChoiceBox, initialUsernameTextField);
+
+        fromAccountChoiceBoxes = new ArrayList<>();
+        fromAccountChoiceBoxes.add(initialFromAccountChoiceBox);
+        usernameTextFields = new ArrayList<>();
+        usernameTextFields.add(initialUsernameTextField);
+        amountTextFields = new ArrayList<>();
+        amountTextFields.add(initialAmountTextField);
+
+        removeRowButtons = new LinkedList<>();
+
         userAccount = kernel.getAccounts().fromAccountNumber(2000);
     }
 }

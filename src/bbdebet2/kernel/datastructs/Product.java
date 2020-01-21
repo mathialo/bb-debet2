@@ -23,6 +23,8 @@ public class Product implements Comparable<Product> {
     private double sellPrice;
     private double buyPrice;
 
+    private double pant;
+
     private boolean custom;
 
 
@@ -48,6 +50,16 @@ public class Product implements Comparable<Product> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public double getPant() {
+        return pant;
+    }
+
+
+    public void setPant(double pant) {
+        this.pant = pant;
     }
 
 
@@ -80,9 +92,11 @@ public class Product implements Comparable<Product> {
         return custom;
     }
 
+
     public boolean equals(Product o) {
         return name.equals(o.getName());
     }
+
 
     @Override
     public int compareTo(Product o) {

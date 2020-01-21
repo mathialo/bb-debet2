@@ -403,6 +403,7 @@ public class Kernel implements CommandLineInterface {
 
             accounts = new AccountSet();
             accounts.add(new Account("Varebeholdning", 1400));
+            accounts.add(new Account("Pant", 1410, true, false));
             accounts.add(new Account("Kontanter", 1900, true, true));
             accounts.add(new Account("Bankkonto", 1910, true, true));
             accounts.add(new Account("Debetbok", 2000, true, false));

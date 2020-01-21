@@ -22,7 +22,7 @@ import bbdebet2.gui.customelements.SuggestionMenu;
 import bbdebet2.gui.modelwrappers.ViewProduct;
 import bbdebet2.gui.modelwrappers.ViewProductForAddition;
 import bbdebet2.kernel.Kernel;
-import bbdebet2.kernel.accounting.Expence;
+import bbdebet2.kernel.accounting.Expense;
 import bbdebet2.kernel.datastructs.Listable;
 import bbdebet2.kernel.datastructs.Product;
 import javafx.collections.FXCollections;
@@ -158,10 +158,10 @@ public class AddProducts extends Applet {
         exit(event);
 
         if (doAccountingInput.isSelected()) {
-            MakeExpence.createAndDisplayDialog(new Expence(
+            MakeExpence.createAndDisplayDialog(new Expense.Transaction(
                     kernel.getAccounts().getStorageAccount(),
                     totalExpenceAmount,
-                    "Varekjøp " + Kernel.dateFormat.format(new Date(System.currentTimeMillis()))
+                    Expense.TransactionType.ADD
                 )
             );
         }
