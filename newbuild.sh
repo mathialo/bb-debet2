@@ -20,5 +20,5 @@ echo "Lager commit"
 git commit -m "$version:$new_buildnum: $*"
 #git tag "v$version.$new_buildnum"
 
-echo "Push til GitHub"
-git push origin master
+#echo "Push til GitHub"
+#git push origin master
