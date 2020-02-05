@@ -198,9 +198,9 @@ preprocess_sources() {
 
 	# Oppdater versjonsnummer og build-nummer i kildefiler
 	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1$version.$buildnum\3/g"  > sedcommand
-	substitute src/bbdebet2/gui/Main.java
+	substitute src/com/mathiaslohne/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1BBdebet $version\\\\nBuild nr $buildnum\3/g" > sedcommand
-	substitute src/bbdebet2/gui/Main.java
+	substitute src/com/mathiaslohne/bbdebet2/gui/Main.java
 	echo "s/BBDEBET_VERSION/$version.$buildnum/g"  > sedcommand
 	substitute bbctl/bbctl/__init__.py
 
@@ -250,9 +250,9 @@ postprocess_sources() {
 
 	# Main.java
 	echo "s/\(public static final String SHORT_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g"  > sedcommand
-	substitute src/bbdebet2/gui/Main.java
+	substitute src/com/mathiaslohne/bbdebet2/gui/Main.java
 	echo "s/\(public static final String FULL_VERSION\s=\s\"\)\(.*\)\(\";\)/\1\3/g" > sedcommand
-	substitute src/bbdebet2/gui/Main.java
+	substitute src/com/mathiaslohne/bbdebet2/gui/Main.java
 	echo "s/$version.$buildnum/BBDEBET_VERSION/g"  > sedcommand
 	substitute bbctl/bbctl/__init__.py
 
@@ -285,8 +285,8 @@ compile_all() {
 
 	# Kompiller
 	$jdk_path/javac -d out -Xlint:unchecked --module-path $javafx_path --add-modules ALL-MODULE-PATH -cp src:lib/javax.mail.jar:lib/poi-4.0.1.jar:lib/activation.jar $javafiles
-	mkdir -p out/bbdebet2/gui/views
-	cp -r src/bbdebet2/gui/views out/bbdebet2/gui/
+	mkdir -p out/com/mathiaslohne/bbdebet2/gui/views
+	cp -r src/com/mathiaslohne/bbdebet2/gui/views out/com/mathiaslohne/bbdebet2/gui/
 
 	# Pakk alt inn i en JAR
 	cd out
