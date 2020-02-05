@@ -64,11 +64,14 @@ public class EditUser extends Applet {
                 return;
             } else {
                 Kernel.getLogger().log("Changing name of user: " + u.getUserName() + " -> " + newUserNameInput.getText().replaceAll(",", "."));
+                kernel.getSalesHistory().filterOnUser(u).forEach(sale -> sale.setUserName(newUserNameInput.getText()));
+
                 u.setUserName(newUserNameInput.getText().replaceAll(",", "."));
             }
         }
 
         Main.getCurrentAdminController().repaintUserList();
+        Main.getCurrentAdminController().repaintSaleHistory();
         exit(event);
     }
 
