@@ -22,9 +22,9 @@ import java.util.Date;
 
 public class Sale {
 
-    private static int counter;
+    private static long counter;
 
-    private int id;
+    private long id;
     private long timestamp;
     private String userName;
     private String productName;
@@ -32,7 +32,7 @@ public class Sale {
     private double earnings;
 
 
-    Sale(int id, long timestamp, String userName, String productName, double pricePayed, double earnings) {
+    Sale(long id, long timestamp, String userName, String productName, double pricePayed, double earnings) {
         this.id = id;
         this.timestamp = timestamp;
         this.userName = userName;
@@ -54,12 +54,12 @@ public class Sale {
     }
 
 
-    public static int getCounter() {
+    public static long getCounter() {
         return counter;
     }
 
 
-    public static void setCounter(int counter) {
+    public static void setCounter(long counter) {
         Sale.counter = counter;
     }
 
@@ -74,13 +74,18 @@ public class Sale {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
 
     public String getUserName() {
         return userName;
+    }
+
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
 

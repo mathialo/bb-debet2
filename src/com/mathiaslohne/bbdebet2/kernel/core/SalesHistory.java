@@ -104,7 +104,7 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
                 // make new Sale and add it to list
                 history.add(
                     new Sale(
-                        Integer.parseInt(line[0]),
+                        Long.parseLong(line[0]),
                         Long.parseLong(line[1]),
                         line[2],
                         line[3],
@@ -163,12 +163,10 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
         pw.println("ID,Timestamp,UserName,Product,Price,Earnings");
 
         // sale num counter
-        int i = 0;
         for (Sale s : history) {
             // write sale as csv, with sale counter as first col
             pw.println(
                 s.getId() + "," + s.getTimestamp() + "," + s.getUserName() + "," + s.getProductName() + "," + s.getPricePayed() + "," + s.getEarnings());
-            i++;
         }
 
         // close output stream
@@ -295,7 +293,7 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
      *
      * @param id sale id
      */
-    public void remove(int id) {
+    public void remove(long id) {
         Iterator<Sale> it = history.iterator();
         while (it.hasNext()) {
             Sale temp = it.next();
@@ -314,7 +312,7 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
      *
      * @return sale on given index
      */
-    public Sale get(int id) {
+    public Sale get(long id) {
         for (Sale temp : history) {
             if (temp.getId() == id) {
                 return temp;
