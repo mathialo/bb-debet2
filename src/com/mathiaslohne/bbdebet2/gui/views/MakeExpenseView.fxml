@@ -20,7 +20,6 @@
     <bottom>
         <ButtonBar BorderPane.alignment="CENTER">
             <buttons>
-                <Button cancelButton="true" mnemonicParsing="false" onAction="#exit" text="Avbryt" />
                 <Button defaultButton="true" mnemonicParsing="false" onAction="#saveExpense" text="Lagre føring" />
             </buttons>
          <BorderPane.margin>

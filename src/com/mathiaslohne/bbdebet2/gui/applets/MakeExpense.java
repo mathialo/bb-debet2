@@ -19,10 +19,10 @@ package com.mathiaslohne.bbdebet2.gui.applets;
 
 import com.mathiaslohne.bbdebet2.gui.Main;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewTransactionForAddition;
-import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.accounting.Account;
 import com.mathiaslohne.bbdebet2.kernel.accounting.Expense;
 import com.mathiaslohne.bbdebet2.kernel.core.CurrencyFormatter;
+import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
 import com.mathiaslohne.bbdebet2.kernel.mailing.InvalidEncryptionException;
 import com.mathiaslohne.bbdebet2.kernel.mailing.TextTemplate;
@@ -103,8 +103,17 @@ public class MakeExpense extends Applet {
 
 
     public static void createAndDisplayDialog(List<Expense.Transaction> initialTransactions) {
-        FXMLLoader loader = Applet.createAndDisplayDialog("Før utlegg", "MakeExpenseView");
-        ((MakeExpense) loader.getController()).addAll(initialTransactions);
+        if (initialTransactions != null && !initialTransactions.isEmpty()) {
+            FXMLLoader loader = Applet.createAndDisplayDialogWithCloseConfirmationnn(
+                "Før utlegg",
+                "MakeExpenseView",
+                "Er du sikker på at du ikke vil føre utlegget?",
+                "Varene er allerede lagt inn på lageret");
+            ((MakeExpense) loader.getController()).initialTransactions(initialTransactions);
+
+        } else {
+            FXMLLoader loader = Applet.createAndDisplayDialog("Før utlegg", "MakeExpenseView");
+        }
     }
 
 
@@ -115,8 +124,12 @@ public class MakeExpense extends Applet {
             totalExpenseLabel.setText("Totalt utlegg: " + CurrencyFormatter.format(totalExpense));
         }
     }
-    protected void addAll(Collection<Expense.Transaction> transactions) {
-        if (transactions != null) transactions.forEach(this::add);
+
+
+    protected void initialTransactions(Collection<Expense.Transaction> transactions) {
+        if (transactions != null) {
+            transactions.forEach(this::add);
+        }
     }
 
 
@@ -150,73 +163,73 @@ public class MakeExpense extends Applet {
         }
 
         try {
-        List<Expense.Transaction> toTransactions = transactionTableView.getItems().stream().map(ViewTransactionForAddition::getTransactionObject).collect(Collectors.toList());
+            List<Expense.Transaction> toTransactions = transactionTableView.getItems().stream().map(ViewTransactionForAddition::getTransactionObject).collect(Collectors.toList());
 
-        double expenseSize = toTransactions.stream().mapToDouble(Expense.Transaction::getAmount).sum();
-        double covered = 0;
+            double expenseSize = toTransactions.stream().mapToDouble(Expense.Transaction::getAmount).sum();
+            double covered = 0;
 
-        List<Expense.Transaction> fromTransactions = new LinkedList<>();
-        Map<User, Double> payOut = new HashMap<>();
+            List<Expense.Transaction> fromTransactions = new LinkedList<>();
+            Map<User, Double> payOut = new HashMap<>();
 
-        for (int i = 0; i < fromAccountChoiceBoxes.size(); i++) {
-            Account fromAccount = fromAccountChoiceBoxes.get(i).getSelectionModel().getSelectedItem();
-            double amount;
+            for (int i = 0; i < fromAccountChoiceBoxes.size(); i++) {
+                Account fromAccount = fromAccountChoiceBoxes.get(i).getSelectionModel().getSelectedItem();
+                double amount;
 
-            if (i == fromAccountChoiceBoxes.size() - 1) {
-                amount = expenseSize - covered;
-            } else {
-                amount = Double.parseDouble(amountTextFields.get(i).getText());
-            }
-
-            fromTransactions.add(new Expense.Transaction(
-                fromAccount,
-                amount,
-                Expense.TransactionType.SUB
-            ));
-
-            covered += amount;
-
-            if (fromAccount == userAccount) {
-                String error = null;
-                String username = usernameTextFields.get(i).getText().trim();
-
-                if (username.equals("")) {
-                    error = "Du må skrive et brukernavn for å velge " + fromAccount + " fom betalingsmåte";
-                }
-                if (!kernel.getUserList().contains(username)) {
-                    error = "Finner ikke bruker " + username;
-                }
-
-                if (error != null) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, error);
-                    alert.setHeaderText("Feil i brukernavn");
-                    alert.showAndWait();
-                    return;
-                }
-
-                User user = kernel.getUserList().find(username);
-
-                if (payOut.containsKey(user)) {
-                    double previous = payOut.get(user);
-                    payOut.put(user, previous + amount);
+                if (i == fromAccountChoiceBoxes.size() - 1) {
+                    amount = expenseSize - covered;
                 } else {
-                    payOut.put(user, amount);
+                    amount = Double.parseDouble(amountTextFields.get(i).getText());
+                }
+
+                fromTransactions.add(new Expense.Transaction(
+                    fromAccount,
+                    amount,
+                    Expense.TransactionType.SUB
+                ));
+
+                covered += amount;
+
+                if (fromAccount == userAccount) {
+                    String error = null;
+                    String username = usernameTextFields.get(i).getText().trim();
+
+                    if (username.equals("")) {
+                        error = "Du må skrive et brukernavn for å velge " + fromAccount + " fom betalingsmåte";
+                    }
+                    if (!kernel.getUserList().contains(username)) {
+                        error = "Finner ikke bruker " + username;
+                    }
+
+                    if (error != null) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, error);
+                        alert.setHeaderText("Feil i brukernavn");
+                        alert.showAndWait();
+                        return;
+                    }
+
+                    User user = kernel.getUserList().find(username);
+
+                    if (payOut.containsKey(user)) {
+                        double previous = payOut.get(user);
+                        payOut.put(user, previous + amount);
+                    } else {
+                        payOut.put(user, amount);
+                    }
                 }
             }
-        }
 
-        payOut.forEach(this::payBackUser);
+            payOut.forEach(this::payBackUser);
 
-        Expense expense = new Expense(commentTextArea.getText());
-        fromTransactions.forEach(expense::addTransaction);
-        toTransactions.forEach(expense::addTransaction);
-        kernel.getLedger().add(expense);
-        Kernel.getLogger().log("Adding expense: " + expense);
+            Expense expense = new Expense(commentTextArea.getText());
+            fromTransactions.forEach(expense::addTransaction);
+            toTransactions.forEach(expense::addTransaction);
+            kernel.getLedger().add(expense);
+            Kernel.getLogger().log("Adding expense: " + expense);
 
-        Main.getCurrentAdminController().repaintUserList();
-        Main.getCurrentAdminController().repaintAccounting();
+            Main.getCurrentAdminController().repaintUserList();
+            Main.getCurrentAdminController().repaintAccounting();
 
-        exit(event);
+            exit(event);
 
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());

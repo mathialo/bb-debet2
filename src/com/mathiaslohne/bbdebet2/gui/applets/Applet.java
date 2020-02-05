@@ -26,11 +26,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 public abstract class Applet implements Initializable {
 
@@ -56,6 +60,45 @@ public abstract class Applet implements Initializable {
             Kernel.getLogger().log(e);
         }
         return null;
+    }
+
+
+    protected static FXMLLoader createAndDisplayDialogWithCloseConfirmationnn(String title, String fxmlFileName, String warningHeader, String warningMessage) {
+        try {
+            Stage stage = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(NewUserTransaction.class.getClassLoader().getResource("com/mathiaslohne/bbdebet2/gui/views/" + fxmlFileName + ".fxml"));
+            Parent root = fxmlLoader.load();
+
+            Scene scene = new Scene(root);
+
+            stage.setTitle(title);
+            stage.setScene(scene);
+            stage.setResizable(false);
+
+            stage.setOnCloseRequest(event -> {
+                if (!confirmExit(warningHeader, warningMessage)) event.consume();
+            });
+
+            stage.show();
+
+            return fxmlLoader;
+        } catch (IOException e) {
+            Kernel.getLogger().log(e);
+        }
+        return null;
+    }
+
+
+    protected static boolean confirmExit(String warningHeader, String warningMessage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Bekreft");
+        alert.setHeaderText(warningHeader);
+        alert.setContentText(warningMessage);
+
+        Optional<ButtonType> pressedButton = alert.showAndWait();
+
+        return pressedButton.get() == ButtonType.OK;
     }
 
 
