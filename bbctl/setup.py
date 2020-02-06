@@ -29,7 +29,8 @@ setup(
     packages=find_packages(),
     license="GPLv3",
     install_requires=[
-        "pytz"
+        "pytz",
+        "cognite-extractor-utils"
     ],
     zip_safe=False,
 )
