@@ -110,7 +110,7 @@ public class Sale {
 
 
     public String getFormattedTimestamp() {
-        return Kernel.dateFormat.format(new Date(timestamp * 1000L));
+        return Kernel.dateTimeFormat.format(new Date(timestamp * 1000L));
     }
 
 

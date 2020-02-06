@@ -24,6 +24,7 @@ import com.mathiaslohne.bbdebet2.kernel.accounting.Expense;
 import com.mathiaslohne.bbdebet2.kernel.core.CurrencyFormatter;
 import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
+import com.mathiaslohne.bbdebet2.kernel.mailing.EmailSender;
 import com.mathiaslohne.bbdebet2.kernel.mailing.InvalidEncryptionException;
 import com.mathiaslohne.bbdebet2.kernel.mailing.TextTemplate;
 import com.mathiaslohne.bbdebet2.kernel.mailing.TextTemplateLoader;
@@ -40,7 +41,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -48,6 +51,8 @@ import javax.mail.MessagingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -101,6 +106,8 @@ public class MakeExpense extends Applet {
 
     private Account userAccount;
 
+    private boolean enableAutoComment;
+
 
     public static void createAndDisplayDialog(List<Expense.Transaction> initialTransactions) {
         if (initialTransactions != null && !initialTransactions.isEmpty()) {
@@ -110,10 +117,17 @@ public class MakeExpense extends Applet {
                 "Er du sikker på at du ikke vil føre utlegget?",
                 "Varene er allerede lagt inn på lageret");
             ((MakeExpense) loader.getController()).initialTransactions(initialTransactions);
+            ((MakeExpense) loader.getController()).setInitialComment("Varekjøp " + Kernel.dateFormat.format(new Date()));
 
         } else {
             FXMLLoader loader = Applet.createAndDisplayDialog("Før utlegg", "MakeExpenseView");
         }
+    }
+
+
+    protected void setInitialComment(String string) {
+        commentTextArea.setText(string);
+        enableAutoComment = true;
     }
 
 
@@ -286,7 +300,7 @@ public class MakeExpense extends Applet {
         amountTextField.setPromptText("Beløp");
         amountTextField.setDisable(true);
 
-        setupFromChoiceBox(accountChoiceBox, usernameTextField);
+        setupFromRow(accountChoiceBox, usernameTextField);
         amountTextFields.get(amountTextFields.size() - 1).setDisable(false);
 
         Button removeRowButton = new Button("-");
@@ -339,12 +353,29 @@ public class MakeExpense extends Applet {
     }
 
 
-    private void setupFromChoiceBox(ChoiceBox<Account> choiceBox, TextField linkedTextField) {
+    private void setupFromRow(ChoiceBox<Account> choiceBox, TextField linkedTextField) {
         choiceBox.getItems().addAll(kernel.getAccounts().getPaymentOptions());
 
         choiceBox.setOnAction(
             e -> linkedTextField.setDisable(choiceBox.getSelectionModel().getSelectedItem() != userAccount)
         );
+
+        linkedTextField.setOnKeyTyped(this::updateAutoComment);
+    }
+
+
+    private void updateAutoComment(KeyEvent keyEvent) {
+        if (!enableAutoComment) return;
+
+        List<String> names = usernameTextFields.stream()
+            .filter(textField -> !textField.isDisabled())
+            .map(TextInputControl::getText)
+            .map(EmailSender::capitalizeFirstLetter)
+            .collect(Collectors.toList());
+
+        String stringNames = String.join(", ", names);
+
+        commentTextArea.setText("Varekjøp " + stringNames + " " + Kernel.dateFormat.format(new Date()));
     }
 
 
@@ -353,7 +384,7 @@ public class MakeExpense extends Applet {
         super.initialize(location, resources);
         setupTableView();
         accountChoiceBox.getItems().addAll(kernel.getAccounts().getAll());
-        setupFromChoiceBox(initialFromAccountChoiceBox, initialUsernameTextField);
+        setupFromRow(initialFromAccountChoiceBox, initialUsernameTextField);
 
         fromAccountChoiceBoxes = new ArrayList<>();
         fromAccountChoiceBoxes.add(initialFromAccountChoiceBox);
@@ -365,5 +396,8 @@ public class MakeExpense extends Applet {
         removeRowButtons = new LinkedList<>();
 
         userAccount = kernel.getAccounts().fromAccountNumber(2000);
+
+        enableAutoComment = false;
+        commentTextArea.setOnKeyTyped(keyEvent -> enableAutoComment = false);
     }
 }

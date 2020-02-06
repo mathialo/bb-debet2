@@ -63,7 +63,8 @@ public class Kernel implements CommandLineInterface {
     public static final String LEDGER_FILEPATH = SAVE_DIR + LEDGER_FILENAME;
     public static final String ACCOUNTS_FILEPATH = SAVE_DIR + ACCOUNTS_FILENAME;
 
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
+    public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
 
     private static Logger logger;
     private File runningFile;

@@ -39,7 +39,7 @@ public class ViewExpence {
         this.to = new SimpleStringProperty(expense.getTo().toString());
         this.amount = new SimpleStringProperty(CurrencyFormatter.format(expense.getAmount()));
         this.comment = new SimpleStringProperty(expense.getComment());
-        this.expenceDate = new SimpleStringProperty(Kernel.dateFormat.format(new Date(expense.getTimestamp() * 1000L)));
+        this.expenceDate = new SimpleStringProperty(Kernel.dateTimeFormat.format(new Date(expense.getTimestamp() * 1000L)));
     }
 
 
