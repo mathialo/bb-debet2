@@ -34,7 +34,7 @@ public class StorageButton extends Button {
         super("Annet");
 
         setWrapText(true);
-        setPrefHeight(100);
+        setPrefHeight(80);
         setPrefWidth(140);
     }
 
@@ -47,7 +47,7 @@ public class StorageButton extends Button {
 
         this.product = product;
         setWrapText(true);
-        setPrefHeight(100);
+        setPrefHeight(80);
         setPrefWidth(140);
 
         CategoryDict.Category category = Main.getKernel().getCategories().getProductCategory(product);
@@ -61,7 +61,7 @@ public class StorageButton extends Button {
         super(productName + "\nUtsolgt");
 
         setWrapText(true);
-        setPrefHeight(100);
+        setPrefHeight(80);
         setPrefWidth(140);
         setDisable(true);
 
