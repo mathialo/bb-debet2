@@ -36,7 +36,7 @@ public class Sale {
         this.id = id;
         this.timestamp = timestamp;
         this.userName = userName;
-        this.productName = productName;
+        this.productName = Product.ProductNameFormatter.convertProductName(productName);
         this.pricePayed = pricePayed;
         this.earnings = earnings;
         if (id > counter) counter = id + 1;
@@ -48,7 +48,7 @@ public class Sale {
         id = counter++;
 
         userName = user.getUserName();
-        productName = product.getName();
+        productName = Product.ProductNameFormatter.convertProductName(product.getName());
         pricePayed = product.getSellPrice();
         earnings = product.getMarkup();
     }
@@ -91,6 +91,11 @@ public class Sale {
 
     public String getProductName() {
         return productName;
+    }
+
+
+    public void setProductName(String productName) {
+        this.productName = Product.ProductNameFormatter.convertProductName(productName);
     }
 
 

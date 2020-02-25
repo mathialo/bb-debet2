@@ -405,7 +405,7 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
         ListIterator<Sale> lit = history.listIterator(history.size() - 1);
         List<ViewProduct> list = new LinkedList<>();
 
-        int maxThreshold = 100;
+        int maxThreshold = 200;
         int counter = 0;
 
         Product p;

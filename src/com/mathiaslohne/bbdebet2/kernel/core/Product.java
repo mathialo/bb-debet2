@@ -29,7 +29,7 @@ public class Product implements Comparable<Product> {
 
 
     public Product(String name, double sellPrice, double buyPrice) {
-        this.name = name;
+        this.name = ProductNameFormatter.convertProductName(name);
         this.sellPrice = sellPrice;
         this.buyPrice = buyPrice;
     }
@@ -49,7 +49,7 @@ public class Product implements Comparable<Product> {
 
 
     public void setName(String name) {
-        this.name = name;
+        this.name = ProductNameFormatter.convertProductName(name);
     }
 
 
@@ -110,5 +110,40 @@ public class Product implements Comparable<Product> {
         String prefix = "";
         if (custom) prefix = "Annet: ";
         return prefix + name + ", " + CurrencyFormatter.format(sellPrice);
+    }
+
+
+    public static class ProductNameFormatter {
+
+        private static String capitalize(String input) {
+            char[] inputArr = input.toLowerCase().toCharArray();
+            inputArr[0] = Character.toUpperCase(inputArr[0]);
+            return new String(inputArr);
+        }
+
+
+        private static boolean allUpper(String input) {
+            for (char c : input.toCharArray())
+                if (!Character.isUpperCase(c)) return false;
+            return true;
+        }
+
+
+        private static String eitherLowerOrUpper(String input) {
+            if (allUpper(input)) return input;
+            else return input.toLowerCase();
+        }
+
+
+        public static String convertProductName(String input) {
+            String[] parts = input.trim().split("\\s+");
+
+            parts[0] = capitalize(parts[0]);
+            for (int i = 1; i < parts.length; i++) {
+                parts[i] = eitherLowerOrUpper(parts[i]);
+            }
+
+            return String.join(" ", parts);
+        }
     }
 }

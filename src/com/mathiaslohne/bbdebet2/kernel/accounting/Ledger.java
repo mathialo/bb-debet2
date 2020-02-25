@@ -97,7 +97,7 @@ public class Ledger implements Exportable, Iterable<Expense> {
 
             // close in stream
             sc.close();
-        } catch (NumberFormatException e) {
+        } catch (IllegalArgumentException e) {
             throw new ErrorInFileException(
                 "Feil i inputfil: Linje " + lineNum + " i " + file + " inneholder et element av feil type.");
         } catch (ArrayIndexOutOfBoundsException e) {
