@@ -223,6 +223,12 @@ public class AddProducts extends Applet {
 
 
     public void updateAutoSalePrice() {
+        if (addPantInput.isSelected()) {
+            addPantInput.setStyle("-fx-base: #A9EDC0;");
+        } else {
+            addPantInput.setStyle("");
+        }
+
         try {
             double pantadd = 0;
             if (addPantInput.isSelected()) pantadd = 2*BOTTLE_LOSE_RATE;
