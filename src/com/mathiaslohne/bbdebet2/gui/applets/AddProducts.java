@@ -29,6 +29,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
@@ -41,6 +42,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -133,11 +135,19 @@ public class AddProducts extends Applet {
     }
 
 
+    @FXML
     public void processAllAndExit(ActionEvent event) {
         if (cartTableView.getItems().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Ingen produkter å legge til");
             alert.setHeaderText(null);
             alert.showAndWait();
+            return;
+        }
+
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Har lagt til alle produktene?");
+        confirmation.setHeaderText("Bekreft");
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
             return;
         }
 
