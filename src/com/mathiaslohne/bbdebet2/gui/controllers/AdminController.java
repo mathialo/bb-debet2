@@ -33,7 +33,7 @@ import com.mathiaslohne.bbdebet2.gui.applets.NewUser;
 import com.mathiaslohne.bbdebet2.gui.applets.SendEmail;
 import com.mathiaslohne.bbdebet2.gui.applets.Settings;
 import com.mathiaslohne.bbdebet2.gui.applets.Stocktaking;
-import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewExpence;
+import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewExpense;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewSale;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewUser;
@@ -102,17 +102,17 @@ public class AdminController implements Initializable {
     @FXML
     private TableColumn<ViewUser, String> userListBalanceCol;
     @FXML
-    private TableView<ViewExpence> accountingView;
+    private TableView<ViewExpense> accountingView;
     @FXML
-    private TableColumn<ViewExpence, String> accountingTimeCol;
+    private TableColumn<ViewExpense, String> accountingTimeCol;
     @FXML
-    private TableColumn<ViewExpence, String> accountingFromCol;
+    private TableColumn<ViewExpense, String> accountingFromCol;
     @FXML
-    private TableColumn<ViewExpence, String> accountingToCol;
+    private TableColumn<ViewExpense, String> accountingToCol;
     @FXML
-    private TableColumn<ViewExpence, String> accountingAmountCol;
+    private TableColumn<ViewExpense, String> accountingAmountCol;
     @FXML
-    private TableColumn<ViewExpence, String> accountingCommentCol;
+    private TableColumn<ViewExpense, String> accountingCommentCol;
     @FXML
     private Menu pluginMenu;
     @FXML
@@ -212,19 +212,19 @@ public class AdminController implements Initializable {
 
     private void setupAccountingView() {
         accountingTimeCol.setCellValueFactory(
-            new PropertyValueFactory<ViewExpence, String>("expenceDate")
+            new PropertyValueFactory<ViewExpense, String>("expenceDate")
         );
         accountingFromCol.setCellValueFactory(
-            new PropertyValueFactory<ViewExpence, String>("from")
+            new PropertyValueFactory<ViewExpense, String>("from")
         );
         accountingToCol.setCellValueFactory(
-            new PropertyValueFactory<ViewExpence, String>("to")
+            new PropertyValueFactory<ViewExpense, String>("to")
         );
         accountingAmountCol.setCellValueFactory(
-            new PropertyValueFactory<ViewExpence, String>("amount")
+            new PropertyValueFactory<ViewExpense, String>("amount")
         );
         accountingCommentCol.setCellValueFactory(
-            new PropertyValueFactory<ViewExpence, String>("comment")
+            new PropertyValueFactory<ViewExpense, String>("comment")
         );
     }
 
@@ -243,7 +243,7 @@ public class AdminController implements Initializable {
 
 
     private void createPluginMenu() {
-        File file = new File("/usr/local/share/com.mathiaslohne.bbdebet2/plugins");
+        File file = new File("/usr/local/share/bbdebet2/plugins");
 
         // If plugin directory is not created, skip this
         if (!file.exists()) return;

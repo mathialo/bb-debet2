@@ -94,6 +94,14 @@ public class AccountSet implements Iterable<Account>, Exportable {
         return accounts.get(1410);
     }
 
+    public Account getLossAccount() {
+        return accounts.get(8000);
+    }
+
+    public Account getUserAccount() {
+        return accounts.get(2000);
+    }
+
 
     public Account fromAccountNumber(int accountNumber) {
         return accounts.get(accountNumber);

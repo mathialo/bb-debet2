@@ -24,7 +24,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.util.Date;
 
-public class ViewExpence {
+public class ViewExpense {
     private final SimpleStringProperty from;
     private final SimpleStringProperty to;
     private final SimpleStringProperty amount;
@@ -33,7 +33,7 @@ public class ViewExpence {
 
     private final Expense expense;
 
-    public ViewExpence(Expense expense) {
+    public ViewExpense(Expense expense) {
         this.expense = expense;
         this.from = new SimpleStringProperty(expense.getFrom().toString());
         this.to = new SimpleStringProperty(expense.getTo().toString());

@@ -224,7 +224,7 @@ public class AddProducts extends Applet {
 
     public void updateAutoSalePrice() {
         if (addPantInput.isSelected()) {
-            addPantInput.setStyle("-fx-base: #A9EDC0;");
+            addPantInput.setStyle("-fx-base: #c0edcf;");
         } else {
             addPantInput.setStyle("");
         }

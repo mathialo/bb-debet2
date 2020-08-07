@@ -18,7 +18,6 @@
 package com.mathiaslohne.bbdebet2.kernel.logging;
 
 import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
-import com.mathiaslohne.bbdebet2.kernel.core.Product;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
 
 import java.io.IOException;
@@ -29,6 +28,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 
 public class CsvLogger {
 
@@ -43,8 +43,8 @@ public class CsvLogger {
     public static void initialize() {
         String[] head0 = {"From", "To", "Amount"};
         headers.put("usertransactions", head0);
-        String[] head1 = {"Product", "Quantity", "Value"};
-        headers.put("losses", head1);
+//        String[] head1 = {"Product", "Quantity", "Value"};
+//        headers.put("losses", head1);
         String[] head2 = {"User", "Amount"};
         headers.put("moneyinserts", head2);
     }
@@ -86,10 +86,10 @@ public class CsvLogger {
     }
 
 
-    public static void addProductLoss(Product product, int num) throws IOException {
-        String[] row = {product.getName(), num + "", product.getSellPrice() * num + ""};
-        addRow("losses", row);
-    }
+//    public static void addProductLoss(Product product, int num) throws IOException {
+//        String[] row = {product.getName(), num + "", product.getSellPrice() * num + ""};
+//        addRow("losses", row);
+//    }
 
 
     public static void addMoneyInserts(User user, double amount) throws IOException {

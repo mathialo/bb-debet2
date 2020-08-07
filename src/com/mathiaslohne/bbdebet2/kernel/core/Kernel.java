@@ -21,6 +21,7 @@ import com.mathiaslohne.bbdebet2.gui.Main;
 import com.mathiaslohne.bbdebet2.kernel.accounting.Account;
 import com.mathiaslohne.bbdebet2.kernel.accounting.AccountSet;
 import com.mathiaslohne.bbdebet2.kernel.accounting.Ledger;
+import com.mathiaslohne.bbdebet2.kernel.accounting.Losses;
 import com.mathiaslohne.bbdebet2.kernel.backup.AutoSaver;
 import com.mathiaslohne.bbdebet2.kernel.logging.CsvLogger;
 import com.mathiaslohne.bbdebet2.kernel.logging.Logger;
@@ -51,6 +52,7 @@ public class Kernel implements CommandLineInterface {
     public static final String LOG_FILENAME = "log";
     public static final String LEDGER_FILENAME = "ledger.csv";
     public static final String ACCOUNTS_FILENAME = "accounts.csv";
+    public static final String LOSSES_FILENAME = "losses.csv";
 
     public static final String SALESHISTORY_FILEPATH = SAVE_DIR + SALESHISTORY_FILENAME;
     public static final String USERLIST_FILEPATH = SAVE_DIR + USERLIST_FILENAME;
@@ -62,6 +64,7 @@ public class Kernel implements CommandLineInterface {
     public static final String PROCESSEDINSERTS_FILEPATH = SAVE_DIR + PROCESSEDINSERTS_FILENAME;
     public static final String LEDGER_FILEPATH = SAVE_DIR + LEDGER_FILENAME;
     public static final String ACCOUNTS_FILEPATH = SAVE_DIR + ACCOUNTS_FILENAME;
+    public static final String LOSSES_FILEPATH = SAVE_DIR + LOSSES_FILENAME;
 
     public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yy - HH:mm");
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
@@ -80,6 +83,7 @@ public class Kernel implements CommandLineInterface {
     private TransactionHandler transactionHandler;
     private Ledger ledger;
     private AccountSet accounts;
+    private Losses losses;
 
     private SettingsHolder settingsHolder;
     private EmailSender emailSender;
@@ -161,6 +165,16 @@ public class Kernel implements CommandLineInterface {
                 cont = false;
             }
         }
+    }
+
+
+    /**
+     * Returns the active logger for this kernel
+     *
+     * @return Current logger
+     */
+    public static Logger getLogger() {
+        return logger;
     }
 
 
@@ -412,7 +426,17 @@ public class Kernel implements CommandLineInterface {
             ledger = new Ledger();
         }
 
-        this.saveOnExit = new Exportable[]{userList, storage, categories, salesHistory, settingsHolder, accounts, ledger};
+        logger.log("Loading losses");
+        try {
+            losses = new Losses(new File(LOSSES_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to no losses");
+
+            losses = new Losses();
+        }
+
+        this.saveOnExit = new Exportable[]{userList, storage, categories, salesHistory, settingsHolder, accounts, ledger, losses};
     }
 
 
@@ -477,16 +501,6 @@ public class Kernel implements CommandLineInterface {
 
 
     /**
-     * Returns the active logger for this kernel
-     *
-     * @return Current logger
-     */
-    public static Logger getLogger() {
-        return logger;
-    }
-
-
-    /**
      * Returns the active transaction handler for this kernel
      *
      * @return Current transaction handler
@@ -513,6 +527,16 @@ public class Kernel implements CommandLineInterface {
      */
     public AccountSet getAccounts() {
         return accounts;
+    }
+
+
+    /**
+     * Get loss list for this kernel
+     *
+     * @return All recorded losses
+     */
+    public Losses getLosses() {
+        return losses;
     }
 
 

@@ -27,6 +27,7 @@ import java.io.IOException;
 
 
 public class AutoSaver {
+
     private Kernel kernel;
 
     private String subdir;
@@ -61,6 +62,7 @@ public class AutoSaver {
         this.placeInSubdirs = placeInSubdirs;
     }
 
+
     public void autoSendToRemoteOnSave(boolean autoSend) {
         this.autoSend = autoSend;
     }
@@ -75,46 +77,44 @@ public class AutoSaver {
 
     public void scheduleNew(int minsFromNow) {
         Timeline autoSaveTimer = new Timeline(new KeyFrame(
-            Duration.millis(minsFromNow*60*1000),
+            Duration.millis(minsFromNow * 60 * 1000),
             e -> saveAll()));
 
         autoSaveTimer.play();
     }
 
-    private void saveAll() {
-        String newSubdir;
 
+    private void saveAll() {
         if (placeInSubdirs) {
             // use epoch timestamp as new folder name
             long timestamp = System.currentTimeMillis() / 1000L;
-            newSubdir = subdir + timestamp + "/";
+            String newSubdir = subdir + timestamp + "/";
 
             // make sure directory exists
             File newDir = new File(Kernel.SAVE_DIR + newSubdir);
             newDir.mkdir();
             Kernel.getLogger().log("Backuping... " + timestamp);
 
+            try {
+                kernel.getSalesHistory().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.SALESHISTORY_FILENAME);
+            } catch (IOException e) {
+                Kernel.getLogger().log(e);
+            }
+
+            try {
+                kernel.getUserList().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.USERLIST_FILENAME, true);
+            } catch (IOException e) {
+                Kernel.getLogger().log(e);
+            }
+
+            try {
+                kernel.getStorage().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.STORAGE_FILENAME);
+            } catch (IOException e) {
+                Kernel.getLogger().log(e);
+            }
+
         } else {
-            newSubdir = subdir;
-        }
-
-
-        try {
-            kernel.getSalesHistory().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.SALESHISTORY_FILENAME);
-        } catch (IOException e) {
-            Kernel.getLogger().log(e);
-        }
-
-        try {
-            kernel.getUserList().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.USERLIST_FILENAME, true);
-        } catch (IOException e) {
-            Kernel.getLogger().log(e);
-        }
-
-        try {
-            kernel.getStorage().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.STORAGE_FILENAME);
-        } catch (IOException e) {
-            Kernel.getLogger().log(e);
+            kernel.saveAll();
         }
 
         if (autoSend) {

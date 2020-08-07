@@ -73,6 +73,9 @@ public class NewSemester extends Applet {
             kernel.getSalesHistory().saveFile(new File(placeDir.getAbsolutePath() + "/" + Kernel.SALESHISTORY_FILENAME));
             kernel.getStorage().saveFile(new File(placeDir.getAbsolutePath() + "/" + Kernel.STORAGE_FILENAME));
             kernel.getUserList().saveFile(new File(placeDir.getAbsolutePath() + "/" + Kernel.USERLIST_FILENAME));
+            kernel.getLosses().saveFile(new File(placeDir.getAbsolutePath() + "/" + Kernel.LOSSES_FILENAME));
+            kernel.getLedger().saveFile(new File(placeDir.getAbsolutePath() + "/" + Kernel.LEDGER_FILENAME));
+            kernel.getAccounts().saveFile(new File(placeDir.getAbsolutePath() + "/" + Kernel.ACCOUNTS_FILENAME));
 
             // Reset SalesHistory
             kernel.getSalesHistory().reset();

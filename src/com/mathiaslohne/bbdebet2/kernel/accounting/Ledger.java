@@ -17,7 +17,7 @@
 
 package com.mathiaslohne.bbdebet2.kernel.accounting;
 
-import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewExpence;
+import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewExpense;
 import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.ErrorInFileException;
 import com.mathiaslohne.bbdebet2.kernel.core.Exportable;
@@ -159,10 +159,10 @@ public class Ledger implements Exportable, Iterable<Expense> {
     }
 
 
-    public ObservableList<ViewExpence> toObservableList() {
-        ArrayList<ViewExpence> newList = new ArrayList<>(expenses.size());
+    public ObservableList<ViewExpense> toObservableList() {
+        ArrayList<ViewExpense> newList = new ArrayList<>(expenses.size());
 
-        for (Expense e : this) newList.add(new ViewExpence(e));
+        for (Expense e : this) newList.add(new ViewExpense(e));
 
         return FXCollections.observableList(newList);
     }

@@ -81,7 +81,7 @@ public class AddBalance extends Applet {
         }
 
         Account to = insertMethodInput.getSelectionModel().getSelectedItem();
-        Account from = kernel.getAccounts().fromAccountNumber(2000);
+        Account from = kernel.getAccounts().getUserAccount();
         kernel.getLedger().add(
             new Expense("Innskudd " + u)
                 .addTransaction(new Expense.Transaction(to, amount, Expense.TransactionType.ADD))

@@ -18,9 +18,9 @@
 package com.mathiaslohne.bbdebet2.gui.applets;
 
 import com.mathiaslohne.bbdebet2.gui.Main;
+import com.mathiaslohne.bbdebet2.kernel.accounting.Expense;
 import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.Product;
-import com.mathiaslohne.bbdebet2.kernel.logging.CsvLogger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -28,9 +28,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
+
 
 public class Stocktaking extends Applet {
 
@@ -69,6 +70,8 @@ public class Stocktaking extends Applet {
 
 
     private void updateStorageNumbers() {
+        double lossAmount = 0;
+
         for (int i = 1; i < rownum; i++) {
             Label productNameView = (Label) getNodeFromStorageViewHolder(0, i);
             TextField productNumInput = (TextField) getNodeFromStorageViewHolder(1, i);
@@ -85,12 +88,21 @@ public class Stocktaking extends Applet {
                     "Stocktaking: " + productNameView.getText() + " changed by " + diff
                 );
 
-                try {
-                    CsvLogger.addProductLoss(p, -diff);
-                } catch (IOException e) {
-                    Kernel.getLogger().log(e);
-                }
+                lossAmount -= p.getBuyPrice() * diff;
+                kernel.getLosses().add(p, -diff);
             }
+        }
+
+        if (lossAmount > 0) {
+            kernel.getLedger().add(new Expense("Varetelling " + Kernel.dateFormat.format(new Date()))
+                .addTransaction(new Expense.Transaction(kernel.getAccounts().getStorageAccount(), lossAmount, Expense.TransactionType.SUB))
+                .addTransaction(new Expense.Transaction(kernel.getAccounts().getLossAccount(), lossAmount, Expense.TransactionType.ADD))
+            );
+        } else if (lossAmount < 0) {
+            kernel.getLedger().add(new Expense("Varetelling " + Kernel.dateFormat.format(new Date()))
+                .addTransaction(new Expense.Transaction(kernel.getAccounts().getStorageAccount(), -lossAmount, Expense.TransactionType.ADD))
+                .addTransaction(new Expense.Transaction(kernel.getAccounts().getLossAccount(), -lossAmount, Expense.TransactionType.SUB))
+            );
         }
     }
 

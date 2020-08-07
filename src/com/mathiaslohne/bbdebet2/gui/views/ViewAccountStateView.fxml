@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!--
+  ~ Copyright (C) 2019  Mathias Lohne
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mathiaslohne.bbdebet2.gui.applets.ViewAccountState">
+   <center>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="480.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+         <content>
+            <GridPane fx:id="storageViewHolder" prefWidth="450.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="350.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Konto" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label text="Beløp" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

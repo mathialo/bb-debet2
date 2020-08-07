@@ -395,7 +395,7 @@ public class MakeExpense extends Applet {
 
         removeRowButtons = new LinkedList<>();
 
-        userAccount = kernel.getAccounts().fromAccountNumber(2000);
+        userAccount = kernel.getAccounts().getUserAccount();
 
         enableAutoComment = false;
         commentTextArea.setOnKeyTyped(keyEvent -> enableAutoComment = false);
