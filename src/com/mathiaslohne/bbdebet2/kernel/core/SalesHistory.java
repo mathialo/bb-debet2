@@ -381,9 +381,9 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
      * @return last n sales
      */
     public SalesHistory filterLastItems(int itemNum) {
-        ListIterator<Sale> lit = history.listIterator(history.size() - 1);
+        if (history.isEmpty()) return new SalesHistory();
 
-        if (!lit.hasPrevious()) return new SalesHistory();
+        ListIterator<Sale> lit = history.listIterator(history.size() - 1);
 
         int number = 0;
         while (lit.hasPrevious() && number < itemNum) {

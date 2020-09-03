@@ -49,8 +49,12 @@ public class ProductSearchEngine {
 
         List<Product> result = productSet.stream().filter(product -> product.getName().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList());
 
-        Map<String, Integer> salenums = kernel.getSalesHistory().filterOnUser(user).filterLastItems(50).getSummary();
-        result.sort(Comparator.comparingInt(p -> -salenums.getOrDefault(p.getName(), 0)));
+        Map<String, Integer> salenumsTotal = kernel.getSalesHistory().filterLastItems(50).getSummary();
+        Map<String, Integer> salenumsUser = kernel.getSalesHistory().filterOnUser(user).filterLastItems(50).getSummary();
+
+        // Sort on total first, then users (sorting is stable, so if user has no purchases of a product, show global most popular first)
+        result.sort(Comparator.comparingInt(p -> -salenumsTotal.getOrDefault(p.getName(), 0)));
+        result.sort(Comparator.comparingInt(p -> -salenumsUser.getOrDefault(p.getName(), 0)));
 
         return result;
     }
