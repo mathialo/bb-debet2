@@ -49,7 +49,8 @@ public class Kernel implements CommandLineInterface {
     public static final String CATEGORIES_FILENAME = "categories.csv";
     public static final String TRANSACTIONHIST_FILENAME = "transactionhistory.csv";
     public static final String SETTINGS_FILENAME = "settings.properties";
-    public static final String LOG_FILENAME = "log";
+    public static final String LOG_FILENAME = "info.log";
+    public static final String ERRORLOG_FILENAME = "error.log";
     public static final String LEDGER_FILENAME = "ledger.csv";
     public static final String ACCOUNTS_FILENAME = "accounts.csv";
     public static final String LOSSES_FILENAME = "losses.csv";
@@ -61,6 +62,7 @@ public class Kernel implements CommandLineInterface {
     public static final String TRANSACTIONHIST_FILEPATH = SAVE_DIR + TRANSACTIONHIST_FILENAME;
     public static final String SETTINGS_FILEPATH = SAVE_DIR + SETTINGS_FILENAME;
     public static final String LOG_FILEPATH = SAVE_DIR + LOG_FILENAME;
+    public static final String ERRORLOG_FILEPATH = SAVE_DIR + ERRORLOG_FILENAME;
     public static final String PROCESSEDINSERTS_FILEPATH = SAVE_DIR + PROCESSEDINSERTS_FILENAME;
     public static final String LEDGER_FILEPATH = SAVE_DIR + LEDGER_FILENAME;
     public static final String ACCOUNTS_FILEPATH = SAVE_DIR + ACCOUNTS_FILENAME;
@@ -308,7 +310,7 @@ public class Kernel implements CommandLineInterface {
      */
     private void createLogger() {
         try {
-            logger = new Logger(new File(LOG_FILEPATH), true);
+            logger = new Logger(new File(LOG_FILEPATH), new File(ERRORLOG_FILEPATH), true);
         } catch (IOException e) {
             System.out.println("Warning: Could not instantiate logger!");
             e.printStackTrace();

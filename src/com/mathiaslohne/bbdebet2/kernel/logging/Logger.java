@@ -36,13 +36,15 @@ public class Logger {
     private File logFile;
 
     private FileWriter logWriter;
+    private FileWriter errorWriter;
     private boolean terminaldump;
 
     private List<PrintStream> outputStreams;
 
 
-    public Logger(File logFile, boolean writeToTerminal) throws IOException {
+    public Logger(File logFile, File errorFile, boolean writeToTerminal) throws IOException {
         logWriter = new FileWriter(logFile, true);
+        errorWriter = new FileWriter(errorFile, true);
         this.logFile = logFile;
 
         outputStreams = new LinkedList<>();
@@ -118,15 +120,17 @@ public class Logger {
 
     public void log(Exception exception) {
         try {
-            logWriter.write(
-                getTimeStamp() + "New " + exception.getClass().getSimpleName() + " occurred:\n");
-            logWriter.write("  -->> " + exception.getMessage() + "\n");
-            logWriter.write("BEGIN STACKTRACE\n");
-            StackTraceElement[] stackTrace = exception.getStackTrace();
-            for (StackTraceElement e : stackTrace) {
-                logWriter.write("\t" + e.toString() + "\n");
+            for (FileWriter writer : List.of(logWriter, errorWriter)) {
+                writer.write(
+                    getTimeStamp() + "New " + exception.getClass().getSimpleName() + " occurred:\n");
+                writer.write("  -->> " + exception.getMessage() + "\n");
+                writer.write("BEGIN STACKTRACE\n");
+                StackTraceElement[] stackTrace = exception.getStackTrace();
+                for (StackTraceElement e : stackTrace) {
+                    writer.write("\t" + e.toString() + "\n");
+                }
+                writer.write("END STACKTRACE\n");
             }
-            logWriter.write("END STACKTRACE\n");
         } catch (IOException ignored) {
         }
 
