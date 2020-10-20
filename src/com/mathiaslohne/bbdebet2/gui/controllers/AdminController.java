@@ -37,6 +37,7 @@ import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewExpense;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewSale;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewUser;
+import com.mathiaslohne.bbdebet2.kernel.accounting.SpreadSheetExporter;
 import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.CurrencyFormatter;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
@@ -59,6 +60,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -391,6 +393,28 @@ public class AdminController implements Initializable {
     public void deleteSelectedExpence(ActionEvent event) {
         kernel.getLedger().remove(accountingView.getSelectionModel().getSelectedItem().getExpenceObject());
         repaintAccounting();
+    }
+
+    @FXML
+    public void exportLedger(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Velg filnavn");
+        FileChooser.ExtensionFilter excelfiles = new FileChooser.ExtensionFilter("Excel regneark (*.xls)", "*.xls");
+        fileChooser.getExtensionFilters().addAll(excelfiles);
+        fileChooser.setSelectedExtensionFilter(excelfiles);
+        File xlsFile = fileChooser.showSaveDialog(null);
+
+        try {
+            new SpreadSheetExporter(kernel).writeToFile(xlsFile);
+        } catch (IOException e) {
+            Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                e.getMessage()
+            );
+            alert.setHeaderText("Feil i eksportering");
+            alert.getDialogPane().setPrefHeight(200);
+            alert.showAndWait();
+        }
     }
 
 
