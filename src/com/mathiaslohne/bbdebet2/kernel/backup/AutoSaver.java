@@ -113,6 +113,12 @@ public class AutoSaver {
                 Kernel.getLogger().log(e);
             }
 
+            try {
+                kernel.getLedger().saveFile(new File(Kernel.SAVE_DIR + newSubdir + Kernel.LEDGER_FILENAME));
+            } catch (IOException e) {
+                Kernel.getLogger().log(e);
+            }
+
         } else {
             kernel.saveAll();
         }

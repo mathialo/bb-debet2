@@ -234,7 +234,7 @@ public class MakeExpense extends Applet {
 
             payOut.forEach(this::payBackUser);
 
-            Expense expense = new Expense(commentTextArea.getText());
+            Expense expense = new Expense(commentTextArea.getText().trim());
             fromTransactions.forEach(expense::addTransaction);
             toTransactions.forEach(expense::addTransaction);
             kernel.getLedger().add(expense);

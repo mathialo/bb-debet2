@@ -76,7 +76,7 @@ public class Ledger implements Exportable, Iterable<Expense> {
                 Expense expense = expenses.get(id);
 
                 if (expense == null) {
-                    expense = new Expense(line[5], Long.parseLong(line[1]), id);
+                    expense = new Expense(line[5].replaceAll("\\\\n", "\n").trim(), Long.parseLong(line[1]), id);
                     expenses.put(id, expense);
                 }
 
@@ -130,6 +130,11 @@ public class Ledger implements Exportable, Iterable<Expense> {
                     transaction.getAccount().getNumber(),
                     transaction.getAmount(),
                     expense.getComment()
+                        .replaceAll("\n", "\\\\n")
+                        .replaceAll(",","")
+                        .replaceAll("\r", "")
+                        .replaceAll("\t", " ")
+                        .trim()
                 ));
             });
         }
