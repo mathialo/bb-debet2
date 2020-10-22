@@ -59,7 +59,7 @@ public class SpreadSheetExporter {
     private void createBook() {
         currentRowNum = 0;
         exportFile = new HSSFWorkbook();
-        sheet = exportFile.createSheet();
+        sheet = exportFile.createSheet("Bilag");
     }
 
 

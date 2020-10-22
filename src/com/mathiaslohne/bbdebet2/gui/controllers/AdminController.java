@@ -67,8 +67,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static com.mathiaslohne.bbdebet2.kernel.core.Kernel.SAVE_DIR;
+import static com.mathiaslohne.bbdebet2.kernel.core.Kernel.getLogger;
 
 
 public class AdminController implements Initializable {
@@ -353,7 +358,7 @@ public class AdminController implements Initializable {
 
     @FXML
     public void viewMoneyInserts(ActionEvent event) {
-        File file = new File(kernel.SAVE_DIR + "moneyinserts.csv");
+        File file = new File(SAVE_DIR + "moneyinserts.csv");
         try {
             CsvViewer.createAndDisplayDialog(file, "Innskudd");
         } catch (IOException e) {
@@ -369,7 +374,7 @@ public class AdminController implements Initializable {
 
     @FXML
     public void viewLosses(ActionEvent event) {
-        File file = new File(kernel.SAVE_DIR + "losses.csv");
+        File file = new File(SAVE_DIR + "losses.csv");
         try {
             CsvViewer.createAndDisplayDialog(file, "Svinn");
         } catch (IOException e) {
@@ -436,13 +441,24 @@ public class AdminController implements Initializable {
     public void showUserManual(ActionEvent event) {
         WebView browser = new WebView();
         WebEngine webEngine = browser.getEngine();
-        webEngine.load("file:/usr/local/share/com.mathiaslohne.bbdebet2/manual_bbdebet2.html");
-        Stage stage = new Stage();
-        Scene scene = new Scene(browser, 850, 650);
 
-        stage.setScene(scene);
-        stage.setTitle("Brukermanual");
-        stage.show();
+        try {
+            String installDir = Files.readString(Path.of(SAVE_DIR, ".installdir")).trim();
+            webEngine.load("file://" + Path.of(installDir,  "manual_bbdebet2.html").toString());
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(browser, 850, 650);
+
+            stage.setScene(scene);
+            stage.setTitle("Brukermanual");
+            stage.show();
+
+        } catch (IOException e) {
+            getLogger().log(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.setHeaderText("Kan ikke vise manual");
+            alert.show();
+        }
     }
 
 
