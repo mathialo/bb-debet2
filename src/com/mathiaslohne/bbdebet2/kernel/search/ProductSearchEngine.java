@@ -21,20 +21,28 @@ import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.Product;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
 public class ProductSearchEngine {
 
+    private static List<Product> innerSearch(Kernel kernel, String query) {
+        return kernel.getStorage().getProductSet().stream()
+            .filter(product ->
+                Arrays.stream(query.split("\\s+")).allMatch(chunk ->
+                    product.getName().toLowerCase().contains(chunk.toLowerCase())
+                )
+            )
+            .collect(Collectors.toList());
+    }
+
+
     public static List<Product> search(Kernel kernel, String query) {
-        Set<Product> productSet = kernel.getStorage().getProductSet();
-
-        List<Product> result = productSet.stream().filter(product -> product.getName().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList());
-
+        List<Product> result = innerSearch(kernel, query);
         Map<String, Integer> salenums = kernel.getSalesHistory().filterLastItems(50).getSummary();
         result.sort(Comparator.comparingInt(p -> -salenums.getOrDefault(p.getName(), 0)));
 
@@ -45,9 +53,7 @@ public class ProductSearchEngine {
     public static List<Product> search(Kernel kernel, String query, User user) {
         if (user == null) return search(kernel, query);
 
-        Set<Product> productSet = kernel.getStorage().getProductSet();
-
-        List<Product> result = productSet.stream().filter(product -> product.getName().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList());
+        List<Product> result = innerSearch(kernel, query);
 
         Map<String, Integer> salenumsTotal = kernel.getSalesHistory().filterLastItems(50).getSummary();
         Map<String, Integer> salenumsUser = kernel.getSalesHistory().filterOnUser(user).filterLastItems(50).getSummary();
