@@ -24,9 +24,9 @@ import com.mathiaslohne.bbdebet2.gui.customelements.MakeCustomProductDialog;
 import com.mathiaslohne.bbdebet2.gui.customelements.StorageButton;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewSale;
-import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.CategoryDict;
 import com.mathiaslohne.bbdebet2.kernel.core.CurrencyFormatter;
+import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.Product;
 import com.mathiaslohne.bbdebet2.kernel.core.SettingsHolder;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
@@ -101,6 +101,7 @@ public class UserController implements Initializable {
     private List<Alert> openAlertBoxes;
 
     private boolean isGlasUser = false;
+    private boolean searchActive = false;
 
 
     private String formatTitleString(User user) {
@@ -368,6 +369,11 @@ public class UserController implements Initializable {
 
         // Reset logout timer
         updateLogoutTimer();
+
+        // Re-focus search
+        Platform.runLater(() -> searchProductInput.requestFocus());
+
+        searchActive = false;
     }
 
 
@@ -407,6 +413,32 @@ public class UserController implements Initializable {
 
         // Reset logout timer
         updateLogoutTimer();
+
+        // Re-focus search
+        Platform.runLater(() -> searchProductInput.requestFocus());
+    }
+
+
+    public void removeLastAdded() {
+        if (shoppingCartView.getItems().isEmpty()) return;
+        if (searchActive) {
+            if (searchProductInput.getText().isBlank()) searchActive = false;
+            return;
+        }
+
+        ViewProduct vp = shoppingCartView.getItems().remove(shoppingCartView.getItems().size() - 1);
+        kernel.getStorage().add(vp.getProductObject());
+
+        // Update storage view as prices and availability might have changed
+        updateStorageView();
+        updateFavouritesView();
+        updateShoppingCartTitleLabel();
+
+        // Reset logout timer
+        updateLogoutTimer();
+
+        // Re-focus search
+        Platform.runLater(() -> searchProductInput.requestFocus());
     }
 
 
@@ -453,6 +485,9 @@ public class UserController implements Initializable {
 
         // Reset logout timer
         updateLogoutTimer();
+
+        // Re-focus search
+        Platform.runLater(() -> searchProductInput.requestFocus());
     }
 
 
@@ -544,6 +579,24 @@ public class UserController implements Initializable {
                 } else if (!storageContainer.getChildren().isEmpty()) {
                     addProductToCart(((StorageButton) storageContainer.getChildren().get(0)).getProduct());
                 }
+            } else if (ke.getCode() == KeyCode.BACK_SPACE) {
+                removeLastAdded();
+            }
+        });
+
+        Main.getUserScene().addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
+            if (ke.getCode().isLetterKey() && !searchProductInput.focusedProperty().get()) {
+                Platform.runLater(() -> {
+                    searchProductInput.requestFocus();
+                    searchProductInput.setText(searchProductInput.getText()+ke.getText());
+                    searchProductInput.positionCaret(1);
+                    newSearch();
+                });
+
+            }
+
+            if (!searchProductInput.getText().isBlank()) {
+                searchActive = true;
             }
         });
     }

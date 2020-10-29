@@ -46,8 +46,8 @@
             <Label alignment="CENTER" text="Skriv inn brukernavn:" />
             <HBox alignment="CENTER">
                <children>
-                  <TextField fx:id="loginNameField" onAction="#attemptLogin" />
-                  <Button mnemonicParsing="false" onAction="#attemptLogin" text="Logg inn" />
+                  <TextField fx:id="loginNameField" focusTraversable="false" onAction="#attemptLogin" />
+                  <Button mnemonicParsing="false" focusTraversable="false"  onAction="#attemptLogin" text="Logg inn" />
                </children>
             </HBox>
             <Label fx:id="errorOutput" textFill="RED" />

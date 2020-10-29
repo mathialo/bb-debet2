@@ -19,6 +19,8 @@ package com.mathiaslohne.bbdebet2.gui.controllers;
 
 import com.mathiaslohne.bbdebet2.gui.Main;
 import com.mathiaslohne.bbdebet2.gui.customelements.PasswordDialog;
+import com.mathiaslohne.bbdebet2.gui.customelements.SuggestionMenu;
+import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewUser;
 import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
 import javafx.application.Platform;
@@ -28,10 +30,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 
 public class LoginController implements Initializable {
 
@@ -42,9 +50,13 @@ public class LoginController implements Initializable {
 
     private Kernel kernel;
 
+    private SuggestionMenu<ViewUser> suggestionMenu;
+
 
     @FXML
     public void attemptLogin(ActionEvent event) {
+        suggestionMenu.setActive(false);
+
         // Extract username
         String userName = loginNameField.getText().trim();
 
@@ -76,6 +88,7 @@ public class LoginController implements Initializable {
     public void resetLogin() {
         loginNameField.setText("");
         errorOutput.setText("");
+        suggestionMenu.setActive(false);
     }
 
 
@@ -110,6 +123,32 @@ public class LoginController implements Initializable {
 
 
     public void postInitialize() {
+        Main.getLoginScene().addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
+            if (ke.getCode() == KeyCode.BACK_SPACE || loginNameField.getText().isBlank()) {
+                suggestionMenu.setActive(false);
 
+            } else if (ke.getCode() == KeyCode.TAB) {
+                List<User> users = StreamSupport.stream(kernel.getUserList().spliterator(), false)
+                    .filter(user -> user.getUserName().startsWith(loginNameField.getText()))
+                    .collect(Collectors.toList());
+
+                if (users.size() == 1) {
+                    loginNameField.setText(users.get(0).getUserName());
+                    loginNameField.positionCaret(users.get(0).getUserName().length());
+                } else {
+                    suggestionMenu.setActive(true);
+                }
+            } else if (ke.getCode().isLetterKey()) {
+                suggestionMenu.updateContextMenuItems(ke);
+            }
+
+
+        });
+
+        suggestionMenu = new SuggestionMenu<>(loginNameField, kernel.getUserList())
+            .setActive(false)
+            .setMatchType(SuggestionMenu.MatchType.STARTS_WITH);
+
+        Platform.runLater(() -> loginNameField.requestFocus());
     }
 }

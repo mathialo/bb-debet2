@@ -29,11 +29,19 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+
 public class SuggestionMenu<T> extends ContextMenu {
 
     private TextField inputField;
     private List<Listable<T>> backends;
     private HashSet<String> previouslyAdded;
+
+    private boolean active;
+    private MatchType matchType = MatchType.CONTAINS;
+
+    public enum MatchType {
+        CONTAINS, STARTS_WITH
+    }
 
 
     public SuggestionMenu(TextField inputField, Listable<T> backend) {
@@ -57,21 +65,54 @@ public class SuggestionMenu<T> extends ContextMenu {
     }
 
 
+    public SuggestionMenu<T> setActive(boolean active) {
+        this.active = active;
+        if (active) updateContextMenuItems(null);
+        else hide();
+        return this;
+    }
+
+
+    public SuggestionMenu<T> setMatchType(MatchType matchType) {
+        this.matchType = matchType;
+        return this;
+    }
+
+
+    private boolean match(String haystack, String needle) {
+        switch (matchType) {
+            case CONTAINS:
+                return haystack.contains(needle);
+
+            case STARTS_WITH:
+                return haystack.startsWith(needle);
+        }
+        return false;
+    }
+
+
     public void updateContextMenuItems(KeyEvent event) {
-        if (! (event.getCode().isLetterKey() || event.getCode() == KeyCode.SPACE || event.getCode().isDigitKey())) return;
+        if (!active)
+            return;
+
+        if (event != null && !(event.getCode().isLetterKey() || event.getCode() == KeyCode.SPACE || event.getCode().isDigitKey()))
+            return;
 
         getItems().clear();
         previouslyAdded.clear();
 
-        for (Listable<T> backend: backends) {
+        for (Listable<T> backend : backends) {
             List<T> list = backend.toList();
 
             for (T item : list) {
-                if (!previouslyAdded.contains(item.toString()) && item.toString().toLowerCase().contains(inputField.getText().toLowerCase())) {
+                if (!previouslyAdded.contains(item.toString()) && match(item.toString().toLowerCase(), inputField.getText().toLowerCase())) {
                     previouslyAdded.add(item.toString());
 
                     MenuItem menuItem = new MenuItem(item.toString());
-                    menuItem.setOnAction(e -> inputField.setText(item.toString()));
+                    menuItem.setOnAction(e -> {
+                        inputField.setText(item.toString());
+                        inputField.positionCaret(inputField.getText().length());
+                    });
                     getItems().add(menuItem);
                 }
             }
