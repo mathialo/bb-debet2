@@ -86,7 +86,9 @@ public class EditProducts extends Applet {
         kernel.getStorage().editProducts(query, newName, newPrice);
         if (query.changeName()) {
             String finalNewName = newName;
-            kernel.getSalesHistory().forEach(sale -> sale.setProductName(finalNewName));
+            kernel.getSalesHistory()
+                .filter(s -> query.match(s.getProduct()))
+                .forEach(sale -> sale.setProductName(finalNewName));
         }
 
         Main.getCurrentAdminController().repaintStorage();

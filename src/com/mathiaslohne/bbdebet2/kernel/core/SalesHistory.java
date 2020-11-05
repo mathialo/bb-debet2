@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.function.Function;
 
 
 public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Exportable {
@@ -239,6 +240,18 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
             if (s.madeByUser(user)) {
                 listOfTransactions.add(s);
             }
+        }
+
+        return new SalesHistory(listOfTransactions);
+    }
+
+
+    public SalesHistory filter(Function<Sale, Boolean> predicate) {
+        // add all elements from user to a new list
+        LinkedList<Sale> listOfTransactions = new LinkedList<>();
+
+        for (Sale s : history) {
+            if (predicate.apply(s)) listOfTransactions.add(s);
         }
 
         return new SalesHistory(listOfTransactions);
