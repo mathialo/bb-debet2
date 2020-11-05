@@ -18,6 +18,7 @@
 package com.mathiaslohne.bbdebet2.kernel.core;
 
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewUser;
+import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewUserVerbose;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,12 +38,14 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
 
     private LinkedList<User> list;
 
+    private File defaultSave;
 
     /**
      * Creates an empty user list
      */
-    public UserList() {
+    public UserList(String savePath) {
         list = new LinkedList<>();
+        defaultSave = new File(savePath);
     }
 
 
@@ -55,6 +59,7 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
      */
     public UserList(File userlist) throws IOException, ErrorInFileException {
         resetToFile(userlist);
+        defaultSave = userlist;
     }
 
 
@@ -119,6 +124,8 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
         } catch (Exception e) {
             throw new ErrorInFileException("Uventet feil i input: " + e.getMessage());
         }
+
+        list.sort(Comparator.comparingInt(User::getId));
     }
 
 
@@ -191,7 +198,7 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
 
     @Override
     public void saveFile() throws IOException {
-        saveFile(Kernel.USERLIST_FILEPATH, true);
+        saveFile(defaultSave, true);
     }
 
 
@@ -281,6 +288,24 @@ public class UserList implements Iterable<User>, Exportable, Listable<ViewUser> 
 
         for (User u : list) {
             listOfPeople.add(new ViewUser(u));
+        }
+
+        return FXCollections.observableArrayList(listOfPeople);
+    }
+
+
+    /**
+     * returns list as an observable list
+     *
+     * @return userlist as an obserable list of usernames
+     */
+    public ObservableList<ViewUser> toObservableList(boolean verbose) {
+        if (!verbose) return toObservableList();
+
+        ArrayList<ViewUser> listOfPeople = new ArrayList<>();
+
+        for (User u : list) {
+            listOfPeople.add(new ViewUserVerbose(u));
         }
 
         return FXCollections.observableArrayList(listOfPeople);

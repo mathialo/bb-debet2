@@ -27,6 +27,7 @@ import com.mathiaslohne.bbdebet2.gui.applets.Console;
 import com.mathiaslohne.bbdebet2.gui.applets.CsvViewer;
 import com.mathiaslohne.bbdebet2.gui.applets.EditProducts;
 import com.mathiaslohne.bbdebet2.gui.applets.EditUser;
+import com.mathiaslohne.bbdebet2.gui.applets.InactiveUsers;
 import com.mathiaslohne.bbdebet2.gui.applets.MakeExpense;
 import com.mathiaslohne.bbdebet2.gui.applets.NewSemester;
 import com.mathiaslohne.bbdebet2.gui.applets.NewUser;
@@ -38,8 +39,8 @@ import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewSale;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewUser;
 import com.mathiaslohne.bbdebet2.kernel.accounting.SpreadSheetExporter;
-import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.CurrencyFormatter;
+import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
 import com.mathiaslohne.bbdebet2.plugins.Plugin;
 import com.mathiaslohne.bbdebet2.plugins.PluginFactory;
@@ -400,6 +401,7 @@ public class AdminController implements Initializable {
         repaintAccounting();
     }
 
+
     @FXML
     public void exportLedger(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -444,7 +446,7 @@ public class AdminController implements Initializable {
 
         try {
             String installDir = Files.readString(Path.of(SAVE_DIR, ".installdir")).trim();
-            webEngine.load("file://" + Path.of(installDir,  "manual_bbdebet2.html").toString());
+            webEngine.load("file://" + Path.of(installDir, "manual_bbdebet2.html").toString());
 
             Stage stage = new Stage();
             Scene scene = new Scene(browser, 850, 650);
@@ -471,6 +473,12 @@ public class AdminController implements Initializable {
     @FXML
     public void newSendEmailWindow(ActionEvent event) {
         SendEmail.createAndDisplayDialog();
+    }
+
+
+    @FXML
+    public void newInactiveUsersWindow(ActionEvent event) {
+        InactiveUsers.createAndDisplayDialog();
     }
 
 

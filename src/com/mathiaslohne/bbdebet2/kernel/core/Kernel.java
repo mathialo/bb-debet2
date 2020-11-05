@@ -45,6 +45,7 @@ public class Kernel implements CommandLineInterface {
     public static final String PROCESSEDINSERTS_FILENAME = "processedInserts";
     public static final String SALESHISTORY_FILENAME = "saleshistory.csv";
     public static final String USERLIST_FILENAME = "users.usl";
+    public static final String INACTIVE_USERLIST_FILENAME = "inactive.usl";
     public static final String STORAGE_FILENAME = "storage.csv";
     public static final String CATEGORIES_FILENAME = "categories.csv";
     public static final String TRANSACTIONHIST_FILENAME = "transactionhistory.csv";
@@ -57,6 +58,7 @@ public class Kernel implements CommandLineInterface {
 
     public static final String SALESHISTORY_FILEPATH = SAVE_DIR + SALESHISTORY_FILENAME;
     public static final String USERLIST_FILEPATH = SAVE_DIR + USERLIST_FILENAME;
+    public static final String INACTIVE_USERLIST_FILEPATH = SAVE_DIR + INACTIVE_USERLIST_FILENAME;
     public static final String STORAGE_FILEPATH = SAVE_DIR + STORAGE_FILENAME;
     public static final String CATEGORIES_FILEPATH = SAVE_DIR + CATEGORIES_FILENAME;
     public static final String TRANSACTIONHIST_FILEPATH = SAVE_DIR + TRANSACTIONHIST_FILENAME;
@@ -77,20 +79,16 @@ public class Kernel implements CommandLineInterface {
     private Exportable[] saveOnExit;
 
     private UserList userList;
-
+    private UserList inactiveUserList;
     private Storage storage;
     private CategoryDict categories;
-
     private SalesHistory salesHistory;
     private TransactionHandler transactionHandler;
     private Ledger ledger;
     private AccountSet accounts;
     private Losses losses;
-
     private SettingsHolder settingsHolder;
     private EmailSender emailSender;
-
-
     /**
      * Initializes a new kernel from specifications in ~/.com.mathiaslohne.bbdebet2. Creates an empty kernel if
      * nothing is specified in ~/.com.mathiaslohne.bbdebet2.
@@ -177,6 +175,11 @@ public class Kernel implements CommandLineInterface {
      */
     public static Logger getLogger() {
         return logger;
+    }
+
+
+    public UserList getInactiveUserList() {
+        return inactiveUserList;
     }
 
 
@@ -354,7 +357,17 @@ public class Kernel implements CommandLineInterface {
             logger.log(e);
             logger.log("Falling back to empty user list");
 
-            userList = new UserList();
+            userList = new UserList(USERLIST_FILEPATH);
+        }
+
+        logger.log("Loading inactive UserList");
+        try {
+            inactiveUserList = new UserList(new File(INACTIVE_USERLIST_FILEPATH));
+        } catch (IOException | ErrorInFileException e) {
+            logger.log(e);
+            logger.log("Falling back to empty inactive user list");
+
+            inactiveUserList = new UserList(INACTIVE_USERLIST_FILEPATH);
         }
 
         logger.log("Loading Storage");
@@ -438,7 +451,7 @@ public class Kernel implements CommandLineInterface {
             losses = new Losses();
         }
 
-        this.saveOnExit = new Exportable[]{userList, storage, categories, salesHistory, settingsHolder, accounts, ledger, losses};
+        this.saveOnExit = new Exportable[]{userList, inactiveUserList, storage, categories, salesHistory, settingsHolder, accounts, ledger, losses};
     }
 
 

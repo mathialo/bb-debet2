@@ -330,8 +330,6 @@ public class Storage implements Exportable, Listable<ViewProduct> {
 
 
     public void editProducts(ProductQuery query, String newName, double newSellPrice) {
-        double tolerance = 1e-7;
-
         for (PriorityQueue<Product> q : storage) {
             for (Product p : q) {
                 if (query.match(p)) {

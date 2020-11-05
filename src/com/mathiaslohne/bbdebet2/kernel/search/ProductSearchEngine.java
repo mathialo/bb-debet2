@@ -43,6 +43,7 @@ public class ProductSearchEngine {
 
     public static List<Product> search(Kernel kernel, String query) {
         List<Product> result = innerSearch(kernel, query);
+
         Map<String, Integer> salenums = kernel.getSalesHistory().filterLastItems(50).getSummary();
         result.sort(Comparator.comparingInt(p -> -salenums.getOrDefault(p.getName(), 0)));
 

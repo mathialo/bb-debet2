@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  Mathias Lohne
+ * Copyright (C) 2020  Mathias Lohne
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -15,25 +15,23 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mathiaslohne.bbdebet2.gui.applets;
+package com.mathiaslohne.bbdebet2.gui.modelwrappers;
 
-import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import com.mathiaslohne.bbdebet2.kernel.core.User;
 
-public class TestAppletLauncher extends Application {
-    public static Kernel kernel;
 
-    public static void main(String[] args) {
-        launch(args);
+public class ViewUserVerbose extends ViewUser {
+
+    public ViewUserVerbose(User user) {
+        super(user);
     }
 
 
     @Override
-    public void start(Stage primaryStage) {
-        kernel = new Kernel();
-        InactiveUsers.createAndDisplayDialog();
+    public String toString() {
+        if (getUserObject().getMail() == null || "".equals(getUserObject().getMail()))
+            return String.format("[%s] %s", getUserObject().getId(), getUserObject().getUserName());
+        else
+            return String.format("[%s] %s (%s)", getUserObject().getId(), getUserObject().getUserName(), getUserObject().getMail());
     }
-
-
 }

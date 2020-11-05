@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (C) 2019  Mathias Lohne
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it
+  ~ under the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along
+  ~ with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mathiaslohne.bbdebet2.gui.applets.InactiveUsers">
+    <center>
+        <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
+            <items>
+                <BorderPane>
+                    <center>
+                        <ListView fx:id="activeUsersView" prefHeight="200.0" prefWidth="200.0"/>
+                    </center>
+                    <top>
+                        <Label text="Aktive brukere" BorderPane.alignment="CENTER">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </Label>
+                    </top>
+                    <bottom>
+                        <Button mnemonicParsing="false" onAction="#makeInactive" text="Deaktiver valgt bruker"
+                                BorderPane.alignment="CENTER"/>
+                    </bottom>
+                </BorderPane>
+                <BorderPane>
+                    <center>
+                        <ListView fx:id="inactiveUsersView" prefHeight="200.0" prefWidth="200.0"/>
+                    </center>
+                    <top>
+                        <Label text="Inaktive brukere" BorderPane.alignment="CENTER">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </Label>
+                    </top>
+                    <bottom>
+                        <Button mnemonicParsing="false" onAction="#makeActive" text="Aktiver valgt bruker"
+                                BorderPane.alignment="CENTER"/>
+                    </bottom>
+                </BorderPane>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

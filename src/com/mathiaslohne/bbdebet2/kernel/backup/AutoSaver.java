@@ -106,6 +106,11 @@ public class AutoSaver {
             } catch (IOException e) {
                 Kernel.getLogger().log(e);
             }
+            try {
+                kernel.getInactiveUserList().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.INACTIVE_USERLIST_FILEPATH, true);
+            } catch (IOException e) {
+                Kernel.getLogger().log(e);
+            }
 
             try {
                 kernel.getStorage().saveFile(Kernel.SAVE_DIR + newSubdir + Kernel.STORAGE_FILENAME);

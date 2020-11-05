@@ -28,6 +28,7 @@ public class ViewUser {
     private final SimpleStringProperty mail;
     private final SimpleStringProperty balance;
     private final SimpleStringProperty acceptedEula;
+
     private User userObject;
 
 
