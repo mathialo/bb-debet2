@@ -61,10 +61,10 @@
                             <center>
                                 <TableView fx:id="saleHistoryView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                     <columns>
-                                        <TableColumn fx:id="saleHistoryTimeCol" editable="false" prefWidth="250.0" sortable="false" text="Tid" />
-                                        <TableColumn fx:id="saleHistoryUserCol" editable="false" minWidth="0.0" prefWidth="250.0" sortable="false" text="Bruker" />
-                                        <TableColumn fx:id="saleHistoryProductCol" editable="false" prefWidth="250.0" sortable="false" text="Vare" />
-                                        <TableColumn fx:id="saleHistoryPriceCol" editable="false" prefWidth="250.0" sortable="false" text="Pris" />
+                                        <TableColumn fx:id="saleHistoryTimeCol" editable="false" prefWidth="250.0" text="Tid" />
+                                        <TableColumn fx:id="saleHistoryUserCol" editable="false" minWidth="0.0" prefWidth="250.0" text="Bruker" />
+                                        <TableColumn fx:id="saleHistoryProductCol" editable="false" prefWidth="250.0" text="Vare" />
+                                        <TableColumn fx:id="saleHistoryPriceCol" editable="false" prefWidth="250.0" text="Pris" />
                                     </columns>
                                 </TableView>
                             </center>
@@ -121,9 +121,9 @@
                             <center>
                                 <TableView fx:id="storageView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                     <columns>
-                                        <TableColumn fx:id="storageProductCol" prefWidth="500.0" sortable="false" text="Vare" />
-                                        <TableColumn fx:id="storageBuyPriceCol" editable="false" prefWidth="250.0" sortable="false" text="Innkjøpspris" />
-                                        <TableColumn fx:id="storageSellPriceCol" prefWidth="250.0" sortable="false" text="Utsalgspris" />
+                                        <TableColumn fx:id="storageProductCol" prefWidth="500.0" text="Vare" />
+                                        <TableColumn fx:id="storageBuyPriceCol" editable="false" prefWidth="250.0" text="Innkjøpspris" />
+                                        <TableColumn fx:id="storageSellPriceCol" prefWidth="250.0" text="Utsalgspris" />
                                     </columns>
                                 </TableView>
                             </center>
@@ -185,10 +185,10 @@
                             <center>
                                 <TableView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                     <columns>
-                                        <TableColumn fx:id="userListIdCol" prefWidth="100.0" sortable="false" text="ID" />
-                                        <TableColumn fx:id="userListUserNameCol" prefWidth="300.0" sortable="false" text="Brukernavn" />
-                                        <TableColumn fx:id="userListEmailCol" minWidth="0.0" prefWidth="300.0" sortable="false" text="Epost" />
-                                        <TableColumn fx:id="userListBalanceCol" prefWidth="300.0" sortable="false" text="Saldo" />
+                                        <TableColumn fx:id="userListIdCol" prefWidth="100.0" text="ID" />
+                                        <TableColumn fx:id="userListUserNameCol" prefWidth="300.0" text="Brukernavn" />
+                                        <TableColumn fx:id="userListEmailCol" minWidth="0.0" prefWidth="300.0" text="Epost" />
+                                        <TableColumn fx:id="userListBalanceCol" prefWidth="300.0" text="Saldo" />
                                     </columns>
                                 </TableView>
                             </center>

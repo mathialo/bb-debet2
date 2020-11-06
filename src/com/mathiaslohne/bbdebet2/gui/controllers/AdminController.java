@@ -70,6 +70,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -160,6 +161,8 @@ public class AdminController implements Initializable {
         saleHistoryPriceCol.setCellValueFactory(
             new PropertyValueFactory<ViewSale, String>("price")
         );
+
+        saleHistoryPriceCol.setComparator(((s1, s2) -> (int) Math.round(Double.parseDouble(s1.replaceAll(" kr" , ""))*100- Double.parseDouble(s2.replace(" kr", ""))*100)));
     }
 
 
@@ -182,6 +185,9 @@ public class AdminController implements Initializable {
         storageSellPriceCol.setCellValueFactory(
             new PropertyValueFactory<ViewProduct, String>("sellPrice")
         );
+
+        storageBuyPriceCol.setComparator(((s1, s2) -> (int) Math.round(Double.parseDouble(s1.replaceAll(" kr" , ""))*100- Double.parseDouble(s2.replace(" kr", ""))*100)));
+        storageSellPriceCol.setComparator(((s1, s2) -> (int) Math.round(Double.parseDouble(s1.replaceAll(" kr" , ""))*100- Double.parseDouble(s2.replace(" kr", ""))*100)));
     }
 
 
@@ -207,6 +213,9 @@ public class AdminController implements Initializable {
         userListBalanceCol.setCellValueFactory(
             new PropertyValueFactory<ViewUser, String>("balance")
         );
+
+        userListBalanceCol.setComparator(((s1, s2) -> (int) Math.round(Double.parseDouble(s1.replaceAll(" kr", "")) * 100 - Double.parseDouble(s2.replace(" kr", "")) * 100)));
+        userListIdCol.setComparator(Comparator.comparingInt(Integer::parseInt));
     }
 
 
@@ -247,6 +256,10 @@ public class AdminController implements Initializable {
         repaintStorage();
         repaintUserList();
         repaintAccounting();
+
+        userListView.sort();
+        storageView.sort();
+        saleHistoryView.sort();
     }
 
 
