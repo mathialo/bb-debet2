@@ -52,6 +52,7 @@ public class SuggestionMenu<T> extends ContextMenu {
         previouslyAdded = new HashSet<>();
 
         inputField.setOnKeyPressed(this::updateContextMenuItems);
+        active=true;
     }
 
 
@@ -62,6 +63,7 @@ public class SuggestionMenu<T> extends ContextMenu {
         previouslyAdded = new HashSet<>();
 
         inputField.setOnKeyPressed(this::updateContextMenuItems);
+        active=true;
     }
 
 
@@ -92,12 +94,18 @@ public class SuggestionMenu<T> extends ContextMenu {
 
 
     public void updateContextMenuItems(KeyEvent event) {
-        if (!active)
+        System.out.println("Clicky!");
+        if (!active) {
+            System.out.println("Not active");
             return;
+        }
 
-        if (event != null && !(event.getCode().isLetterKey() || event.getCode() == KeyCode.SPACE || event.getCode().isDigitKey()))
+        if (event != null && !(event.getCode().isLetterKey() || event.getCode() == KeyCode.SPACE || event.getCode().isDigitKey())) {
+            System.out.println("keycode " + event.getCode());
             return;
+        }
 
+        System.out.println("setting items");
         getItems().clear();
         previouslyAdded.clear();
 
@@ -114,6 +122,7 @@ public class SuggestionMenu<T> extends ContextMenu {
                         inputField.positionCaret(inputField.getText().length());
                     });
                     getItems().add(menuItem);
+                    System.out.println(item);
                 }
             }
         }
