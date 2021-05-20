@@ -18,6 +18,7 @@
 package com.mathiaslohne.bbdebet2.gui.applets;
 
 import com.mathiaslohne.bbdebet2.gui.Main;
+import com.mathiaslohne.bbdebet2.gui.customelements.ConfirmFuzzyProductFind;
 import com.mathiaslohne.bbdebet2.gui.customelements.SuggestionMenu;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProductForAddition;
@@ -44,6 +45,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 
 public class AddProducts extends Applet {
@@ -100,6 +102,14 @@ public class AddProducts extends Applet {
             Product searchForInStorage = kernel.getStorage().findIgnoreCase(name);
             if (searchForInStorage != null) {
                 name = searchForInStorage.getName();
+            }
+
+            // Fuzzy search for possible duplicates
+            Set<String> finds = kernel.getSalesHistory().fuzzyFind(name);
+            if (!finds.isEmpty()) {
+                Optional<String> newName = new ConfirmFuzzyProductFind(name, finds).showAndWait();
+                if (newName.isEmpty()) return;
+                name = newName.get();
             }
 
             double buyPrice = Double.parseDouble(buyPriceInput.getText().replaceAll(",", "."));

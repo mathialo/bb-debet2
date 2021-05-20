@@ -17,9 +17,15 @@
 
 package com.mathiaslohne.bbdebet2.gui.applets;
 
+import com.mathiaslohne.bbdebet2.gui.customelements.ConfirmFuzzyProductFind;
 import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
+import com.mathiaslohne.bbdebet2.kernel.core.Product;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.util.List;
+import java.util.Set;
+
 
 public class TestAppletLauncher extends Application {
     public static Kernel kernel;
@@ -32,8 +38,9 @@ public class TestAppletLauncher extends Application {
     @Override
     public void start(Stage primaryStage) {
         kernel = new Kernel();
-        InactiveUsers.createAndDisplayDialog();
+//        InactiveUsers.createAndDisplayDialog();
+        Product p = new Product("ipa", 1, 2);
+        Set<String> f = kernel.getSalesHistory().fuzzyFind(p.getName());
+        System.out.println(new ConfirmFuzzyProductFind(p.getName(), f).showAndWait());
     }
-
-
 }

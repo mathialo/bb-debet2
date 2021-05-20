@@ -19,6 +19,7 @@ package com.mathiaslohne.bbdebet2.kernel.core;
 
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewSale;
+import com.mathiaslohne.bbdebet2.kernel.search.FuzzyMatcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,13 +28,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 
@@ -429,6 +434,17 @@ public class SalesHistory implements Iterable<Sale>, Listable<ViewProduct>, Expo
         }
 
         return list;
+    }
+
+
+    public Set<String> fuzzyFind(String productName) {
+        Set<String> result = new TreeSet<>();
+
+        for (Sale sale : history)
+            if (FuzzyMatcher.fuzzyMatch(sale.getProductName(), productName))
+                result.add(sale.getProductName());
+
+        return result;
     }
 
 
