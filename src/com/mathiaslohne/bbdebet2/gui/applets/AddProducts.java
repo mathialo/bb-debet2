@@ -19,11 +19,13 @@ package com.mathiaslohne.bbdebet2.gui.applets;
 
 import com.mathiaslohne.bbdebet2.gui.Main;
 import com.mathiaslohne.bbdebet2.gui.customelements.ConfirmFuzzyProductFind;
+import com.mathiaslohne.bbdebet2.gui.customelements.NewCategoryRulePrompt;
 import com.mathiaslohne.bbdebet2.gui.customelements.SuggestionMenu;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProductForAddition;
-import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.accounting.Expense;
+import com.mathiaslohne.bbdebet2.kernel.core.CategoryDict;
+import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.Listable;
 import com.mathiaslohne.bbdebet2.kernel.core.Product;
 import javafx.collections.FXCollections;
@@ -49,6 +51,7 @@ import java.util.Set;
 
 
 public class AddProducts extends Applet {
+
     private static final double BOTTLE_LOSE_RATE = 0.15;
 
     @FXML
@@ -105,7 +108,7 @@ public class AddProducts extends Applet {
             }
 
             // Fuzzy search for possible duplicates
-            Set<String> finds = kernel.getSalesHistory().fuzzyFind(name);
+            Set<String> finds = kernel.getCategories().fuzzyFind(name);
             if (!finds.isEmpty()) {
                 Optional<String> newName = new ConfirmFuzzyProductFind(name, finds).showAndWait();
                 if (newName.isEmpty()) return;
@@ -127,6 +130,13 @@ public class AddProducts extends Applet {
                 addPantInput.isSelected()
             );
 
+            if (!kernel.getCategories().containsRuleFor(name)) {
+                Optional<CategoryDict.Category> category = new NewCategoryRulePrompt().showAndWait();
+                if (category.isPresent()) {
+                    kernel.getCategories().newCategoryRule(name, category.get());
+                    Kernel.getLogger().log("New category rule added for " + name + " -> " + category.get());
+                }
+            }
 
             cartTableView.getItems().add(p);
         } catch (NumberFormatException e) {
@@ -251,7 +261,7 @@ public class AddProducts extends Applet {
 
         try {
             double pantadd = 0;
-            if (addPantInput.isSelected()) pantadd = 2*BOTTLE_LOSE_RATE;
+            if (addPantInput.isSelected()) pantadd = 2 * BOTTLE_LOSE_RATE;
 
             int packsize = 1;
             try {
@@ -278,8 +288,7 @@ public class AddProducts extends Applet {
         setupTableView();
 
         List<Listable<ViewProduct>> searchHere = new LinkedList<>();
-        searchHere.add(kernel.getStorage());
-        searchHere.add(kernel.getSalesHistory());
+        searchHere.add(kernel.getCategories());
         SuggestionMenu<ViewProduct> suggestionMenu = new SuggestionMenu<>(productNameInput, searchHere);
     }
 

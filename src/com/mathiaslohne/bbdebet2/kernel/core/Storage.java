@@ -318,7 +318,6 @@ public class Storage implements Exportable, Listable<ViewProduct> {
                     for (int i = 0; i < oldNum - newNum; i++) {
                         q.poll();
                     }
-                    System.out.println(q.size());
 
                     if (q.size() == 0) storageIterator.remove();
                 }

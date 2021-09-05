@@ -17,20 +17,26 @@
 
 package com.mathiaslohne.bbdebet2.kernel.core;
 
+import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewProduct;
+import com.mathiaslohne.bbdebet2.kernel.search.FuzzyMatcher;
 import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 
-public class CategoryDict implements Exportable {
+public class CategoryDict implements Exportable, Listable<ViewProduct> {
 
     private Map<String, Category> productToCategory;
     private Map<String, Category> existingCategories;
@@ -151,6 +157,32 @@ public class CategoryDict implements Exportable {
     }
 
 
+    public boolean containsRuleFor(Product product) {
+        return containsRuleFor(product.getName());
+    }
+
+    public boolean containsRuleFor(String productName) {
+        return  productToCategory.containsKey(productName);
+    }
+
+    public Set<String> fuzzyFind(String productName) {
+        Set<String> result = new TreeSet<>();
+
+        for (String name : getProductNames())
+            if (FuzzyMatcher.fuzzyMatch(name, productName))
+                result.add(name);
+
+        return result;
+    }
+
+    @Override
+    public List<ViewProduct> toList() {
+        return new ArrayList<>(getProductNames()).stream()
+            .map(s -> new ViewProduct(new Product(s, 0, 0)))
+            .collect(Collectors.toList());
+    }
+
+
     private void readCsv(File file) throws IOException, ErrorInFileException {
         Scanner scanner = new Scanner(file);
 
@@ -216,6 +248,11 @@ public class CategoryDict implements Exportable {
         }
 
 
+        private void setColor(Color color) {
+            this.color = color;
+        }
+
+
         /**
          * Convert color to html encoding. From StackOverflow at
          * https://stackoverflow.com/questions/17925318/how-to-get-hex-web-string-from-javafx-colorpicker-color
@@ -239,11 +276,6 @@ public class CategoryDict implements Exportable {
 
         private void setName(String name) {
             this.name = name;
-        }
-
-
-        private void setColor(Color color) {
-            this.color = color;
         }
 
 

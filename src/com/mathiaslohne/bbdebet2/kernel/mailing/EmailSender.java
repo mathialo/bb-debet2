@@ -34,6 +34,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Properties;
 
+
 public class EmailSender {
 
     private Kernel kernel;
@@ -43,6 +44,14 @@ public class EmailSender {
     public EmailSender(Kernel kernel) {
         this.kernel = kernel;
         settings = kernel.getSettingsHolder();
+    }
+
+
+    public static String capitalizeFirstLetter(String original) {
+        if (original == null || original.length() == 0) {
+            return original;
+        }
+        return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
 
@@ -108,14 +117,6 @@ public class EmailSender {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-
-    public static String capitalizeFirstLetter(String original) {
-        if (original == null || original.length() == 0) {
-            return original;
-        }
-        return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
 

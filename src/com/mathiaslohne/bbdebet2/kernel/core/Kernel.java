@@ -89,6 +89,8 @@ public class Kernel implements CommandLineInterface {
     private Losses losses;
     private SettingsHolder settingsHolder;
     private EmailSender emailSender;
+
+
     /**
      * Initializes a new kernel from specifications in ~/.com.mathiaslohne.bbdebet2. Creates an empty kernel if
      * nothing is specified in ~/.com.mathiaslohne.bbdebet2.
