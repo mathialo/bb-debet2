@@ -19,6 +19,7 @@ package com.mathiaslohne.bbdebet2.gui.applets;
 
 import com.mathiaslohne.bbdebet2.gui.Main;
 import com.mathiaslohne.bbdebet2.kernel.core.CurrencyFormatter;
+import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.Product;
 import com.mathiaslohne.bbdebet2.kernel.core.ProductQuery;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 
 public class EditProducts extends Applet {
 
@@ -82,6 +84,9 @@ public class EditProducts extends Applet {
             query.setChangePrice();
             newPrice = Double.parseDouble(newProductPriceInput.getText().replaceAll(",", "."));
         }
+
+        if (query.changeName()) Kernel.getLogger().log("Updating name of " + query + " to " + newName);
+        if (query.changePrice()) Kernel.getLogger().log("Updating price of " + query + " to " + newPrice);
 
         kernel.getStorage().editProducts(query, newName, newPrice);
         if (query.changeName()) {

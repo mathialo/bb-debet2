@@ -318,6 +318,7 @@ public class AdminController implements Initializable {
 
     @FXML
     public void logout(ActionEvent event) {
+        Kernel.getLogger().log("Admin logout");
         Main.toLoginScreen();
     }
 

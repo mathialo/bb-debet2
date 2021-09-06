@@ -19,6 +19,7 @@ package com.mathiaslohne.bbdebet2.gui.applets;
 
 import com.mathiaslohne.bbdebet2.gui.Main;
 import com.mathiaslohne.bbdebet2.gui.modelwrappers.ViewUser;
+import com.mathiaslohne.bbdebet2.kernel.core.Kernel;
 import com.mathiaslohne.bbdebet2.kernel.core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,6 +45,8 @@ public class InactiveUsers extends Applet {
 
 
     private void innerMakeInactive(User user) {
+        Kernel.getLogger().log("Turning " + user + " inactive");
+
         kernel.getInactiveUserList().add(user);
         kernel.getUserList().remove(user);
         updateLists();
@@ -67,9 +70,13 @@ public class InactiveUsers extends Applet {
             Optional<String> result = newNameDialog.showAndWait();
 
             if (result.isEmpty()) return;
+            String newName = result.get().replaceAll(",", ".");
 
-            user.setUserName(result.get());
+            Kernel.getLogger().log("Changing name of user: " + user.getUserName() + " -> " + newName);
+            user.setUserName(newName);
         }
+
+        Kernel.getLogger().log("Turning " + user + " active");
 
         kernel.getUserList().add(user);
         kernel.getInactiveUserList().remove(user);

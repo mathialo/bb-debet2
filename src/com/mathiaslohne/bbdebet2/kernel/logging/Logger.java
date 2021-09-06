@@ -72,6 +72,12 @@ public class Logger {
 
 
     private void controlFileSize() {
+        try {
+            logWriter.flush();
+            errorWriter.flush();
+        } catch (IOException ignored) {
+        }
+
         if (logFile.length() >= MAX_FILESIZE) {
             // Close previous file
             try {
@@ -111,7 +117,7 @@ public class Logger {
         }
 
         for (PrintStream output : outputStreams) {
-            output.println(getTimeStamp() + " [LOG]:  " + message);
+            output.println(getTimeStamp() + " [LOG]:  " + message);;
         }
 
         controlFileSize();

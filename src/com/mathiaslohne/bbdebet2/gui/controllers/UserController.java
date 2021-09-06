@@ -347,7 +347,7 @@ public class UserController implements Initializable {
         if (logOutAlert.getResult() == waitButton) {
             updateLogoutTimer();
         } else {
-            Kernel.getLogger().log(Main.getActiveUser() + " forcibly logged out");
+            Kernel.getLogger().log(Main.getActiveUser() + " timed out");
             logout();
             Main.toLoginScreen();
         }
@@ -516,6 +516,7 @@ public class UserController implements Initializable {
 
 
     private void logout() {
+        Kernel.getLogger().log("Logging out " + Main.getActiveUser());
         if (Main.getActiveUser() == null) return;
 
         // Force through purchase of all goods in cart

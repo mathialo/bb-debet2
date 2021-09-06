@@ -105,8 +105,10 @@ public class LoginController implements Initializable {
 
         if (result.isPresent()) {
             if (result.get().equals(kernel.getSettingsHolder().getAdminPass())) {
+                Kernel.getLogger().log("New admin login");
                 Main.toAdminScreen();
             } else {
+                Kernel.getLogger().log("Failed admin login");
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Prøv på nytt");
                 alert.setHeaderText("Feil passord");
                 alert.showAndWait();

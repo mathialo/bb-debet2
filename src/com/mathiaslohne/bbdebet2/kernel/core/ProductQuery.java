@@ -82,4 +82,17 @@ public class ProductQuery {
     public boolean changePrice() {
         return changePrice;
     }
+
+
+    @Override
+    public String toString() {
+        String qName;
+        if (anyName) qName = "Any name";
+        else qName = "name='" + name + "'";
+        String qPrice;
+        if (anyPrice) qPrice = "Any price";
+        else qPrice = "price='" + price + "'";
+
+        return "ProductQuery[" + qName + ", " + qPrice + "]";
+    }
 }
